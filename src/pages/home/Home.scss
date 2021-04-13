@@ -1,0 +1,51 @@
+@import "src/variables";
+
+.home {
+  @include page;
+  max-width: 700px;
+
+  hr {
+    border: 4px $color-bloom solid;
+  }
+
+  &__title {
+    color: $color-bloom;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  &__error {
+    color: $color-error;
+    margin-top: -10px;
+    text-align: left;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+    height: 0.85rem;
+  }
+
+  &__submit {
+    cursor: pointer;
+    background-color: $color-warning;
+    border: none;
+    outline: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
+}

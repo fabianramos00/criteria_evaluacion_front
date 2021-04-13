@@ -1,0 +1,55 @@
+@import "src/variables";
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+
+  &__item {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__label {
+    margin-left: 15px;
+  }
+
+  &__badge {
+    width: 30px;
+    height: 30px;
+    background-color: $color-warning;
+    text-align: center;
+    padding: 5px;
+    border-radius: 10px;
+
+    &--complete {
+      background-color: $color-success;
+    }
+  }
+
+  &__content {
+    padding-left: 45px;
+  }
+
+  &__controls {
+    padding: 10px;
+
+    button {
+      cursor: pointer;
+      margin-right: 10px;
+      border-radius: 5px;
+      outline: none;
+      border: none;
+      padding: 10px;
+
+      &:active {
+        transform: scale(0.96);
+      }
+    }
+  }
+}

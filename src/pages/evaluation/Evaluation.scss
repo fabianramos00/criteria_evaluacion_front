@@ -1,0 +1,9 @@
+@import "src/variables";
+
+.evaluation {
+  @include page;
+
+  &__title {
+    color: $color-bloom;
+  }
+}
