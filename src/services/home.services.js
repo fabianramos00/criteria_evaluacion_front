@@ -1,3 +1,3 @@
-export async function evaluate(link, name) {
-  console.log(link, name);
+export async function evaluate(input) {
+  console.log(input);
 }

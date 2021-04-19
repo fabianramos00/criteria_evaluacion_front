@@ -8,6 +8,8 @@ import * as yup from 'yup';
 const schema = yup.object().shape({
   link: yup.string().required('Completa este campo.'),
   name: yup.string().required('Completa este campo.'),
+  secondName: yup.string(),
+  thirdName: yup.string(),
 });
 
 function Home() {
@@ -20,8 +22,8 @@ function Home() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ link, name }) => {
-    evaluate(link, name).then(() => history.push('/eval'));
+  const onSubmit = values => {
+    evaluate(values).then(() => history.push('/eval'));
   };
 
   return (
@@ -38,6 +40,10 @@ function Home() {
         <span className='home__error'>{errors.link?.message}</span>
         <input {...register('name')} placeholder='Nombre del repositorio' />
         <span className='home__error'>{errors.name?.message}</span>
+        <input {...register('secondName')} placeholder='Nombre del repositorio (opcional)' />
+        <span className='home__error'>{errors.secondName?.message}</span>
+        <input {...register('thirdName')} placeholder='Nombre del repositorio (opcional)' />
+        <span className='home__error'>{errors.thirdName?.message}</span>
         <button type='submit' className='home__submit'>
           Evaluar
         </button>

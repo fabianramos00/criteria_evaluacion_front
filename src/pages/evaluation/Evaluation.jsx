@@ -1,19 +1,26 @@
 import './Evaluation.scss';
 import Steps from '../../components/steps/Steps';
+import AutomaticMessage from '../../components/automaticMessage/Automatic';
+import Visibility from '../../components/evaluation/visibility/Visibility';
+import Policies from '../../components/evaluation/policies/Policies';
+import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects';
+import Safety from '../../components/evaluation/safety/Safety';
+import Statistics from '../../components/evaluation/statistics/Statistics';
+import RaterOpinion from '../../components/evaluation/raterOpinion/RaterOpinion';
 
 const criteriaSteps = [
-  { id: 1, label: 'Visibilidad', component: <div>Resultados del servidor</div> },
-  { id: 2, label: 'Políticas', component: <div>Formulario de políticas</div> },
-  { id: 3, label: 'Aspectos Legales', component: <div>Formulario Aspectos Legales</div> },
-  { id: 4, label: 'Metadatos', component: <div>Metadatos</div> },
-  { id: 5, label: 'Interoperabilidad', component: <div>Interoperabilidad</div> },
-  { id: 6, label: 'Seguridas', component: <div>Seguridad</div> },
-  { id: 7, label: 'Estadísticas', component: <div>Estadísticas</div> },
-  { id: 8, label: 'Servicios de valor añadido', component: <div>Servicios de valor añadido</div> },
+  { id: 1, label: 'Visibilidad', component: <Visibility /> },
+  { id: 2, label: 'Políticas', component: <Policies /> },
+  { id: 3, label: 'Aspectos Legales', component: <LegalAspects /> },
+  { id: 4, label: 'Metadatos', component: <AutomaticMessage /> },
+  { id: 5, label: 'Interoperabilidad', component: <AutomaticMessage /> },
+  { id: 6, label: 'Seguridad', component: <Safety /> },
+  { id: 7, label: 'Estadísticas', component: <Statistics /> },
+  { id: 8, label: 'Servicios de valor añadido', component: <AutomaticMessage /> },
   {
     id: 9,
     label: 'Opinión personal del evaluador',
-    component: <div>Opinión personal del evaluador</div>,
+    component: <RaterOpinion />,
   },
 ];
 
