@@ -1,16 +1,12 @@
 import './Steps.scss';
-import { useState } from 'react';
+import { Switch, Route, useRouteMatch, NavLink, useParams, useHistory } from 'react-router-dom';
 
 function Steps({ items = [] }) {
-  const [active, setActive] = useState(0);
+  const { path } = useRouteMatch();
+  const { token } = useParams();
 
-  const next = () => setActive(prev => prev + 1);
-
-  const back = () => setActive(prev => prev - 1);
-
-  const finish = () => {
-    next();
-    console.log('Terminar');
+  const getPath = (stepPath, token) => {
+    return typeof stepPath === 'function' ? stepPath(token) : `${path}${stepPath}`;
   };
 
   return (
@@ -18,25 +14,54 @@ function Steps({ items = [] }) {
       {items.map((step, i) => (
         <div key={`step-${step.id}`} className='steps__item'>
           <div className='steps__header'>
-            <div className={i < active ? ' steps__badge steps__badge--complete' : 'steps__badge'}>
-              {i + 1}
-            </div>
+            <NavLink
+              to={getPath(step.path, token)}
+              activeClassName='steps__badge steps__badge--complete'
+              className='steps__badge'
+              exact
+            >
+              <div>{i + 1}</div>
+            </NavLink>
             <div className='steps__label'>{step.label}</div>
           </div>
-          {i === active && (
-            <div className='steps__content'>
-              {step.component}
-              <div className='steps__controls'>
-                {active > 0 && <button onClick={back}>Anterior</button>}
-                {active < items.length - 1 && <button onClick={next}>Siguiente</button>}
-                {active === items.length - 1 && <button onClick={finish}>Finalizar</button>}
-              </div>
-            </div>
-          )}
+          <Switch>
+            <Route exact path={getPath(step.path)}>
+              <Step step={step} />
+            </Route>
+          </Switch>
         </div>
       ))}
     </div>
   );
 }
+
+const Step = ({ step }) => {
+  return <div className='steps__content'>{step.component}</div>;
+};
+
+export const StepControls = ({ showBack = true, nextRoute = '', backRoute = '' }) => {
+  const history = useHistory();
+
+  const goNext = () => nextRoute && history.push(nextRoute);
+
+  const goBack = () => backRoute && history.push(backRoute);
+
+  return (
+    <div className='step-controls'>
+      {showBack && (
+        <button type='submit' className='step-controls__btn' onClick={goBack}>
+          volver
+        </button>
+      )}
+      <button
+        type='submit'
+        onClick={goNext}
+        className='step-controls__btn step-controls__btn--next'
+      >
+        Siguiente
+      </button>
+    </div>
+  );
+};
 
 export default Steps;

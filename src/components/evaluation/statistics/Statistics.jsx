@@ -1,28 +1,17 @@
+import { useParams } from 'react-router-dom';
+import RadioGroup from '../../general/radioGroup/RadioGroup';
+import { StepControls } from '../../steps/Steps';
+import { servicesRoute, securityRoute } from '../../../const/routes';
+
 const Statistics = () => {
+  const { token } = useParams();
+
   return (
     <>
       {categories.map(cat => (
-        <div key={`cat-${cat.id}`} role='radiogroup' aria-labelledby='group_label_1' id={cat.id}>
-          <h5 id='group_label_1'>{cat.label}</h5>
-          <div style={{ display: 'flex' }}>
-            {cat.options.map(option => (
-              <label
-                key={`opt-${cat.id}-${option.id}`}
-                className='radio'
-                style={{ textAlign: 'center', margin: '0 10px', cursor: 'pointer' }}
-              >
-                {option.label}
-                <input
-                  type='radio'
-                  name='answer'
-                  value={option.value}
-                  style={{ cursor: 'pointer' }}
-                />
-              </label>
-            ))}
-          </div>
-        </div>
+        <RadioGroup key={`cat-${cat.id}`} text={cat.label} options={cat.options} />
       ))}
+      <StepControls backRoute={securityRoute(token)} nextRoute={servicesRoute(token)} />
     </>
   );
 };

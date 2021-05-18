@@ -6,22 +6,47 @@ import Policies from '../../components/evaluation/policies/Policies';
 import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects';
 import Safety from '../../components/evaluation/safety/Safety';
 import Statistics from '../../components/evaluation/statistics/Statistics';
-import RaterOpinion from '../../components/evaluation/raterOpinion/RaterOpinion';
+import {
+  visibilityRoute,
+  policiesRoute,
+  legalAspectsRoute,
+  metadataRoute,
+  interoperabilityRoute,
+  securityRoute,
+  statsRoute,
+  servicesRoute,
+} from '../../const/routes';
 
 const criteriaSteps = [
-  { id: 1, label: 'Visibilidad', component: <Visibility /> },
-  { id: 2, label: 'Políticas', component: <Policies /> },
-  { id: 3, label: 'Aspectos Legales', component: <LegalAspects /> },
-  { id: 4, label: 'Metadatos', component: <AutomaticMessage /> },
-  { id: 5, label: 'Interoperabilidad', component: <AutomaticMessage /> },
-  { id: 6, label: 'Seguridad', component: <Safety /> },
-  { id: 7, label: 'Estadísticas', component: <Statistics /> },
-  { id: 8, label: 'Servicios de valor añadido', component: <AutomaticMessage /> },
+  { id: 1, label: 'Visibilidad', component: <Visibility />, path: visibilityRoute },
+  { id: 2, label: 'Políticas', component: <Policies />, path: policiesRoute },
   {
-    id: 9,
-    label: 'Opinión personal del evaluador',
-    component: <RaterOpinion />,
+    id: 3,
+    label: 'Aspectos Legales',
+    component: <LegalAspects />,
+    path: legalAspectsRoute,
   },
+  { id: 4, label: 'Metadatos', component: <AutomaticMessage />, path: metadataRoute },
+  {
+    id: 5,
+    label: 'Interoperabilidad',
+    component: <AutomaticMessage />,
+    path: interoperabilityRoute,
+  },
+  { id: 6, label: 'Seguridad', component: <Safety />, path: securityRoute },
+  { id: 7, label: 'Estadísticas', component: <Statistics />, path: statsRoute },
+  {
+    id: 8,
+    label: 'Servicios de valor añadido',
+    component: <AutomaticMessage />,
+    path: servicesRoute,
+  },
+  // {
+  //   id: 9,
+  //   label: 'Opinión personal del evaluador',
+  //   component: <RaterOpinion />,
+  //   path: opinionRoute,
+  // },
 ];
 
 function Evaluation() {

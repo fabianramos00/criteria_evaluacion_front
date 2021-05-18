@@ -4,12 +4,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { evaluate } from '../../services/home.services';
 import * as yup from 'yup';
+import { REQUIRED_FIELD_ERROR, INVALID_URL_ERROR } from '../../const/errors';
 
 const schema = yup.object().shape({
-  link: yup.string().required('Completa este campo.'),
-  name: yup.string().required('Completa este campo.'),
-  secondName: yup.string(),
-  thirdName: yup.string(),
+  repository_url: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  repository_name: yup.string().required(REQUIRED_FIELD_ERROR),
+  repository_name1: yup.string(),
+  repository_name2: yup.string(),
 });
 
 function Home() {
@@ -23,7 +24,7 @@ function Home() {
   });
 
   const onSubmit = values => {
-    evaluate(values).then(() => history.push('/eval'));
+    evaluate(values).then(() => history.push('/eval/TOKEN457DF'));
   };
 
   return (
@@ -36,14 +37,14 @@ function Home() {
         more-or-less normal distribution of letters, as opposed to using 'Content here,
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className='home__form'>
-        <input {...register('link')} placeholder='Enlace al repositorio' />
-        <span className='home__error'>{errors.link?.message}</span>
-        <input {...register('name')} placeholder='Nombre del repositorio' />
-        <span className='home__error'>{errors.name?.message}</span>
-        <input {...register('secondName')} placeholder='Nombre del repositorio (opcional)' />
-        <span className='home__error'>{errors.secondName?.message}</span>
-        <input {...register('thirdName')} placeholder='Nombre del repositorio (opcional)' />
-        <span className='home__error'>{errors.thirdName?.message}</span>
+        <input {...register('repository_url')} placeholder='Enlace al repositorio' />
+        <span className='home__error'>{errors.repository_url?.message}</span>
+        <input {...register('repository_name')} placeholder='Nombre del repositorio' />
+        <span className='home__error'>{errors.repository_name?.message}</span>
+        <input {...register('repository_name1')} placeholder='Nombre del repositorio (opcional)' />
+        <span className='home__error'>{errors.repository_name1?.message}</span>
+        <input {...register('repository_name2')} placeholder='Nombre del repositorio (opcional)' />
+        <span className='home__error'>{errors.repository_name2?.message}</span>
         <button type='submit' className='home__submit'>
           Evaluar
         </button>

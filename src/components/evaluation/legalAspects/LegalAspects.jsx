@@ -1,28 +1,17 @@
+import { StepControls } from '../../steps/Steps';
+import { policiesRoute, metadataRoute } from '../../../const/routes';
+import { useParams } from 'react-router-dom';
+import RadioGroup from '../../general/radioGroup/RadioGroup';
+
 const LegalAspects = () => {
+  const { token } = useParams();
+
   return (
     <>
       {categories.map(cat => (
-        <div key={`cat-${cat.id}`} role='radiogroup' aria-labelledby='group_label_1' id={cat.id}>
-          <h5 id='group_label_1'>{cat.label}</h5>
-          <div style={{ display: 'flex' }}>
-            {cat.options.map(option => (
-              <label
-                key={`opt-${cat.id}-${option.id}`}
-                className='radio'
-                style={{ textAlign: 'center', margin: '0 10px', cursor: 'pointer' }}
-              >
-                {option.label}
-                <input
-                  type='radio'
-                  name='answer'
-                  value={option.value}
-                  style={{ cursor: 'pointer' }}
-                />
-              </label>
-            ))}
-          </div>
-        </div>
+        <RadioGroup key={`cat-${cat.id}`} text={cat.label} options={cat.options} />
       ))}
+      <StepControls backRoute={policiesRoute(token)} nextRoute={metadataRoute(token)} />
     </>
   );
 };
@@ -54,14 +43,6 @@ const categories = [
       { id: 2, label: 'No', value: 0 },
     ],
   },
-  // {
-  //   id: 4,
-  //   label: 'Inclusión de los derechos de autor en los metadatos de cada recurso',
-  //   options: [
-  //     { id: 1, label: 'Sí', value: 2 },
-  //     { id: 2, label: 'No', value: 0 },
-  //   ],
-  // },
   {
     id: 5,
     label: 'Inclusión de los derechos de autor en cada recurso',

@@ -1,0 +1,20 @@
+@import "src/variables";
+
+.visibility {
+  &__form {
+    background-color: rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 10px 5px 10px;
+    border-radius: 10px;
+
+    div {
+      margin-left: 10px;
+    }
+
+    input  {
+      min-width: 330px;
+      margin-right: 15px;
+    }
+  }
+}
