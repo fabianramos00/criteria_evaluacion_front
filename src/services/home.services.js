@@ -1,3 +1,5 @@
+import { postData } from '../config/client.http';
+
 export async function evaluate(input) {
-  console.log(input);
+  return await postData('/', input);
 }

@@ -79,6 +79,12 @@ export const StepControls = ({
 
   const goBack = () => backRoute && history.push(backRoute);
 
+  const handleClick = () => {
+    if (nextText) {
+      goNext();
+    }
+  };
+
   return (
     <div className='step-controls'>
       {showBack && (
@@ -88,7 +94,7 @@ export const StepControls = ({
       )}
       <button
         type='submit'
-        onClick={nextText && goNext}
+        onClick={handleClick}
         className='step-controls__btn step-controls__btn--next'
       >
         {nextText ? 'Siguiente' : 'Guardar'}

@@ -8,6 +8,7 @@ import { StepControls } from '../../steps/Steps';
 import { policiesRoute } from '../../../const/routes';
 import { useParams } from 'react-router-dom';
 import RadioGroup from '../../general/radioGroup/RadioGroup';
+import Option from '../../general/option/Option';
 
 const schema = yup.object().shape({
   repository_url: yup.string().url(INVALID_URL_ERROR),
@@ -33,22 +34,16 @@ const Visibility = () => {
 
   return (
     <div className='visibility'>
-      <div className='option'>
-        <p>
-          <b>1. Presencia en directorios internacionales:</b> OpenDOAR, ROAR, OAI Data Providers,
-          e3dat
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>2. Presencia en recolectores internacionales:</b> LA Referencia, OpenAIRE, Google
-          Académico, CORE, BASE
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>3. Presencia en recolectores nacionales.</b>
-        </p>
+      <Option
+        label='Presencia en directorios internacionales'
+        text='OpenDOAR, ROAR, OAI Data Providers, e3dat'
+      />
+      <Option
+        step={2}
+        label='Presencia en recolectores internacionales'
+        text='La Referencia, OpenAIRE, Google Académico, CORE, BASE'
+      />
+      <Option step={3} label='Presencia en recolectores nacionales'>
         <RadioGroup
           text=''
           options={[
@@ -83,29 +78,17 @@ const Visibility = () => {
             </div>
           </form>
         )}
-      </div>
-      <div className='option'>
-        <p>
-          <b>4. Existencia de nombre normalizado del RI en directorios y recolectores.</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>5. Existencia de URL segura (https) y amigable (nombre del RI).</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>6. Disponibilidad de documentos en acceso abierto.</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>
-            7. Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la
-            propia institución.
-          </b>
-        </p>
+      </Option>
+      <Option
+        step={4}
+        label='Existencia de nombre normalizado del RI en directorios y recolectores'
+      />
+      <Option step={5} label='Existencia de URL segura (https) y amigable (nombre del RI)' />
+      <Option step={6} label='Disponibilidad de documentos en acceso abierto' />
+      <Option
+        step={7}
+        label='Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la propia institución'
+      >
         <RadioGroup
           text=''
           options={[
@@ -113,7 +96,7 @@ const Visibility = () => {
             { id: 2, label: 'No', value: 0 },
           ]}
         />
-      </div>
+      </Option>
       <StepControls showBack={false} nextRoute={policiesRoute(token)} nextText={showNext} />
     </div>
   );

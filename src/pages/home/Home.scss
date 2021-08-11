@@ -3,29 +3,12 @@
 .home {
   @include page;
   max-width: 700px;
-
-  hr {
-    border: 4px $color-bloom solid;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   &__title {
     color: $color-bloom;
-  }
-
-  &__form {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  &__error {
-    color: $color-error;
-    margin-top: -10px;
-    text-align: left;
-    margin-left: 5px;
-    margin-bottom: 10px;
-    font-size: 0.85rem;
-    height: 0.85rem;
   }
 
   &__submit {
