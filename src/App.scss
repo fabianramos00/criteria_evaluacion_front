@@ -1,5 +1,13 @@
 @import "variables";
 
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+b {
+  font-weight: 500;
+}
+
 .App {
   text-align: center;
 }
@@ -12,4 +20,14 @@
   margin-bottom: 5px;
   font-size: 0.85rem;
   min-height: 1rem;
+}
+
+.vertical-padding {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.horizontal-padding {
+  padding-left: 10px;
+  padding-right: 10px;
 }

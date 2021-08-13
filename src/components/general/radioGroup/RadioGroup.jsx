@@ -1,25 +1,55 @@
 import './styles.scss';
-import RadioBtn from '../radioBtn/RadioBtn';
 import { useState } from 'react';
+import RadioBtn from '../radioBtn/RadioBtn';
+import { Controller } from 'react-hook-form';
 
-const RadioGroup = ({ text = '', options = [], onChange = () => {} }) => {
+const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name }) => {
   const handleChange = e => {
-    onChange(e.target.value);
+    const value = e.target.value;
+
+    if (typeof value === 'boolean') {
+      onChange(value);
+    } else {
+      onChange(value === 'true');
+    }
   };
 
   return (
     <>
       <p>{text}</p>
-      <form style={{ display: 'flex' }} onChange={handleChange}>
-        {options.map(option => (
-          <RadioBtn
-            key={`opt-${option.id}`}
-            label={option.label}
-            value={option.value}
-            name={`answer`}
-          />
-        ))}
-      </form>
+      {control ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { onChange, onBlur, value, ref } }) => (
+            <fieldset style={{ display: 'flex' }} onChange={onChange}>
+              {options.map(option => (
+                <RadioBtn
+                  key={`opt-${option.id}`}
+                  label={option.label}
+                  value={option.value}
+                  onChange={e => {
+                    onChange(e);
+                    handleChange(e);
+                  }}
+                  name={name}
+                />
+              ))}
+            </fieldset>
+          )}
+        />
+      ) : (
+        <fieldset style={{ display: 'flex' }} onChange={handleChange}>
+          {options.map(option => (
+            <RadioBtn
+              key={`opt-${option.id}`}
+              label={option.label}
+              value={option.value}
+              name={name}
+            />
+          ))}
+        </fieldset>
+      )}
     </>
   );
 };

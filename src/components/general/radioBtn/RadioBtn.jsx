@@ -1,10 +1,13 @@
 import './RadioBtn.scss';
+import { forwardRef } from 'react';
 
-const RadioBtn = ({ label = '', name = '', value = '' }) => (
-  <label>
-    <input type='radio' name={name} value={value} />
-    <span>{label}</span>
-  </label>
+const RadioBtn = forwardRef(
+  ({ label = '', name = '', value = '', onChange, checked = false, ...props }, ref) => (
+    <label>
+      <input type='radio' name={name} value={value} onChange={onChange} ref={ref} {...props} />
+      <span>{label}</span>
+    </label>
+  ),
 );
 
 export default RadioBtn;
