@@ -3,119 +3,151 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { INVALID_URL_ERROR } from '../../../const/errors';
+import {
+  NATIONAL_COLLECTOR,
+  COLLECTOR_URL1,
+  COLLECTOR_URL2,
+  COLLECTOR_URL3,
+  COLLECTOR_URL4,
+  COLLECTOR_URL5,
+  INITIATIVES_EXISTENCE,
+} from '../../../schemas/visibility';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StepControls } from '../../steps/Steps';
 import { policiesRoute } from '../../../const/routes';
 import { useParams } from 'react-router-dom';
 import RadioGroup from '../../general/radioGroup/RadioGroup';
+import Option from '../../general/option/Option';
+import Input from '../../general/input/Input';
+import { cleanJSON, getError } from '../../../utils/common';
+import { URL_PLACEHOLDER, YES_NO_OPTIONS } from '../../../const/common';
+import { evalVisibility } from '../../../services/evaluation.services';
 
 const schema = yup.object().shape({
-  repository_url: yup.string().url(INVALID_URL_ERROR),
-  repository_url1: yup.string().url(INVALID_URL_ERROR),
-  repository_url2: yup.string().url(INVALID_URL_ERROR),
-  repository_url3: yup.string().url(INVALID_URL_ERROR),
-  repository_url4: yup.string().url(INVALID_URL_ERROR),
+  [NATIONAL_COLLECTOR]: yup.boolean(),
+  [COLLECTOR_URL1]: yup.string().url(INVALID_URL_ERROR),
+  [COLLECTOR_URL2]: yup.string().url(INVALID_URL_ERROR),
+  [COLLECTOR_URL3]: yup.string().url(INVALID_URL_ERROR),
+  [COLLECTOR_URL4]: yup.string().url(INVALID_URL_ERROR),
+  [COLLECTOR_URL5]: yup.string().url(INVALID_URL_ERROR),
+  [INITIATIVES_EXISTENCE]: yup.boolean(),
 });
 
 const Visibility = () => {
-  const [national, setNational] = useState(0);
+  const [national, setNational] = useState(false);
   const [showNext, setShowNext] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { token } = useParams();
 
   const onSubmit = values => {
-    console.log(values);
+    const body = cleanJSON(values);
+    setLoading(true);
+    evalVisibility(token, body)
+      .then(data => {
+        console.log(data);
+        setShowNext();
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
-    <div className='visibility'>
-      <div className='option'>
-        <p>
-          <b>1. Presencia en directorios internacionales:</b> OpenDOAR, ROAR, OAI Data Providers,
-          e3dat
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>2. Presencia en recolectores internacionales:</b> LA Referencia, OpenAIRE, Google
-          Académico, CORE, BASE
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>3. Presencia en recolectores nacionales.</b>
-        </p>
-        <RadioGroup
-          text=''
-          options={[
-            { id: 1, label: 'Sí', value: 3 },
-            { id: 2, label: 'No', value: 0 },
-          ]}
-          onChange={setNational}
+    <section className='visibility'>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Option
+          step={1}
+          label='Presencia en directorios internacionales'
+          text='OpenDOAR, ROAR, OAI Data Providers, e3dat'
+          automatic
         />
-        {national > 0 && (
-          <form onSubmit={handleSubmit(onSubmit)}>
+        <Option
+          step={2}
+          label='Presencia en recolectores internacionales'
+          text='La Referencia, OpenAIRE, Google Académico, CORE, BASE'
+          automatic
+        />
+        <Option step={3} label='Presencia en recolectores nacionales'>
+          <RadioGroup
+            options={YES_NO_OPTIONS}
+            onChange={setNational}
+            control={control}
+            name={NATIONAL_COLLECTOR}
+          />
+          {national && (
             <div className='visibility__form'>
-              <div>
-                <input {...register('repository_url')} placeholder='Repositorio nacional 1' />
-                <p className='form__error'>{errors.repository_url?.message}</p>
-              </div>
-              <div>
-                <input {...register('repository_url1')} placeholder='Repositorio nacional 2' />
-                <p className='form__error'>{errors.repository_url1?.message}</p>
-              </div>
-              <div>
-                <input {...register('repository_url2')} placeholder='Repositorio nacional 3' />
-                <p className='form__error'>{errors.repository_url2?.message}</p>
-              </div>
-              <div>
-                <input {...register('repository_url3')} placeholder='Repositorio nacional 4' />
-                <p className='form__error'>{errors.repository_url3?.message}</p>
-              </div>
-              <div>
-                <input {...register('repository_url4')} placeholder='Repositorio nacional 5' />
-                <p className='form__error'>{errors.repository_url4?.message}</p>
-              </div>
+              <Input
+                {...register(COLLECTOR_URL1)}
+                error={getError(errors, COLLECTOR_URL1)}
+                label='Enlace de recolector'
+                placeholder={URL_PLACEHOLDER}
+                required
+              />
+              <Input
+                {...register(COLLECTOR_URL2)}
+                error={getError(errors, COLLECTOR_URL2)}
+                label='Enlace de recolector'
+                placeholder={URL_PLACEHOLDER}
+                required
+              />
+              <Input
+                {...register(COLLECTOR_URL3)}
+                error={getError(errors, COLLECTOR_URL3)}
+                label='Enlace de recolector'
+                placeholder={URL_PLACEHOLDER}
+                required
+              />
+              <Input
+                {...register(COLLECTOR_URL4)}
+                error={getError(errors, COLLECTOR_URL4)}
+                label='Enlace de recolector'
+                placeholder={URL_PLACEHOLDER}
+                required
+              />
+              <Input
+                {...register(COLLECTOR_URL5)}
+                error={getError(errors, COLLECTOR_URL5)}
+                label='Enlace de recolector'
+                placeholder={URL_PLACEHOLDER}
+                required
+              />
             </div>
-          </form>
-        )}
-      </div>
-      <div className='option'>
-        <p>
-          <b>4. Existencia de nombre normalizado del RI en directorios y recolectores.</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>5. Existencia de URL segura (https) y amigable (nombre del RI).</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>6. Disponibilidad de documentos en acceso abierto.</b>
-        </p>
-      </div>
-      <div className='option'>
-        <p>
-          <b>
-            7. Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la
-            propia institución.
-          </b>
-        </p>
-        <RadioGroup
-          text=''
-          options={[
-            { id: 1, label: 'Sí', value: 3 },
-            { id: 2, label: 'No', value: 0 },
-          ]}
+          )}
+        </Option>
+        <Option
+          step={4}
+          label='Existencia de nombre normalizado del RI en directorios y recolectores'
+          automatic
         />
-      </div>
-      <StepControls showBack={false} nextRoute={policiesRoute(token)} nextText={showNext} />
-    </div>
+        <Option
+          step={5}
+          label='Existencia de URL segura (https) y amigable (nombre del RI)'
+          automatic
+        />
+        <Option step={6} label='Disponibilidad de documentos en acceso abierto' automatic />
+        <Option
+          step={7}
+          label='Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la propia institución'
+        >
+          <RadioGroup
+            text=''
+            options={YES_NO_OPTIONS}
+            control={control}
+            name={INITIATIVES_EXISTENCE}
+          />
+        </Option>
+        <StepControls
+          showBack={false}
+          nextRoute={policiesRoute(token)}
+          nextText={showNext}
+          loading={loading}
+        />
+      </form>
+    </section>
   );
 };
 

@@ -1,0 +1,25 @@
+@import "src/index";
+
+.option {
+  background-color: white;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  border: rgba(0, 0, 0, 0.15) 1px solid;
+
+  >.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    >.tag {
+      background-color: $color-info;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-weight: 600;
+      user-select: none;
+      margin-left: 10px;
+    }
+  }
+}

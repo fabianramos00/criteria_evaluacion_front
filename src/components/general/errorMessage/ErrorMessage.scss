@@ -1,0 +1,9 @@
+@import "src/App";
+
+.error-message {
+  color: $color-error;
+  font-size: 0.9rem;
+  min-height: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}

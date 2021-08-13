@@ -72,6 +72,7 @@ export const StepControls = ({
   nextRoute = '',
   backRoute = '',
   nextText = false,
+  loading = false,
 }) => {
   const history = useHistory();
 
@@ -79,19 +80,26 @@ export const StepControls = ({
 
   const goBack = () => backRoute && history.push(backRoute);
 
+  const handleClick = () => {
+    if (nextText) {
+      goNext();
+    }
+  };
+
   return (
     <div className='step-controls'>
       {showBack && (
-        <button type='submit' className='step-controls__btn' onClick={goBack}>
+        <button className='step-controls__btn' onClick={goBack}>
           volver
         </button>
       )}
       <button
         type='submit'
-        onClick={nextText && goNext}
+        onClick={handleClick}
         className='step-controls__btn step-controls__btn--next'
+        disabled={loading}
       >
-        {nextText ? 'Siguiente' : 'Guardar'}
+        {nextText ? 'Siguiente' : loading ? 'Cargando...' : 'Guardar'}
       </button>
     </div>
   );

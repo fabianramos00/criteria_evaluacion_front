@@ -6,6 +6,7 @@ import Policies from '../../components/evaluation/policies/Policies';
 import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects';
 import Safety from '../../components/evaluation/safety/Safety';
 import Statistics from '../../components/evaluation/statistics/Statistics';
+import Metadata from '../../components/evaluation/metadata/Metadata';
 import {
   visibilityRoute,
   policiesRoute,
@@ -26,7 +27,7 @@ const criteriaSteps = [
     component: <LegalAspects />,
     path: legalAspectsRoute,
   },
-  { id: 4, label: 'Metadatos', component: <AutomaticMessage />, path: metadataRoute },
+  { id: 4, label: 'Metadatos', component: <Metadata />, path: metadataRoute },
   {
     id: 5,
     label: 'Interoperabilidad',

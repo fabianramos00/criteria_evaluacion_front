@@ -21,17 +21,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-input {
-  border: lightgray 1px solid;
-  width: 100%;
-  font-size: 1.1rem;
-  border-radius: 5px;
-  outline: none;
-  padding: 10px;
-  box-sizing: border-box;
+button[disabled], button:disabled {
+  background-color: $color-gray;
+  color: $color-text-light;
+}
 
-  &:focus {
-    border: 1px $color-warning solid;
-    -moz-outline-radius: 10px;
-  }
+fieldset {
+  border: none;
 }
