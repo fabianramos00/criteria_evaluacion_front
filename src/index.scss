@@ -25,3 +25,7 @@ button[disabled], button:disabled {
   background-color: $color-gray;
   color: $color-text-light;
 }
+
+fieldset {
+  border: none;
+}

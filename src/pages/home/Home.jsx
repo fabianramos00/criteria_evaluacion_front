@@ -14,6 +14,8 @@ import {
   REPOSITORY_NAME_2,
 } from '../../schemas/home';
 import { getError } from '../../utils/common';
+import { visibilityRoute } from '../../const/routes';
+import { URL_PLACEHOLDER } from '../../const/common';
 
 const schema = yup.object().shape({
   [REPOSITORY_URL]: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
@@ -38,8 +40,9 @@ function Home() {
     setLoading(true);
     evaluate(values)
       .then(data => {
-        history.push(`/eval/${data?.token}`);
+        history.push(visibilityRoute(data?.token));
       })
+      .catch(e => console.log(e))
       .finally(() => setLoading(false));
   };
 
@@ -51,7 +54,7 @@ function Home() {
           {...register(REPOSITORY_URL)}
           error={getError(errors, REPOSITORY_URL)}
           label='Enlace al repositorio'
-          placeholder='http:// - https://'
+          placeholder={URL_PLACEHOLDER}
           required
         />
         <Input
@@ -74,7 +77,7 @@ function Home() {
           placeholder='Nombre del repositorio (opcional)'
         />
         <button type='submit' className='home__submit' disabled={loading}>
-          Evaluar
+          {loading ? 'Cargando...' : 'Evaluar'}
         </button>
       </form>
     </div>
