@@ -3,7 +3,7 @@ import { useState } from 'react';
 import RadioBtn from '../radioBtn/RadioBtn';
 import { Controller } from 'react-hook-form';
 
-const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name }) => {
+const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name}) => {
   const handleChange = e => {
     const value = e.target.value;
 
@@ -13,7 +13,6 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
       onChange(value === 'true');
     }
   };
-
   return (
     <>
       <p>{text}</p>
@@ -33,6 +32,7 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
                     handleChange(e);
                   }}
                   name={name}
+                  checked={String(value) === String(option.value)}
                 />
               ))}
             </fieldset>

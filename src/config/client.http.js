@@ -11,6 +11,8 @@ export const postData = async (path = '/', body) => {
     method: 'POST',
     body: JSON.stringify(body),
   });
-
-  return await response.json();
+  return {
+    'status': response.status,
+    'data': await response.json()
+  };
 };

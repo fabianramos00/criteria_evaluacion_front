@@ -26,9 +26,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { cleanJSON, getError } from '../../../utils/common';
 import { evalPolitics } from '../../../services/evaluation.services';
 import Option from '../../general/option/Option';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import RadioWithUrl from '../../general/radioWithUrl/RadioWithUrl';
 import ErrorMessage from '../../general/errorMessage/ErrorMessage';
+import { TotalContext } from '../../../context/context';
 
 const schema = yup.object().shape({
   [OPEN_ACCESS]: yup.boolean(),
@@ -54,6 +55,7 @@ const Policies = () => {
   const [loading, setLoading] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const [error, setError] = useState('');
+  const totalContext = useContext(TotalContext);
 
   const {
     handleSubmit,
@@ -71,6 +73,7 @@ const Policies = () => {
         else setShowNext();
       })
       .finally(() => setLoading(false));
+    totalContext.setTotal(prev => prev+10);
   };
 
   return (

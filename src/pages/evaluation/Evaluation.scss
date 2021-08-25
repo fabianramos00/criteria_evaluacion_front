@@ -6,4 +6,19 @@
   &__title {
     color: $color-bloom;
   }
+
+  .header {
+    display: flex;
+    justify-content: center;
+
+    .evaluation__title {
+      color: $color-bloom;
+      position: relative;
+    }
+
+    .rating {
+      position: absolute;
+      right: 30px;
+    }
+  }
 }

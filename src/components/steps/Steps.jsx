@@ -73,6 +73,8 @@ export const StepControls = ({
   backRoute = '',
   nextText = false,
   loading = false,
+  total = 0,
+  showTotal = false
 }) => {
   const history = useHistory();
 
@@ -92,6 +94,9 @@ export const StepControls = ({
         <button className='step-controls__btn' onClick={goBack}>
           volver
         </button>
+      )}
+      {showTotal && (
+        <h3>Total {total}</h3>
       )}
       <button
         type='submit'

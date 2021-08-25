@@ -17,46 +17,47 @@ import {
   statsRoute,
   servicesRoute,
 } from '../../const/routes';
-
-const criteriaSteps = [
-  { id: 1, label: 'Visibilidad', component: <Visibility />, path: visibilityRoute },
-  { id: 2, label: 'Políticas', component: <Policies />, path: policiesRoute },
-  {
-    id: 3,
-    label: 'Aspectos Legales',
-    component: <LegalAspects />,
-    path: legalAspectsRoute,
-  },
-  { id: 4, label: 'Metadatos', component: <Metadata />, path: metadataRoute },
-  {
-    id: 5,
-    label: 'Interoperabilidad',
-    component: <AutomaticMessage />,
-    path: interoperabilityRoute,
-  },
-  { id: 6, label: 'Seguridad', component: <Safety />, path: securityRoute },
-  { id: 7, label: 'Estadísticas', component: <Statistics />, path: statsRoute },
-  {
-    id: 8,
-    label: 'Servicios de valor añadido',
-    component: <AutomaticMessage />,
-    path: servicesRoute,
-  },
-  // {
-  //   id: 9,
-  //   label: 'Opinión personal del evaluador',
-  //   component: <RaterOpinion />,
-  //   path: opinionRoute,
-  // },
-];
+import { useState } from 'react';
+import { TotalContext } from '../../context/context';
 
 function Evaluation() {
+  const [total, setTotal] = useState(0);
+
+  const criteriaSteps = [
+    { id: 1, label: 'Visibilidad', component: <Visibility />, path: visibilityRoute },
+    { id: 2, label: 'Políticas', component: <Policies />, path: policiesRoute },
+    {
+      id: 3,
+      label: 'Aspectos Legales',
+      component: <LegalAspects />,
+      path: legalAspectsRoute,
+    },
+    { id: 4, label: 'Metadatos', component: <Metadata />, path: metadataRoute },
+    {
+      id: 5,
+      label: 'Interoperabilidad',
+      component: <AutomaticMessage />,
+      path: interoperabilityRoute,
+    },
+    { id: 6, label: 'Seguridad', component: <Safety />, path: securityRoute },
+    { id: 7, label: 'Estadísticas', component: <Statistics />, path: statsRoute },
+    {
+      id: 8,
+      label: 'Servicios de valor añadido',
+      component: <AutomaticMessage />,
+      path: servicesRoute,
+    },
+  ];
+
   return (
     <div className='evaluation'>
-      <h3 className='evaluation__title'>Evaluación del repositorio</h3>
-      It is a long established fact that a reader will be distracted by the readable content of a
-      page when looking at its layout.
-      <Steps items={criteriaSteps} />
+      <div className='header'>
+        <h2 className='evaluation__title'>Evaluación del repositorio</h2>
+        <h2 className='rating'>{total}</h2>
+      </div>
+      <TotalContext.Provider value={{ setTotal }}>
+        <Steps items={criteriaSteps} />
+      </TotalContext.Provider>
     </div>
   );
 }
