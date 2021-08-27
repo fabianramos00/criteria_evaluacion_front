@@ -1,5 +1,7 @@
 @import "src/variables";
 
+$br-radius: 20px;
+
 .evaluation {
   @include page;
 
@@ -17,8 +19,37 @@
     }
 
     .rating {
-      position: absolute;
-      right: 30px;
+      background-color: rgba($color-bloom, 0.9);
+      color: $color-text-light;
+      font-weight: 500;
+      font-size: 3rem;
+      padding: 20px 40px;
+      border-top-left-radius: $br-radius;
+      border-bottom-left-radius: $br-radius;
+      position: fixed;
+      right: 0;
+      cursor: pointer;
+      transition: all 0.7s;
+
+      p {
+        color: $color-text-light;
+        font-size: 1.2rem;
+      }
+
+      &.small {
+        display: flex;
+        font-size: 1.2rem;
+        align-items: center;
+        font-weight: bold;
+        padding: 10px 20px;
+
+        p {
+          margin: 0 15px 0 0;
+          font-weight: 400;
+          font-size: 0.8rem;
+          display: none;
+        }
+      }
     }
   }
 }

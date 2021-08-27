@@ -22,6 +22,7 @@ import { TotalContext } from '../../context/context';
 
 function Evaluation() {
   const [total, setTotal] = useState(0);
+  const [ratingSmall, setRatingSmall] = useState(false);
 
   const criteriaSteps = [
     { id: 1, label: 'Visibilidad', component: <Visibility />, path: visibilityRoute },
@@ -49,11 +50,16 @@ function Evaluation() {
     },
   ];
 
+  const handleRatingSmall = () => setRatingSmall(!ratingSmall);
+
   return (
     <div className='evaluation'>
       <div className='header'>
         <h2 className='evaluation__title'>Evaluación del repositorio</h2>
-        <h2 className='rating'>{total}</h2>
+        <div className={`rating ${ratingSmall && 'small'}`} onClick={handleRatingSmall}>
+          <p>Puntuación total</p>
+          {total}
+        </div>
       </div>
       <TotalContext.Provider value={{ setTotal }}>
         <Steps items={criteriaSteps} />

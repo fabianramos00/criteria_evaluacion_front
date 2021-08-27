@@ -73,8 +73,7 @@ export const StepControls = ({
   backRoute = '',
   nextText = false,
   loading = false,
-  total = 0,
-  showTotal = false
+  total,
 }) => {
   const history = useHistory();
 
@@ -90,22 +89,22 @@ export const StepControls = ({
 
   return (
     <div className='step-controls'>
-      {showBack && (
-        <button className='step-controls__btn' onClick={goBack}>
-          volver
+      <div>
+        {showBack && (
+          <button className='step-controls__btn' onClick={goBack}>
+            volver
+          </button>
+        )}
+        <button
+          type='submit'
+          onClick={handleClick}
+          className='step-controls__btn step-controls__btn--next'
+          disabled={loading}
+        >
+          {nextText ? 'Siguiente' : loading ? 'Cargando...' : 'Guardar'}
         </button>
-      )}
-      {showTotal && (
-        <h3>Total {total}</h3>
-      )}
-      <button
-        type='submit'
-        onClick={handleClick}
-        className='step-controls__btn step-controls__btn--next'
-        disabled={loading}
-      >
-        {nextText ? 'Siguiente' : loading ? 'Cargando...' : 'Guardar'}
-      </button>
+      </div>
+      {total && <h3>Total {total}</h3>}
     </div>
   );
 };

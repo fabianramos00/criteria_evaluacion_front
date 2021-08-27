@@ -1,14 +1,16 @@
 @import "src/index";
 
+$br-radius: 10px;
+
 .option {
   background-color: white;
-  padding: 10px 15px;
   margin-bottom: 20px;
-  border-radius: 10px;
+  border-radius: $br-radius;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
   border: rgba(0, 0, 0, 0.15) 1px solid;
 
   >.header {
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,6 +22,35 @@
       font-weight: 600;
       user-select: none;
       margin-left: 10px;
+    }
+  }
+
+  >.score-tag {
+    background-color: rgba($color-info, 0.17);
+    min-width: 50px;
+    border-bottom-left-radius: $br-radius;
+    border-bottom-right-radius: $br-radius;
+    text-align: center;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.82rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+
+    p {
+      margin: 0;
+
+      &:last-child {
+        font-weight: bold;
+        font-size: 1rem;
+        background-color: rgba(white, 0.5);
+        width: 50px;
+        padding: 2px 0;
+        border-radius: 5px;
+      }
     }
   }
 }

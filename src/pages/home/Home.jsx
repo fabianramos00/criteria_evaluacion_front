@@ -39,8 +39,8 @@ function Home() {
   const onSubmit = values => {
     setLoading(true);
     evaluate(values)
-      .then(data => {
-        history.push(visibilityRoute(data?.token));
+      .then(({ token }) => {
+        history.push(visibilityRoute(token));
       })
       .catch(e => console.log(e))
       .finally(() => setLoading(false));

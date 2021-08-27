@@ -28,10 +28,7 @@ const schema = yup.object().shape({
   [NATIONAL_COLLECTOR]: yup.boolean().default(false),
   [COLLECTOR_URL1]: yup.string().when('national_collector', {
     is: true,
-    then: yup
-      .string()
-      .url(INVALID_URL_ERROR)
-      .required(REQUIRED_FIELD_ERROR),
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [COLLECTOR_URL2]: yup.string().url(INVALID_URL_ERROR),
   [COLLECTOR_URL3]: yup.string().url(INVALID_URL_ERROR),
@@ -44,8 +41,7 @@ const Visibility = () => {
   const [national, setNational] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showResponse, setShowResponse] = useState(false);
-  const [response, setResponse] = useState({} );
+  const [response, setResponse] = useState({});
   const totalContext = useContext(TotalContext);
 
   const {
@@ -55,7 +51,7 @@ const Visibility = () => {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: { [NATIONAL_COLLECTOR]: false, [INITIATIVES_EXISTENCE]: false},
+    defaultValues: { [NATIONAL_COLLECTOR]: false, [INITIATIVES_EXISTENCE]: false },
     resolver: yupResolver(schema),
   });
   const { token } = useParams();
@@ -65,21 +61,18 @@ const Visibility = () => {
     setLoading(true);
     evalVisibility(token, body)
       .then(data => {
-        console.log(data.status);
-        console.log(data.data);
-        if (data.status === 200) {
-          setResponse(data.data);
-          totalContext.setTotal(data.data.accumulative);
-          setShowResponse(true);
-          setShowNext(true);
-        } else if (data.status === 400) {
-          Object.keys(data.data).forEach(key => {
-            setError(key, {message: data.data[key]});
-          });
-        }
+        setResponse(data);
+        totalContext.setTotal(data.accumulative);
+        setShowNext(true);
+      })
+      .catch(e => {
+        Object.keys(e).forEach(key => {
+          setError(key, { message: e.data[key] });
+        });
       })
       .finally(() => setLoading(false));
   };
+
   return (
     <section className='visibility'>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,8 +90,11 @@ const Visibility = () => {
           automatic
           value={response.collector}
         />
-        <Option step={3} label='Presencia en recolectores nacionales'
-                value={response.national_collector}>
+        <Option
+          step={3}
+          label='Presencia en recolectores nacionales'
+          value={response.national_collector}
+        >
           <RadioGroup
             options={YES_NO_OPTIONS}
             onChange={setNational}
@@ -153,8 +149,12 @@ const Visibility = () => {
           automatic
           value={response.url}
         />
-        <Option step={6} label='Disponibilidad de documentos en acceso abierto' automatic evaluated={showResponse}
-                value={response.open_access} />
+        <Option
+          step={6}
+          label='Disponibilidad de documentos en acceso abierto'
+          automatic
+          value={response.open_access}
+        />
         <Option
           step={7}
           label='Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la propia institución'
@@ -173,7 +173,6 @@ const Visibility = () => {
           nextRoute={policiesRoute(token)}
           nextText={showNext}
           loading={loading}
-          showTotal={showResponse}
           total={response.total}
         />
       </form>
