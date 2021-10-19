@@ -19,7 +19,7 @@ export const postData = async (path = '/', body) => {
           if (status === 200) {
             resolve(data);
           }
-          if (status === 400) {
+          if (status >= 400 && status <= 599) {
             reject(data);
           }
         });

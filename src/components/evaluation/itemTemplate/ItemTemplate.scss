@@ -39,6 +39,10 @@
       border-radius: 50px;
       cursor: pointer;
       margin: 10px 20px;
+
+      &[type=submit] {
+        background-color: $primary;
+      }
     }
   }
 }

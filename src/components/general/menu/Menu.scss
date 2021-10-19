@@ -60,11 +60,11 @@
 
   &.light {
     &:hover {
-      background-color: lighten($color-text-dark, 55%);
+      background-color: lighten($color-text-dark, 60%);
     }
 
     &.selected {
-      background-color: lighten($color-text-dark, 60%);
+      background-color: lighten($color-text-dark, 65%);
     }
   }
 

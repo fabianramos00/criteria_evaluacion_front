@@ -3,10 +3,11 @@ import { useParams, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getItemEvaluation } from '../../../services/evaluation.services';
 import { useForm } from 'react-hook-form';
-import './ItemTemplate.scss';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { cleanJSON, isEmptyObject } from '../../../utils/common';
 import { TotalContext } from '../../../context/context';
+import * as Yup from 'yup';
+import './ItemTemplate.scss';
 
 const ItemTemplate = ({
   children,
@@ -18,7 +19,7 @@ const ItemTemplate = ({
   hasPrev = true,
   nextRoute = '',
   prevRoute = '',
-  form = { defaultValues: {}, schema: {} },
+  form = { defaultValues: {}, schema: Yup.object().shape({}) },
   evalFunc = () => {},
 }) => {
   const [loading, setLoading] = useState(false);
@@ -50,27 +51,30 @@ const ItemTemplate = ({
 
   const onSubmit = values => {
     const body = cleanJSON(values);
-    setLoading(true);
-    evalFunc(token, body)
-      .then(data => {
-        setData(data);
-        setTotal(data.accumulative);
-      })
-      .catch(e => {
-        Object.keys(e).forEach(key => {
-          setError(key, { message: e.data[key] });
-        });
-      })
-      .finally(() => setLoading(false));
+    if (isEmptyObject(errors)) {
+      setLoading(true);
+      evalFunc(token, body)
+        .then(data => {
+          setData(data);
+          setTotal(data.accumulative);
+        })
+        .catch(e => {
+          console.log('Error', e);
+          Object.keys(e).forEach(key => {
+            setError(key, { message: e?.[key] });
+          });
+        })
+        .finally(() => setLoading(false));
+    }
   };
 
   const handlePrev = () => history.push(prevRoute);
 
-  // const handleNext = () => {
-  //   if (isEmptyObject(errors)) {
-  //     history.push(nextRoute);
-  //   }
-  // };
+  const handleNext = () => {
+    if (isEmptyObject(errors)) {
+      history.push(nextRoute);
+    }
+  };
 
   return (
     <section className={`item-template ${wrapperClassName}`}>
@@ -78,23 +82,26 @@ const ItemTemplate = ({
         <h1 className='main-title'>CARGANDO. . .</h1>
       </div>
       <h1 className='main-title'>{`${title} ${data.total ? `\n[${data.total}]` : ''}`}</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {render ? render({ register, control, errors, data }) : children}
-        {hasPrev && (
-          <button className='cta' onClick={handlePrev}>
-            Anterior
-          </button>
-        )}
-        {hasNext && (
-          <button
-            className='cta'
-            // onClick={handleNext}
-            type={!isEmptyObject(data) ? 'button' : 'submit'}
-          >
-            Guardar
-          </button>
-        )}
-      </form>
+      {!loading && (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {render ? render({ register, control, errors, data }) : children}
+          {hasPrev && (
+            <button className='cta' onClick={handlePrev}>
+              Anterior
+            </button>
+          )}
+          {isEmptyObject(data) && (
+            <button className='cta' type='submit'>
+              Guardar
+            </button>
+          )}
+          {hasNext && (
+            <button className='cta' onClick={handleNext} type='button'>
+              Siguiente
+            </button>
+          )}
+        </form>
+      )}
     </section>
   );
 };

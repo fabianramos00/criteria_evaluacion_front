@@ -4,30 +4,33 @@ import './Option.scss';
 
 const Option = ({ step = 1, label = '', text = '', automatic = false, value, children }) => {
   const score = typeof value === 'object' ? value.value : value;
-  const scoreText = typeof value === 'object' ? value.text : '---';
+  const scoreText =
+    typeof value === 'object' && value.text ? value.text : score === 0 ? 'No aplica' : 'aplica';
 
   return (
     <div className='option'>
-      <div className='header'>
-        <p>
-          <b>
-            {step}. {label}
-            {text && ':'}
-          </b>{' '}
-          {text}
-        </p>
-        {automatic && (
-          <div
-            className='tag'
-            data-tip='La calificación de este criterio se obtendrá de manera automática'
-          >
-            Automático
-          </div>
-        )}
-        <ReactTooltip backgroundColor='#636161' textColor='#e3e3e3' />
+      <div className='wrapper'>
+        <div className='header'>
+          <p>
+            <b>
+              {step}. {label}
+              {text && ':'}
+            </b>{' '}
+            {text}
+          </p>
+          {automatic && (
+            <div
+              className='tag'
+              data-tip='La calificación de este criterio se obtendrá de manera automática'
+            >
+              Automático
+            </div>
+          )}
+          <ReactTooltip backgroundColor='#636161' textColor='#e3e3e3' />
+        </div>
+        <div className='content'>{children}</div>
       </div>
-      <div className='content'>{children}</div>
-      {String(value) && (
+      {typeof value !== 'undefined' && String(value) && (
         <div className='score-tag'>
           <p>{scoreText}</p>
           <p>{score}</p>

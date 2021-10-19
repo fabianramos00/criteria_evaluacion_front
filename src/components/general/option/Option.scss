@@ -9,30 +9,35 @@ $br-radius: 10px;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
   border: rgba(0, 0, 0, 0.15) 1px solid;
   padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  >.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
+  > .wrapper {
+    >.header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
 
-    >.tag {
-      background-color: lighten($primary, 4%);
-      padding: 5px 10px;
-      border-radius: 14px;
-      font-weight: 600;
-      user-select: none;
-      margin-left: 10px;
+      >.tag {
+        background-color: lighten($primary, 4%);
+        padding: 5px 10px;
+        border-radius: 14px;
+        font-weight: 600;
+        user-select: none;
+        margin-left: 10px;
+      }
+    }
+
+    > .content {
+      padding: 0 30px;
+      text-align: left;
     }
   }
 
-  > .content {
-    padding: 0 30px;
-    text-align: left;
-  }
-
   >.score-tag {
-    background-color: rgba($tertiary, 0.15);
+    background-color: rgba($tertiary, 0.061);
     min-width: 50px;
     border-bottom-left-radius: $br-radius;
     border-bottom-right-radius: $br-radius;

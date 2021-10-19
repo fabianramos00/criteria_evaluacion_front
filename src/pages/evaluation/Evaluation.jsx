@@ -72,7 +72,7 @@ function Evaluation() {
 
   return (
     <section className='evaluation'>
-      <Menu title='Repositorio X' items={items} mode='light' />
+      <Menu title='Repositorio X' items={items} mode='dark' />
       <article className='content'>
         <Switch>
           <Route exact path={visibilityRoute()}>

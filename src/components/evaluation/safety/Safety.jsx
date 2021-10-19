@@ -1,47 +1,82 @@
 import RadioGroup from '../../general/radioGroup/RadioGroup';
-import { StepControls } from '../../steps/Steps';
-import { statsRoute, interoperabilityRoute } from '../../../const/routes';
 import { useParams } from 'react-router-dom';
 import RadioWithUrl from '../../general/radioWithUrl/RadioWithUrl';
-import './Safety.scss';
 import Option from '../../general/option/Option';
 import { YES_NO_OPTIONS } from '../../../const/common';
+import ItemTemplate from '../itemTemplate/ItemTemplate';
+import { evalSecurity } from '../../../services/evaluation.services';
+import { interoperabilityRoute, statsRoute } from '../../../const/routes';
+import {
+  BACKUPS,
+  BACKUPS_URL,
+  BACKUPS_LOCATION,
+  CHECKSUM,
+  FORMAT_CONTROL,
+} from '../../../schemas/safety';
+import './Safety.scss';
+import { getError } from '../../../utils/common';
+import * as yup from 'yup';
+import { INVALID_URL_ERROR } from '../../../const/errors';
+
+const schema = yup.object().shape({
+  [BACKUPS]: yup.boolean(),
+  [BACKUPS_URL]: yup.string().url(INVALID_URL_ERROR),
+  [BACKUPS_LOCATION]: yup.boolean(),
+  [CHECKSUM]: yup.boolean(),
+  [FORMAT_CONTROL]: yup.boolean(),
+});
 
 const Safety = () => {
   const { token } = useParams();
 
   return (
-    <section className='safety'>
-      <h1 className='main-title'>Seguridad</h1>
-      <div className='two-col-content'>
-        <Option
-          label='Mención en el sitio del RI de la realización de copias de seguridad'
-          step={1}
-        >
-          <RadioWithUrl urlLabel='Enlace al sitio' />
-        </Option>
-        <Option
-          label='Mención en el sitio del RI de la ejecución de sumas de verificación (checksum)'
-          step={2}
-        >
-          <RadioWithUrl urlLabel='Enlace al sitio' />
-        </Option>
-        <Option
-          label='Existen como mínimo tres copias de los registros (metadatos y ficheros) y, por lo menos, una de ellas está ubicada en una localización geográfica distinta'
-          step={3}
-        >
-          <RadioGroup options={YES_NO_OPTIONS} />
-        </Option>
-        <Option
-          label='Identificación, control y validación de formatos'
-          text='JHOVE, DROID, Xena, entre otros'
-          step={4}
-        >
-          <RadioGroup options={YES_NO_OPTIONS} />
-        </Option>
-      </div>
-      <StepControls backRoute={interoperabilityRoute(token)} nextRoute={statsRoute(token)} />
-    </section>
+    <ItemTemplate
+      item='security'
+      evalFunc={evalSecurity}
+      title='Seguridad'
+      prevRoute={interoperabilityRoute(token)}
+      nextRoute={statsRoute(token)}
+      form={{ schema }}
+      render={({ register, control, errors, data }) => (
+        <div className='two-col-content'>
+          <Option
+            label='Mención en el sitio del RI de la realización de copias de seguridad'
+            step={1}
+            value={data[BACKUPS]}
+          >
+            <RadioWithUrl
+              urlLabel='Enlace al sitio'
+              control={control}
+              radioName={BACKUPS}
+              error={getError(errors, BACKUPS_URL)}
+              {...register(BACKUPS_URL)}
+            />
+          </Option>
+          <Option
+            label='Mención en el sitio del RI de la ejecución de sumas de verificación (checksum)'
+            step={2}
+            value={data[CHECKSUM]}
+          >
+            <RadioWithUrl urlLabel='Enlace al sitio' control={control} radioName={CHECKSUM} />
+          </Option>
+          <Option
+            label='Existen como mínimo tres copias de los registros (metadatos y ficheros) y, por lo menos, una de ellas está ubicada en una localización geográfica distinta'
+            step={3}
+            value={data[BACKUPS_LOCATION]}
+          >
+            <RadioGroup options={YES_NO_OPTIONS} control={control} name={BACKUPS_LOCATION} />
+          </Option>
+          <Option
+            label='Identificación, control y validación de formatos'
+            text='JHOVE, DROID, Xena, entre otros'
+            step={4}
+            value={data[FORMAT_CONTROL]}
+          >
+            <RadioGroup options={YES_NO_OPTIONS} control={control} name={FORMAT_CONTROL} />
+          </Option>
+        </div>
+      )}
+    />
   );
 };
 
