@@ -20,6 +20,8 @@ import { cleanJSON, getError } from '../../../utils/common';
 import { YES_NO_OPTIONS } from '../../../const/common';
 import ErrorMessage from '../../general/errorMessage/ErrorMessage';
 import { evalLegalAspects } from '../../../services/evaluation.services';
+import './LegalAspects.scss';
+import ItemTemplate from '../itemTemplate/ItemTemplate';
 
 const schema = yup.object().shape({
   [AUTHOR_PROPERTY]: yup.boolean(),
@@ -54,47 +56,57 @@ const LegalAspects = () => {
   };
 
   return (
-    <section>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Option
-          step={1}
-          label='Exigencia al autor de reconocer que no está infringiendo ningún derecho de propiedad intelectual'
-        >
-          <RadioGroup control={control} name={AUTHOR_PROPERTY} options={YES_NO_OPTIONS} />
-        </Option>
-        <Option
-          label='Exigencia al autor de la firma de una autorización para la distribución de su obra'
-          step={2}
-        >
-          <RadioWithUrl
-            radioName={AUTHOR_PERMISSION}
-            urlLabel='Enlace'
-            error={getError(errors, AUTHOR_PERMISSION_URL)}
-            {...register(AUTHOR_PERMISSION_URL)}
+    <>
+      <ItemTemplate
+        item='legal_aspects'
+        title='Aspectos legales'
+        prevRoute={policiesRoute(token)}
+        nextRoute={metadataRoute(token)}
+      />
+      <section className='legal-aspects'>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='two-col-content'>
+            <Option
+              step={1}
+              label='Exigencia al autor de reconocer que no está infringiendo ningún derecho de propiedad intelectual'
+            >
+              <RadioGroup control={control} name={AUTHOR_PROPERTY} options={YES_NO_OPTIONS} />
+            </Option>
+            <Option
+              label='Exigencia al autor de la firma de una autorización para la distribución de su obra'
+              step={2}
+            >
+              <RadioWithUrl
+                radioName={AUTHOR_PERMISSION}
+                urlLabel='Enlace'
+                error={getError(errors, AUTHOR_PERMISSION_URL)}
+                {...register(AUTHOR_PERMISSION_URL)}
+              />
+            </Option>
+            <Option
+              label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea, etc.)'
+              step={3}
+            >
+              <RadioGroup control={control} name={EDITORIAL_POLICY} options={YES_NO_OPTIONS} />
+            </Option>
+            <Option
+              label='Inclusión de los derechos de autor en los metadatos de cada recurso'
+              step={4}
+              automatic
+            />
+            <Option label='Inclusión de los derechos de autor en cada recurso' step={5}>
+              <RadioGroup control={control} name={AUTHOR_COPYRIGHT} options={YES_NO_OPTIONS} />
+            </Option>
+          </div>
+          <ErrorMessage message={error} loading={loading} nextText={showNext} />
+          <StepControls
+            backRoute={policiesRoute(token)}
+            nextRoute={metadataRoute(token)}
+            loading={loading}
           />
-        </Option>
-        <Option
-          label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea, etc.)'
-          step={3}
-        >
-          <RadioGroup control={control} name={EDITORIAL_POLICY} options={YES_NO_OPTIONS} />
-        </Option>
-        <Option
-          label='Inclusión de los derechos de autor en los metadatos de cada recurso'
-          step={4}
-          automatic
-        />
-        <Option label='Inclusión de los derechos de autor en cada recurso' step={5}>
-          <RadioGroup control={control} name={AUTHOR_COPYRIGHT} options={YES_NO_OPTIONS} />
-        </Option>
-        <ErrorMessage message={error} loading={loading} nextText={showNext} />
-        <StepControls
-          backRoute={policiesRoute(token)}
-          nextRoute={metadataRoute(token)}
-          loading={loading}
-        />
-      </form>
-    </section>
+        </form>
+      </section>
+    </>
   );
 };
 

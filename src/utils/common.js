@@ -14,3 +14,5 @@ export const cleanJSON = (object = {}) => {
 
   return newObject;
 };
+
+export const isEmptyObject = (obj = {}) => Object.keys(obj).length === 0;

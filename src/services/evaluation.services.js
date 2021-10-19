@@ -1,4 +1,8 @@
-import { postData } from '../config/client.http';
+import { postData, getData } from '../config/client.http';
+
+export function getItemEvaluation(item, token) {
+  return getData(`/${item}/${token}`);
+}
 
 export function evalVisibility(token, data) {
   return postData(`/visibility/${token}`, data);

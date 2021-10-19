@@ -27,3 +27,17 @@ export const postData = async (path = '/', body) => {
       .catch(e => reject(e));
   });
 };
+
+export const getData = async (path = '') =>
+  new Promise((resolve, reject) => {
+    fetch(`${SERVER_ENDPOINT}${path}`).then(response => {
+      const { status } = response;
+      response.json().then(data => {
+        if (status >= 400 && status <= 599) {
+          reject(data.error);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  });

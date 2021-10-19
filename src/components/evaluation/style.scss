@@ -1,6 +1,8 @@
 @import "src/variables";
 
 .visibility {
+  @include page;
+
   &__form {
     background-color: rgba(0, 0, 0, 0.03);
     display: flex;

@@ -1,6 +1,9 @@
-export const HOME_ROUTE = '/';
-export const EVAL_ROUTE = '/eval/:token';
+// home
+export const HOME_ROUTE = '/home';
+export const homeList = (parent = HOME_ROUTE) => `${parent}/list`;
 
+// eval
+export const EVAL_ROUTE = '/eval/:token';
 export const visibilityRoute = (token = ':token') => `/eval/${token}`;
 export const policiesRoute = (token = ':token') => `/eval/${token}/policies`;
 export const legalAspectsRoute = (token = ':token') => `/eval/${token}/legal-aspects`;

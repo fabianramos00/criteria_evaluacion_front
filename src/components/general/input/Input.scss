@@ -21,7 +21,7 @@
     width: 100%;
 
     &:focus {
-      border: 1px $color-warning solid;
+      border: 1px lighten($primary, 10%) solid;
       -moz-outline-radius: 10px;
     }
   }

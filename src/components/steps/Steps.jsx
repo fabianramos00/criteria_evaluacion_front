@@ -1,6 +1,6 @@
-import './Steps.scss';
 import { useState, useMemo } from 'react';
 import { Switch, Route, useRouteMatch, NavLink, useParams, useHistory } from 'react-router-dom';
+import './Steps.scss';
 
 function Steps({ items = [] }) {
   const [headerPage, setHeaderPage] = useState(0);

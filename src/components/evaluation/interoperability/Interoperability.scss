@@ -1,0 +1,9 @@
+@import "src/variables";
+
+.interoperability {
+  @include page;
+
+  .link {
+    color: $color-info;
+  }
+}

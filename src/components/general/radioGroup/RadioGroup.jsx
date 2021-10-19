@@ -1,9 +1,9 @@
-import './styles.scss';
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import RadioBtn from '../radioBtn/RadioBtn';
 import { Controller } from 'react-hook-form';
+import './styles.scss';
 
-const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name}) => {
+const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name }) => {
   const handleChange = e => {
     const value = e.target.value;
 
@@ -54,22 +54,9 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
   );
 };
 
-export default RadioGroup;
-
-export const InputOption = ({ question, placeholder = '' }) => {
-  const [currentOption, setCurrentOption] = useState('-1');
-
-  return (
-    <div className='input-option'>
-      <RadioGroup
-        key={`cat-${question.id}`}
-        text={question.label}
-        options={question.options}
-        onChange={setCurrentOption}
-      />
-      {parseFloat(currentOption) === question.options[0]?.value && (
-        <input placeholder={placeholder} />
-      )}
-    </div>
-  );
+RadioGroup.propTypes = {
+  text: PropTypes.string,
+  options: PropTypes.array.isRequired,
 };
+
+export default RadioGroup;

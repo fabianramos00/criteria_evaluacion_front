@@ -6,17 +6,18 @@ $br-radius: 10px;
   background-color: white;
   margin-bottom: 20px;
   border-radius: $br-radius;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
   border: rgba(0, 0, 0, 0.15) 1px solid;
+  padding: 10px 15px;
 
   >.header {
-    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: left;
 
     >.tag {
-      background-color: $color-info;
+      background-color: lighten($primary, 4%);
       padding: 5px 10px;
       border-radius: 14px;
       font-weight: 600;
@@ -25,8 +26,13 @@ $br-radius: 10px;
     }
   }
 
+  > .content {
+    padding: 0 30px;
+    text-align: left;
+  }
+
   >.score-tag {
-    background-color: rgba($color-info, 0.17);
+    background-color: rgba($tertiary, 0.15);
     min-width: 50px;
     border-bottom-left-radius: $br-radius;
     border-bottom-right-radius: $br-radius;

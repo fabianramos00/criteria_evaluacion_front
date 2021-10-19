@@ -26,8 +26,8 @@ const Option = ({ step = 1, label = '', text = '', automatic = false, value, chi
         )}
         <ReactTooltip backgroundColor='#636161' textColor='#e3e3e3' />
       </div>
-      {children}
-      {value && (
+      <div className='content'>{children}</div>
+      {String(value) && (
         <div className='score-tag'>
           <p>{scoreText}</p>
           <p>{score}</p>
