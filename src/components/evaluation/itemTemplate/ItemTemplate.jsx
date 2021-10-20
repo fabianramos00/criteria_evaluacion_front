@@ -81,7 +81,9 @@ const ItemTemplate = ({
       <div className={`blocking-loading ${loading ? 'visible' : ''} main-title`}>
         <h1 className='main-title'>CARGANDO. . .</h1>
       </div>
-      <h1 className='main-title'>{`${title} ${String(data.total) ? `\n[${data.total}]` : ''}`}</h1>
+      <h1 className='main-title'>{`${title} ${
+        typeof data.total !== 'undefined' ? `\n[${data.total}]` : ''
+      }`}</h1>
       {!loading && (
         <form onSubmit={handleSubmit(onSubmit)}>
           {render ? render({ register, control, errors, data }) : children}
