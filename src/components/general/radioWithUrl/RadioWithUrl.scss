@@ -1,0 +1,12 @@
+.radio-with-url {
+  > .url {
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+
+    &.open {
+      max-height: 1500px;
+    }
+  }
+}

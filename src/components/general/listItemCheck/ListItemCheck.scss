@@ -1,0 +1,24 @@
+@import "src/variables";
+
+.list-item-check {
+  list-style-type: circle;
+
+  &.evaluated {
+    list-style-type: none;
+  }
+
+  > .wrapper {
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    top: 7px;
+
+    > .pass {
+      color: $color-success;
+    }
+
+    > .fails {
+      color: $color-error;
+    }
+  }
+}

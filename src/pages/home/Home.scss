@@ -1,19 +1,24 @@
 @import "src/variables";
 
 .home {
-  @include page;
-  max-width: 700px;
+  max-width: 100vw;
+  height: 100vh;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
 
-  &__title {
-    color: $color-bloom;
+  > .content {
+    width: 100%;
+
+    > .form {
+      max-width: 700px;
+      margin: 0 auto;
+    }
   }
 
   &__submit {
     cursor: pointer;
-    background-color: $color-warning;
+    background-color: $primary;
+    color: $color-text-light;
     border: none;
     outline: none;
     padding: 10px;
