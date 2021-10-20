@@ -1,6 +1,6 @@
-import './Steps.scss';
 import { useState, useMemo } from 'react';
 import { Switch, Route, useRouteMatch, NavLink, useParams, useHistory } from 'react-router-dom';
+import './Steps.scss';
 
 function Steps({ items = [] }) {
   const [headerPage, setHeaderPage] = useState(0);
@@ -73,6 +73,7 @@ export const StepControls = ({
   backRoute = '',
   nextText = false,
   loading = false,
+  total,
 }) => {
   const history = useHistory();
 
@@ -88,19 +89,22 @@ export const StepControls = ({
 
   return (
     <div className='step-controls'>
-      {showBack && (
-        <button className='step-controls__btn' onClick={goBack}>
-          volver
+      <div>
+        {showBack && (
+          <button className='step-controls__btn' onClick={goBack}>
+            volver
+          </button>
+        )}
+        <button
+          type='submit'
+          onClick={handleClick}
+          className='step-controls__btn step-controls__btn--next'
+          disabled={loading}
+        >
+          {nextText ? 'Siguiente' : loading ? 'Cargando...' : 'Guardar'}
         </button>
-      )}
-      <button
-        type='submit'
-        onClick={handleClick}
-        className='step-controls__btn step-controls__btn--next'
-        disabled={loading}
-      >
-        {nextText ? 'Siguiente' : loading ? 'Cargando...' : 'Guardar'}
-      </button>
+      </div>
+      {total && <h3>Total {total}</h3>}
     </div>
   );
 };

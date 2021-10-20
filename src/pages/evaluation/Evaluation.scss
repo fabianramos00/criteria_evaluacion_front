@@ -1,9 +1,13 @@
 @import "src/variables";
 
-.evaluation {
-  @include page;
+$br-radius: 20px;
 
-  &__title {
-    color: $color-bloom;
+.evaluation {
+  display: flex;
+  max-height: 100vh;
+  overflow-y: auto;
+
+  > .content {
+    width: 100%;
   }
 }

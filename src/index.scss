@@ -21,9 +21,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-button[disabled], button:disabled {
+button[disabled], button:disabled  {
   background-color: $color-gray;
   color: $color-text-light;
+
+  &:hover {
+    background-color: $color-gray;
+  }
 }
 
 fieldset {

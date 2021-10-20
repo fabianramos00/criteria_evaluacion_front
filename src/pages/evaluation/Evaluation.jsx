@@ -1,6 +1,5 @@
-import './Evaluation.scss';
-import Steps from '../../components/steps/Steps';
-import AutomaticMessage from '../../components/automaticMessage/Automatic';
+import { useMemo } from 'react';
+import { useParams, Switch, Route } from 'react-router-dom';
 import Visibility from '../../components/evaluation/visibility/Visibility';
 import Policies from '../../components/evaluation/policies/Policies';
 import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects';
@@ -17,47 +16,92 @@ import {
   statsRoute,
   servicesRoute,
 } from '../../const/routes';
-
-const criteriaSteps = [
-  { id: 1, label: 'Visibilidad', component: <Visibility />, path: visibilityRoute },
-  { id: 2, label: 'Políticas', component: <Policies />, path: policiesRoute },
-  {
-    id: 3,
-    label: 'Aspectos Legales',
-    component: <LegalAspects />,
-    path: legalAspectsRoute,
-  },
-  { id: 4, label: 'Metadatos', component: <Metadata />, path: metadataRoute },
-  {
-    id: 5,
-    label: 'Interoperabilidad',
-    component: <AutomaticMessage />,
-    path: interoperabilityRoute,
-  },
-  { id: 6, label: 'Seguridad', component: <Safety />, path: securityRoute },
-  { id: 7, label: 'Estadísticas', component: <Statistics />, path: statsRoute },
-  {
-    id: 8,
-    label: 'Servicios de valor añadido',
-    component: <AutomaticMessage />,
-    path: servicesRoute,
-  },
-  // {
-  //   id: 9,
-  //   label: 'Opinión personal del evaluador',
-  //   component: <RaterOpinion />,
-  //   path: opinionRoute,
-  // },
-];
+import Menu from '../../components/general/menu/Menu';
+import Interoperability from '../../components/evaluation/interoperability/Interoperability';
+import ValueServices from '../../components/evaluation/valueServices/ValueServices';
+import './Evaluation.scss';
 
 function Evaluation() {
+  const { token } = useParams();
+
+  const items = useMemo(
+    () => [
+      {
+        text: 'Visibilidad',
+        path: visibilityRoute(token),
+        icon: 'visibility',
+      },
+      {
+        text: 'Políticas',
+        path: policiesRoute(token),
+        icon: 'policy',
+      },
+      {
+        text: 'Aspectos Legales',
+        path: legalAspectsRoute(token),
+        icon: 'gavel',
+      },
+      {
+        text: 'Metadatos',
+        path: metadataRoute(token),
+        icon: 'source',
+      },
+      {
+        text: 'Interoperabilidad',
+        path: interoperabilityRoute(token),
+        icon: 'account_tree',
+      },
+      {
+        text: 'Seguridad',
+        path: securityRoute(token),
+        icon: 'lock',
+      },
+      {
+        text: 'Estadísticas',
+        path: statsRoute(token),
+        icon: 'equalizer',
+      },
+      {
+        text: 'Servicios de valor añadido',
+        path: servicesRoute(token),
+        icon: 'miscellaneous_services',
+      },
+    ],
+    [token],
+  );
+
   return (
-    <div className='evaluation'>
-      <h3 className='evaluation__title'>Evaluación del repositorio</h3>
-      It is a long established fact that a reader will be distracted by the readable content of a
-      page when looking at its layout.
-      <Steps items={criteriaSteps} />
-    </div>
+    <section className='evaluation'>
+      <Menu title='Repositorio X' items={items} mode='dark' />
+      <article className='content'>
+        <Switch>
+          <Route exact path={visibilityRoute()}>
+            <Visibility />
+          </Route>
+          <Route exact path={policiesRoute()}>
+            <Policies />
+          </Route>
+          <Route exact path={legalAspectsRoute()}>
+            <LegalAspects />
+          </Route>
+          <Route exact path={metadataRoute()}>
+            <Metadata />
+          </Route>
+          <Route exact path={interoperabilityRoute()}>
+            <Interoperability />
+          </Route>
+          <Route exact path={securityRoute()}>
+            <Safety />
+          </Route>
+          <Route exact path={statsRoute()}>
+            <Statistics />
+          </Route>
+          <Route exact path={servicesRoute()}>
+            <ValueServices />
+          </Route>
+        </Switch>
+      </article>
+    </section>
   );
 }
 
