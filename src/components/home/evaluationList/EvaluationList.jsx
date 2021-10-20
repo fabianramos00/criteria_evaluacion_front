@@ -7,14 +7,18 @@ import './EvaluationList.scss';
 
 const EvaluationList = () => {
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
-    listEvaluations().then(data => setList(data?.items || []));
+    setLoading(true);
+    listEvaluations()
+      .then(data => setList(data?.items || []))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleClick = (item = '', token = '') => {
-    if (item === 'visibility' || item === 'started') {
+    if (item.toLowerCase() === 'visibility' || item.toLowerCase() === 'started') {
       history.push(visibilityRoute(token));
     } else {
       history.push(`${visibilityRoute(token)}/${item}`);
@@ -24,6 +28,13 @@ const EvaluationList = () => {
   return (
     <div className='evaluation-list'>
       <h2 className='main-title'>Repositorios evaluados</h2>
+      {loading && (
+        <>
+          <br />
+          <br />
+          <h1 className='main-title'>Cargando. . . </h1>
+        </>
+      )}
       <div className='two-col-content'>
         {list.map((item, index) => (
           <div key={`eval-${index}`} className='evaluation-card'>
