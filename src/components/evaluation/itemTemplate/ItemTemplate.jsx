@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { cleanJSON, isEmptyObject } from '../../../utils/common';
 import { TotalContext } from '../../../context/context';
 import * as Yup from 'yup';
+import { summaryRoute } from '../../../const/routes';
 import './ItemTemplate.scss';
 
 const ItemTemplate = ({
@@ -21,10 +22,11 @@ const ItemTemplate = ({
   prevRoute = '',
   form = { defaultValues: {}, schema: Yup.object().shape({}) },
   evalFunc = () => {},
+  lastItem = false,
 }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
-  const { setTotal } = useContext(TotalContext);
+  const { setTotal, total, setRepositoryName } = useContext(TotalContext);
   const { token } = useParams();
   const history = useHistory();
 
@@ -36,6 +38,7 @@ const ItemTemplate = ({
     control,
     setError,
     formState: { errors },
+    setValue,
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   useEffect(() => {
@@ -43,11 +46,18 @@ const ItemTemplate = ({
     getItemEvaluation(item, token)
       .then(data => {
         setData(data);
+        Object.keys(data).forEach(key => {
+          if (key !== 'accumulative' && key !== 'total' && key !== 'repository_name') {
+            const value = typeof data[key] === 'object' ? data[key].value : data[key];
+            setValue(key, value === 1);
+          }
+        });
         setTotal(data.accumulative);
+        setRepositoryName(data.repository_name);
       })
-      .catch(error => console.log(error))
+      .catch(() => {})
       .finally(() => setLoading(false));
-  }, [token, item, setTotal]);
+  }, [token, item, setTotal, setValue, setRepositoryName]);
 
   const onSubmit = values => {
     const body = cleanJSON(values);
@@ -59,7 +69,7 @@ const ItemTemplate = ({
           setTotal(data.accumulative);
         })
         .catch(e => {
-          console.log('Error', e);
+          console.log(e);
           Object.keys(e).forEach(key => {
             setError(key, { message: e?.[key] });
           });
@@ -81,12 +91,19 @@ const ItemTemplate = ({
       <div className={`blocking-loading ${loading ? 'visible' : ''} main-title`}>
         <h1 className='main-title'>CARGANDO. . .</h1>
       </div>
-      <h1 className='main-title'>{`${title} ${
-        typeof data.total !== 'undefined' ? `\n[${data.total}]` : ''
-      }`}</h1>
+      <header>
+        <h1 className='main-title'>{`${title} ${
+          typeof data.total !== 'undefined' ? `\n[${data.total}]` : ''
+        }`}</h1>
+        <span className='score'>
+          <span>Total</span>
+          <br />
+          {total}
+        </span>
+      </header>
       {!loading && (
         <form onSubmit={handleSubmit(onSubmit)}>
-          {render ? render({ register, control, errors, data }) : children}
+          {render ? render({ register, control, errors, data, disabled: !!data }) : children}
           {hasPrev && (
             <button className='cta' onClick={handlePrev}>
               Anterior
@@ -102,6 +119,11 @@ const ItemTemplate = ({
               Siguiente
             </button>
           )}
+          {lastItem && data && (
+            <a href={summaryRoute(token)} className='cta summary' target='_blank' rel='noreferrer'>
+              Resumen
+            </a>
+          )}
         </form>
       )}
     </section>
@@ -115,6 +137,7 @@ ItemTemplate.propTypes = {
   render: PropTypes.func,
   hasNext: PropTypes.bool,
   hasPrev: PropTypes.bool,
+  lastItem: PropTypes.bool,
 };
 
 export default ItemTemplate;

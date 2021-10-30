@@ -1,0 +1,124 @@
+@import "src/variables";
+
+.summary {
+  @include page;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+
+  > * {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  > .main-title {
+    font-size: clamp(1.2rem, 5vw, 1.7rem);
+    line-height: clamp(22px, 6vw, 42px);
+  }
+
+  > header {
+    padding: 10px 0 20px 0;
+    text-align: left;
+
+    > .names {
+      font-size: 0.9rem;
+
+      ul {
+        margin-block-start: 8px;
+      }
+
+      li {
+        margin: 0;
+      }
+
+      > .state {
+        margin-top: -10px;
+
+        span {
+          font-weight: 600;
+          font-size: 1.2rem;
+          margin-left: 5px;
+
+          &.complete {
+            color: $color-success;
+          }
+          &.progress {
+            color: $color-warning;
+          }
+        }
+      }
+    }
+  }
+
+  > .options {
+    text-align: right;
+    padding: 20px 10px;
+
+    .option {
+      background-color: $secondary;
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      padding: 10px 15px 5px;
+      text-align: center;
+      margin: 0 5px;
+      border-radius: 4px;
+    }
+
+    > a {
+      @extend .option;
+
+      span {
+        color: $primary;
+        line-height: 2.5rem;
+
+      }
+    }
+  }
+
+  > .content {
+    .card {
+      padding: 0 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    > .item-card {
+      @extend .card;
+      border-top: lightgray 1px solid;
+
+      > .total {
+        background-color: $secondary;
+        color: $light;
+        min-width: 50px;
+        margin-left: 15px;
+        border-radius: 5px;
+      }
+    }
+
+    > .score {
+      @extend .card;
+      background-color: $secondary;
+      transform: scale(1.03);
+      padding: 0 clamp(20px, 3vw, 30px);
+      margin-top: 25px;
+      border-radius: 5px;
+
+      > p {
+        color: $light;
+        font-size: clamp(0.9rem, 4vw, 1.2rem);
+
+        &:last-child {
+          background-color: $primary;
+          color: $secondary;
+          min-width: 60px;
+          font-size: clamp(0.9rem, 4vw, 1.3rem);
+          border-radius: 5px;
+          font-weight: 600;
+          padding: 2px 0;
+        }
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
 import {
   AUTHOR_COPYRIGHT,
+  AUTHOR_METADATA,
   AUTHOR_PERMISSION,
   AUTHOR_PERMISSION_URL,
   AUTHOR_PROPERTY,
@@ -35,16 +36,29 @@ const LegalAspects = () => {
       title='Aspectos legales'
       prevRoute={policiesRoute(token)}
       nextRoute={metadataRoute(token)}
-      form={{ schema }}
+      form={{
+        schema,
+        defaultValues: {
+          [AUTHOR_PROPERTY]: false,
+          [AUTHOR_PERMISSION]: false,
+          [EDITORIAL_POLICY]: false,
+          [AUTHOR_COPYRIGHT]: false,
+        },
+      }}
       evalFunc={evalLegalAspects}
-      render={({ register, control, errors, data }) => (
+      render={({ register, control, errors, data, disabled }) => (
         <div className='two-col-content'>
           <Option
             step={1}
             label='Exigencia al autor de reconocer que no está infringiendo ningún derecho de propiedad intelectual'
             value={data[AUTHOR_PROPERTY]}
           >
-            <RadioGroup control={control} name={AUTHOR_PROPERTY} options={YES_NO_OPTIONS} />
+            <RadioGroup
+              control={control}
+              name={AUTHOR_PROPERTY}
+              options={YES_NO_OPTIONS}
+              disabled={disabled}
+            />
           </Option>
           <Option
             label='Exigencia al autor de la firma de una autorización para la distribución de su obra'
@@ -56,6 +70,7 @@ const LegalAspects = () => {
               urlLabel='Enlace'
               control={control}
               error={getError(errors, AUTHOR_PERMISSION || AUTHOR_PERMISSION_URL)}
+              disabled={disabled}
               {...register(AUTHOR_PERMISSION_URL)}
             />
           </Option>
@@ -64,20 +79,30 @@ const LegalAspects = () => {
             step={3}
             value={data[EDITORIAL_POLICY]}
           >
-            <RadioGroup control={control} name={EDITORIAL_POLICY} options={YES_NO_OPTIONS} />
+            <RadioGroup
+              control={control}
+              name={EDITORIAL_POLICY}
+              options={YES_NO_OPTIONS}
+              disabled={disabled}
+            />
           </Option>
           <Option
             label='Inclusión de los derechos de autor en los metadatos de cada recurso'
             step={4}
             automatic
-            value={data['author_metadata']}
+            value={data[AUTHOR_METADATA]}
           />
           <Option
             label='Inclusión de los derechos de autor en cada recurso'
             step={5}
             value={data[AUTHOR_COPYRIGHT]}
           >
-            <RadioGroup control={control} name={AUTHOR_COPYRIGHT} options={YES_NO_OPTIONS} />
+            <RadioGroup
+              control={control}
+              name={AUTHOR_COPYRIGHT}
+              options={YES_NO_OPTIONS}
+              disabled={disabled}
+            />
           </Option>
         </div>
       )}

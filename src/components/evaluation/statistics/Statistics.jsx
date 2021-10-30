@@ -11,6 +11,7 @@ import {
   GENERAL_STATISTICS,
   COUNTER,
   SAVE_LOGS,
+  URL_STATISTICS,
 } from '../../../schemas/statistics';
 import * as Yup from 'yup';
 import './Statistics.scss';
@@ -35,8 +36,11 @@ const Statistics = () => {
       title='Estadísticas y logs'
       prevRoute={securityRoute(token)}
       nextRoute={servicesRoute(token)}
-      form={{ schema }}
-      render={({ register, control, errors, data }) => (
+      form={{
+        schema,
+        defaultValues: { [GENERAL_STATISTICS]: false, [SAVE_LOGS]: false, [COUNTER]: false },
+      }}
+      render={({ register, control, errors, data, disabled }) => (
         <div className='two-col-content'>
           <Option
             label='Disponibilidad de estadísticas públicas del RI en general'
@@ -48,6 +52,7 @@ const Statistics = () => {
               control={control}
               radioName={GENERAL_STATISTICS}
               error={getError(errors, GENERAL_STATISTICS_URL)}
+              disabled={disabled}
               {...register(GENERAL_STATISTICS_URL)}
             />
           </Option>
@@ -55,17 +60,27 @@ const Statistics = () => {
             label='Disponibilidad de estadísticas públicas de cada documento depositado en el RI'
             step={2}
             automatic
-            value={data['url_statistics']}
+            value={data[URL_STATISTICS]}
           />
           <Option
             label='Los logs del servidor web donde está alojado el repositorio se archivan de forma permanente'
             step={3}
             value={data[SAVE_LOGS]}
           >
-            <RadioGroup options={YES_NO_OPTIONS} control={control} name={SAVE_LOGS} />
+            <RadioGroup
+              options={YES_NO_OPTIONS}
+              control={control}
+              name={SAVE_LOGS}
+              disabled={disabled}
+            />
           </Option>
           <Option label='Utilización del estándar COUNTER' step={4} value={data[COUNTER]}>
-            <RadioGroup options={YES_NO_OPTIONS} control={control} name={COUNTER} />
+            <RadioGroup
+              options={YES_NO_OPTIONS}
+              control={control}
+              name={COUNTER}
+              disabled={disabled}
+            />
           </Option>
         </div>
       )}

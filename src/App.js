@@ -2,8 +2,9 @@ import './App.scss';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Evaluation from './pages/evaluation/Evaluation';
-import { HOME_ROUTE, EVAL_ROUTE } from './const/routes';
+import { HOME_ROUTE, EVAL_ROUTE, summaryRoute } from './const/routes';
 import { TotalProvider } from './context/context';
+import Summary from './pages/summary/Summary';
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
             </Route>
             <Route path={EVAL_ROUTE}>
               <Evaluation />
+            </Route>
+            <Route path={summaryRoute()}>
+              <Summary />
             </Route>
             <Route path='*'>
               <h1 className='main-title'>Página no encontrada</h1>

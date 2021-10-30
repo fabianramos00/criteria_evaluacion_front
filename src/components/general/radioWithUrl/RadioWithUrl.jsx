@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import './RadioWithUrl.scss';
 
 const RadioWithUrl = forwardRef(
-  ({ control, radioName = '', urlLabel = '', error = '', ...props }, ref) => {
+  ({ control, radioName = '', urlLabel = '', error = '', disabled = false, ...props }, ref) => {
     const [showUrl, setShowUrl] = useState(false);
 
     return (
@@ -16,6 +16,7 @@ const RadioWithUrl = forwardRef(
           onChange={setShowUrl}
           control={control}
           name={radioName}
+          disabled={disabled}
         />
         <div className={`url ${showUrl ? 'open' : ''}`}>
           <Input
@@ -36,6 +37,7 @@ RadioWithUrl.propTypes = {
   radioName: PropTypes.string,
   urlLabel: PropTypes.string,
   error: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default RadioWithUrl;

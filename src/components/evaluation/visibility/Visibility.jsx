@@ -10,6 +10,11 @@ import {
   COLLECTOR_URL4,
   COLLECTOR_URL5,
   INITIATIVES_EXISTENCE,
+  DIRECTORY,
+  COLLECTOR,
+  STANDARD,
+  URL,
+  OPEN_ACCESS,
 } from '../../../schemas/visibility';
 import { policiesRoute } from '../../../const/routes';
 import { useParams } from 'react-router-dom';
@@ -51,7 +56,7 @@ const Visibility = () => {
         schema,
       }}
       evalFunc={evalVisibility}
-      render={({ register, control, errors, data }) => (
+      render={({ register, control, errors, data, disabled }) => (
         <>
           <div className='two-col-content'>
             <Option
@@ -59,26 +64,27 @@ const Visibility = () => {
               label='Presencia en directorios internacionales'
               text='OpenDOAR, ROAR, OAI Data Providers, re3data'
               automatic
-              value={data.directory}
+              value={data[DIRECTORY]}
             />
             <Option
               step={2}
               label='Presencia en recolectores internacionales'
               text='La Referencia, OpenAIRE, Google Académico, CORE, BASE'
               automatic
-              value={data.collector}
+              value={data[COLLECTOR]}
             />
           </div>
           <Option
             step={3}
             label='Presencia en recolectores nacionales'
-            value={data.national_collector}
+            value={data[NATIONAL_COLLECTOR]}
           >
             <RadioGroup
               options={YES_NO_OPTIONS}
               onChange={setNational}
               control={control}
               name={NATIONAL_COLLECTOR}
+              disabled={disabled}
             />
             <div className={`collapse ${national ? 'open' : ''}`}>
               <Input
@@ -119,24 +125,24 @@ const Visibility = () => {
               step={4}
               label='Existencia de nombre normalizado del RI en directorios y recolectores'
               automatic
-              value={data.standard}
+              value={data[STANDARD]}
             />
             <Option
               step={5}
               label='Existencia de URL segura (https) y amigable (nombre del RI)'
               automatic
-              value={data.url}
+              value={data[URL]}
             />
             <Option
               step={6}
               label='Disponibilidad de documentos en acceso abierto'
               automatic
-              value={data.open_access}
+              value={data[OPEN_ACCESS]}
             />
             <Option
               step={7}
               label='Existencia de iniciativas para fomentar la visibilidad del repositorio dentro de la propia institución'
-              value={data.initiatives_existence}
+              value={data[INITIATIVES_EXISTENCE]}
             >
               <RadioGroup
                 text=''
@@ -144,6 +150,7 @@ const Visibility = () => {
                 control={control}
                 name={INITIATIVES_EXISTENCE}
                 error={getError(errors, INITIATIVES_EXISTENCE)}
+                disabled={disabled}
               />
             </Option>
           </div>

@@ -3,7 +3,14 @@ import RadioBtn from '../radioBtn/RadioBtn';
 import { Controller } from 'react-hook-form';
 import './styles.scss';
 
-const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, name }) => {
+const RadioGroup = ({
+  control,
+  text = '',
+  options = [],
+  onChange = () => {},
+  name,
+  disabled = false,
+}) => {
   const handleChange = e => {
     const value = e.target.value;
 
@@ -13,6 +20,7 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
       onChange(value === 'true');
     }
   };
+
   return (
     <>
       <p>{text}</p>
@@ -33,6 +41,7 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
                   }}
                   name={name}
                   checked={String(value) === String(option.value)}
+                  disabled={disabled}
                 />
               ))}
             </fieldset>
@@ -46,6 +55,7 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
               label={option.label}
               value={option.value}
               name={name}
+              disabled={disabled}
             />
           ))}
         </fieldset>
@@ -57,6 +67,7 @@ const RadioGroup = ({ control, text = '', options = [], onChange = () => {}, nam
 RadioGroup.propTypes = {
   text: PropTypes.string,
   options: PropTypes.array.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default RadioGroup;

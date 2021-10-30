@@ -17,6 +17,7 @@ import {
   METADATA_REUSE_URL,
   POLICY_DATA_URL,
   VISION_MISSION_URL,
+  BOAI,
 } from '../../../schemas/policies';
 import * as yup from 'yup';
 import { INVALID_URL_ERROR } from '../../../const/errors';
@@ -57,8 +58,20 @@ const Policies = () => {
       prevRoute={visibilityRoute(token)}
       nextRoute={legalAspectsRoute(token)}
       evalFunc={evalPolitics}
-      form={{ schema }}
-      render={({ register, control, errors, data }) => (
+      form={{
+        schema,
+        defaultValues: {
+          [OPEN_ACCESS]: false,
+          [ACTION_POLICY]: false,
+          [POLICY_DATA]: false,
+          [VISION_MISSION]: false,
+          [DEPOSIT_DATA]: false,
+          [CONTENT_PRESERVATION]: false,
+          [METADATA_REUSE]: false,
+          [CONTACT]: false,
+        },
+      }}
+      render={({ register, control, errors, data, disabled }) => (
         <>
           <Option
             step={1}
@@ -70,13 +83,14 @@ const Policies = () => {
               control={control}
               urlLabel='Enlace a la política'
               error={getError(errors, OPEN_ACCESS_URL)}
+              disabled={disabled}
               {...register(OPEN_ACCESS_URL)}
             />
           </Option>
           <Option
             step={2}
             label='Adhesión a la declaración de Budapest, una de las fundacional del movimiento de acceso abierto'
-            value={data['boai']}
+            value={data[BOAI]}
             automatic
           />
           <div className='two-col-content'>
@@ -90,6 +104,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace a la política'
                 error={getError(errors, ACTION_POLICY_URL)}
+                disabled={disabled}
                 {...register(ACTION_POLICY_URL)}
               />
             </Option>
@@ -103,6 +118,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace a la política'
                 error={getError(errors, POLICY_DATA_URL)}
+                disabled={disabled}
                 {...register(POLICY_DATA_URL)}
               />
             </Option>
@@ -116,6 +132,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace a la misión y los objetivos'
                 error={getError(errors, VISION_MISSION_URL)}
+                disabled={disabled}
                 {...register(VISION_MISSION_URL)}
               />
             </Option>
@@ -129,6 +146,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace'
                 error={getError(errors, DEPOSIT_DATA_URL)}
+                disabled={disabled}
                 {...register(DEPOSIT_DATA_URL)}
               />
             </Option>
@@ -142,6 +160,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace a contenido de preservación'
                 error={getError(errors, CONTENT_PRESERVATION_URL)}
+                disabled={disabled}
                 {...register(CONTENT_PRESERVATION_URL)}
               />
             </Option>
@@ -155,6 +174,7 @@ const Policies = () => {
                 control={control}
                 urlLabel='Enlace '
                 error={getError(errors, METADATA_REUSE_URL)}
+                disabled={disabled}
                 {...register(METADATA_REUSE_URL)}
               />
             </Option>
@@ -169,6 +189,7 @@ const Policies = () => {
               control={control}
               urlLabel='Enlace a datos de contacto'
               error={getError(errors, CONTACT_URL)}
+              disabled={disabled}
               {...register(CONTACT_URL)}
             />
           </Option>

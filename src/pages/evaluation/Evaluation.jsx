@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import { useParams, Switch, Route } from 'react-router-dom';
 import Visibility from '../../components/evaluation/visibility/Visibility';
 import Policies from '../../components/evaluation/policies/Policies';
@@ -15,14 +15,17 @@ import {
   securityRoute,
   statsRoute,
   servicesRoute,
+  HOME_ROUTE,
 } from '../../const/routes';
 import Menu from '../../components/general/menu/Menu';
 import Interoperability from '../../components/evaluation/interoperability/Interoperability';
 import ValueServices from '../../components/evaluation/valueServices/ValueServices';
+import { TotalContext } from '../../context/context';
 import './Evaluation.scss';
 
 function Evaluation() {
   const { token } = useParams();
+  const { repositoryName } = useContext(TotalContext);
 
   const items = useMemo(
     () => [
@@ -66,13 +69,18 @@ function Evaluation() {
         path: servicesRoute(token),
         icon: 'miscellaneous_services',
       },
+      {
+        text: 'Volver al inicio',
+        path: HOME_ROUTE,
+        icon: 'arrow_back_ios',
+      },
     ],
     [token],
   );
 
   return (
     <section className='evaluation'>
-      <Menu title='Repositorio X' items={items} mode='dark' />
+      <Menu title={repositoryName} items={items} mode='dark' />
       <article className='content'>
         <Switch>
           <Route exact path={visibilityRoute()}>

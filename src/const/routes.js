@@ -12,3 +12,6 @@ export const interoperabilityRoute = (token = ':token') => `/eval/${token}/inter
 export const securityRoute = (token = ':token') => `/eval/${token}/security`;
 export const statsRoute = (token = ':token') => `/eval/${token}/stats`;
 export const servicesRoute = (token = ':token') => `/eval/${token}/services`;
+
+// Summary
+export const summaryRoute = (token = ':token') => `/summary/${token}`;

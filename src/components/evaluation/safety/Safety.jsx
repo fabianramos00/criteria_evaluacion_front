@@ -36,8 +36,16 @@ const Safety = () => {
       title='Seguridad'
       prevRoute={interoperabilityRoute(token)}
       nextRoute={statsRoute(token)}
-      form={{ schema }}
-      render={({ register, control, errors, data }) => (
+      form={{
+        schema,
+        defaultValues: {
+          [BACKUPS]: false,
+          [CHECKSUM]: false,
+          [BACKUPS_LOCATION]: false,
+          [FORMAT_CONTROL]: false,
+        },
+      }}
+      render={({ register, control, errors, data, disabled }) => (
         <div className='two-col-content'>
           <Option
             label='Mención en el sitio del RI de la realización de copias de seguridad'
@@ -49,6 +57,7 @@ const Safety = () => {
               control={control}
               radioName={BACKUPS}
               error={getError(errors, BACKUPS_URL)}
+              disabled={disabled}
               {...register(BACKUPS_URL)}
             />
           </Option>
@@ -57,14 +66,24 @@ const Safety = () => {
             step={2}
             value={data[CHECKSUM]}
           >
-            <RadioWithUrl urlLabel='Enlace al sitio' control={control} radioName={CHECKSUM} />
+            <RadioWithUrl
+              urlLabel='Enlace al sitio'
+              control={control}
+              radioName={CHECKSUM}
+              disabled={disabled}
+            />
           </Option>
           <Option
             label='Existen como mínimo tres copias de los registros (metadatos y ficheros) y, por lo menos, una de ellas está ubicada en una localización geográfica distinta'
             step={3}
             value={data[BACKUPS_LOCATION]}
           >
-            <RadioGroup options={YES_NO_OPTIONS} control={control} name={BACKUPS_LOCATION} />
+            <RadioGroup
+              options={YES_NO_OPTIONS}
+              control={control}
+              name={BACKUPS_LOCATION}
+              disabled={disabled}
+            />
           </Option>
           <Option
             label='Identificación, control y validación de formatos'
@@ -72,7 +91,12 @@ const Safety = () => {
             step={4}
             value={data[FORMAT_CONTROL]}
           >
-            <RadioGroup options={YES_NO_OPTIONS} control={control} name={FORMAT_CONTROL} />
+            <RadioGroup
+              options={YES_NO_OPTIONS}
+              control={control}
+              name={FORMAT_CONTROL}
+              disabled={disabled}
+            />
           </Option>
         </div>
       )}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { listEvaluations } from '../../../services/home.services';
 import { formatDate } from '../../../utils/common';
-import { visibilityRoute } from '../../../const/routes';
+import { servicesRoute, visibilityRoute } from '../../../const/routes';
 import './EvaluationList.scss';
 
 const EvaluationList = () => {
@@ -17,13 +17,15 @@ const EvaluationList = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleClick = (item = '', token = '') => {
+  const handleContinueClick = (item = '', token = '') => {
     if (item.toLowerCase() === 'visibility' || item.toLowerCase() === 'started') {
       history.push(visibilityRoute(token));
     } else {
       history.push(`${visibilityRoute(token)}/${item}`);
     }
   };
+
+  const handleEvaluationClick = (token = '') => history.push(servicesRoute(token));
 
   return (
     <div className='evaluation-list'>
@@ -57,10 +59,14 @@ const EvaluationList = () => {
                 <div className={`state ${item.is_completed ? 'complete' : ''}`}>
                   {item.is_completed ? 'Completo' : 'En progreso'}
                 </div>
-                {!item.is_completed && (
+                {item.is_completed ? (
+                  <button className='cta' onClick={() => handleEvaluationClick(item.token)}>
+                    Ver evaluación
+                  </button>
+                ) : (
                   <button
                     className='cta'
-                    onClick={() => handleClick(item.last_item_evaluated, item.token)}
+                    onClick={() => handleContinueClick(item.last_item_evaluated, item.token)}
                   >
                     Continuar
                   </button>
