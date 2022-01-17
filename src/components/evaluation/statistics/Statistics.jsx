@@ -26,7 +26,7 @@ const schema = Yup.object().shape({
   [SAVE_LOGS]: Yup.boolean(),
 });
 
-const Statistics = () => {
+const Statistics = ({ ref }) => {
   const { token } = useParams();
 
   return (
@@ -36,56 +36,57 @@ const Statistics = () => {
       title='Estadísticas y logs'
       prevRoute={securityRoute(token)}
       nextRoute={servicesRoute(token)}
+      ref={ref}
       form={{
         schema,
         defaultValues: { [GENERAL_STATISTICS]: false, [SAVE_LOGS]: false, [COUNTER]: false },
       }}
       render={({ register, control, errors, data, disabled }) => (
-        <div className='two-col-content'>
-          <Option
-            label='Disponibilidad de estadísticas públicas del RI en general'
-            step={1}
-            value={data[GENERAL_STATISTICS]}
-          >
-            <RadioWithUrl
-              urlLabel='Enlace a estadísticas'
-              control={control}
-              radioName={GENERAL_STATISTICS}
-              error={getError(errors, GENERAL_STATISTICS_URL)}
-              disabled={disabled}
-              {...register(GENERAL_STATISTICS_URL)}
-            />
-          </Option>
-          <Option
-            label='Disponibilidad de estadísticas públicas de cada documento depositado en el RI'
-            step={2}
-            automatic
-            value={data[URL_STATISTICS]}
-          />
-          <Option
-            label='Los logs del servidor web donde está alojado el repositorio se archivan de forma permanente'
-            step={3}
-            value={data[SAVE_LOGS]}
-          >
-            <RadioGroup
-              options={YES_NO_OPTIONS}
-              control={control}
-              name={SAVE_LOGS}
-              disabled={disabled}
-            />
-          </Option>
-          <Option label='Utilización del estándar COUNTER' step={4} value={data[COUNTER]}>
-            <RadioGroup
-              options={YES_NO_OPTIONS}
-              control={control}
-              name={COUNTER}
-              disabled={disabled}
-            />
-          </Option>
-        </div>
+        <Fields
+          register={register}
+          control={control}
+          errors={errors}
+          data={data}
+          disabled={disabled}
+        />
       )}
     />
   );
 };
+
+export const Fields = ({ register, control, errors = {}, data = {}, disabled = false }) => (
+  <div className='two-col-content'>
+    <Option
+      label='Disponibilidad de estadísticas públicas del RI en general'
+      step={1}
+      value={data[GENERAL_STATISTICS]}
+    >
+      <RadioWithUrl
+        urlLabel='Enlace a estadísticas'
+        control={control}
+        radioName={GENERAL_STATISTICS}
+        error={getError(errors, GENERAL_STATISTICS_URL)}
+        disabled={disabled}
+        {...register(GENERAL_STATISTICS_URL)}
+      />
+    </Option>
+    <Option
+      label='Disponibilidad de estadísticas públicas de cada documento depositado en el RI'
+      step={2}
+      automatic
+      value={data[URL_STATISTICS]}
+    />
+    <Option
+      label='Los logs del servidor web donde está alojado el repositorio se archivan de forma permanente'
+      step={3}
+      value={data[SAVE_LOGS]}
+    >
+      <RadioGroup options={YES_NO_OPTIONS} control={control} name={SAVE_LOGS} disabled={disabled} />
+    </Option>
+    <Option label='Utilización del estándar COUNTER' step={4} value={data[COUNTER]}>
+      <RadioGroup options={YES_NO_OPTIONS} control={control} name={COUNTER} disabled={disabled} />
+    </Option>
+  </div>
+);
 
 export default Statistics;

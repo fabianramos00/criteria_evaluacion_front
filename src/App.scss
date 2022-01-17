@@ -66,3 +66,9 @@ b {
   color: $color-info;
   padding-top: 10px;
 }
+
+@media (max-width: 1150px) {
+  .two-col-content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

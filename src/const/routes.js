@@ -15,3 +15,4 @@ export const servicesRoute = (token = ':token') => `/eval/${token}/services`;
 
 // Summary
 export const summaryRoute = (token = ':token') => `/summary/${token}`;
+export const summaryPrintRoute = (token = ':token') => `${summaryRoute(token)}/pdf`;
