@@ -2,6 +2,7 @@ import { useRouteMatch, Route } from 'react-router-dom';
 import { homeList } from '../../const/routes';
 import Form from '../../components/home/form/Form';
 import Menu from '../../components/general/menu/Menu';
+import EvaluationList from '../../components/home/evaluationList/EvaluationList';
 import './Home.scss';
 
 function Home() {
@@ -29,7 +30,7 @@ function Home() {
           <Form />
         </Route>
         <Route exact path={`${path}/list`}>
-          <h2 className='main-title'>Repositorios evaluados</h2>
+          <EvaluationList />
         </Route>
       </article>
     </section>

@@ -5,7 +5,7 @@ import './Option.scss';
 const Option = ({ step = 1, label = '', text = '', automatic = false, value, children }) => {
   const score = typeof value === 'object' ? value.value : value;
   const scoreText =
-    typeof value === 'object' && value.text ? value.text : score === 0 ? 'No aplica' : 'aplica';
+    typeof value === 'object' && value.text ? value.text : score === 0 ? 'No aplica' : 'Aplica';
 
   return (
     <div className='option'>

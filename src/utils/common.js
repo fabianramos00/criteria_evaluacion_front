@@ -16,3 +16,5 @@ export const cleanJSON = (object = {}) => {
 };
 
 export const isEmptyObject = (obj = {}) => Object.keys(obj).length === 0;
+
+export const formatDate = date => new Date(date).toDateString();

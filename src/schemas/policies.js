@@ -14,3 +14,6 @@ export const VISION_MISSION = 'vision_mission';
 export const VISION_MISSION_URL = 'vision_mission_url';
 export const CONTACT = 'contact';
 export const CONTACT_URL = 'contact_url';
+
+// Automatic
+export const BOAI = 'boai';

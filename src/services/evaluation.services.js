@@ -35,3 +35,7 @@ export async function evalStatistics(token, data) {
 export async function evalServices(token, data) {
   return postData(`/services/${token}`, data);
 }
+
+export async function summary(token) {
+  return getData(`/summary/${token}`);
+}

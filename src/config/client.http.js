@@ -6,25 +6,25 @@ const headers = {
 };
 
 export const postData = async (path = '/', body) => {
-  return new Promise((resolve, reject) => {
-    fetch(`${SERVER_ENDPOINT}${path}`, {
-      headers,
-      method: 'POST',
-      body: JSON.stringify(body),
-    })
-      .then(response => {
-        const { status } = response;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(`${SERVER_ENDPOINT}${path}`, {
+        headers,
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      const { status } = response;
+      const data = await response.json();
 
-        response.json().then(data => {
-          if (status === 200) {
-            resolve(data);
-          }
-          if (status >= 400 && status <= 599) {
-            reject(data);
-          }
-        });
-      })
-      .catch(e => reject(e));
+      if (status === 200) {
+        resolve(data);
+      }
+      if (status >= 400 && status <= 599) {
+        reject(data);
+      }
+    } catch (e) {
+      reject(e);
+    }
   });
 };
 

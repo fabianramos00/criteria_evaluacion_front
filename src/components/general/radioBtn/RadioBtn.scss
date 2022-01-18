@@ -8,6 +8,26 @@ label {
   margin-right: 15px;
   position: relative;
 
+  &.disabled {
+    cursor: not-allowed;
+
+    input {
+      &:checked + span {
+        background-color: mix(#fff, $color-info, 70%);
+
+        &:before {
+          box-shadow: inset 0 0 0 0.4375em $color-info;
+        }
+      }
+    }
+
+    span {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
   input {
     position: absolute;
     left: -9999px;
