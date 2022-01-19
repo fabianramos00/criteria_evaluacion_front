@@ -201,13 +201,13 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           label='El campo tipo de resultado de investigación se asigna según el vocabulario de tipos de recursos de COAR'
           step={9}
           automatic
-          value={[STANDARD_TYPE_RESEARCH_RESULT]}
+          value={data[STANDARD_TYPE_RESEARCH_RESULT]}
         />
         <Option
           label='El campo de formato está asignado conforme al vocabulario establecido'
           step={10}
           automatic
-          value={[STANDARD_FORMAT]}
+          value={data[STANDARD_FORMAT]}
         />
         <Option
           label='El campo de versión del recurso contiene una única ocurrencia'
@@ -215,19 +215,19 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           automatic
           value={data[SINGLE_VERSION]}
         />
-        <Option
-          label='El campo de versión del recurso se encuentra conforme al vocabulario COAR'
-          text='draft, submittedVersion, acceptedVersion, publishedVersion, updatedVersion'
-          step={12}
-          automatic
-          value={data[STANDARD_VERSION_COAR]}
-        />
       </div>
+      <Option
+        label='El campo de versión del recurso se encuentra conforme al vocabulario COAR'
+        text='draft, submittedVersion, acceptedVersion, publishedVersion, updatedVersion'
+        step={12}
+        automatic
+        value={data[STANDARD_VERSION_COAR]}
+      />
       <div className='two-col-content'>
         <Option
           label='Se aplica algún sistema de clasificación normalizado'
           step={13}
-          text='(disposición de uno o varios sistemas de clasificación normalizados tales como CDU, JEL, UNESCO'
+          text='disposición de uno o varios sistemas de clasificación normalizados tales como CDU, JEL, UNESCO'
           value={data[CLASSIFICATION_SYSTEM]}
         >
           <RadioGroup

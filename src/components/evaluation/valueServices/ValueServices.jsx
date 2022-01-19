@@ -11,13 +11,14 @@ import {
   AUTHOR_PROFILES,
   AUTHOR_PROFILES_URL,
   CITE_METRICS,
+  CITE_METRICS_URL,
   NEW_METRICS,
   NEW_METRICS_URL,
   SOCIAL_NETWORKS,
   BIBLIOGRAPHIC_MANAGERS,
   METADATA_EXPORTS,
 } from '../../../schemas/valueServices';
-import { INVALID_URL_ERROR } from '../../../const/errors';
+import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 import { getError } from '../../../utils/common';
 import RadioGroup from '../../general/radioGroup/RadioGroup';
 import './ValueServices.scss';
@@ -25,10 +26,20 @@ import './ValueServices.scss';
 const schema = yup.object().shape({
   [RSS_ALERT]: yup.boolean(),
   [AUTHOR_PROFILES]: yup.boolean(),
-  [AUTHOR_PROFILES_URL]: yup.string().url(INVALID_URL_ERROR),
+  [AUTHOR_PROFILES_URL]: yup.string().when(AUTHOR_PROFILES, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [CITE_METRICS]: yup.boolean(),
+  [CITE_METRICS_URL]: yup.string().when(CITE_METRICS, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [NEW_METRICS]: yup.boolean(),
-  [NEW_METRICS_URL]: yup.string().url(INVALID_URL_ERROR),
+  [NEW_METRICS_URL]: yup.string().when(NEW_METRICS, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
 });
 
 const ValueServices = ({ ref }) => {
@@ -71,19 +82,20 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
       label='Uso de redes sociales para compartir cada documento'
       step={1}
       automatic
+      text='twitter, Facebook, LinkedIn'
       value={data[SOCIAL_NETWORKS]}
     />
     <Option
       label='Integración con gestores bibliográficos'
       step={2}
       automatic
-      text='Zotero, Mendeley, entre otras'
+      text='Zotero, Mendeley'
       value={data[BIBLIOGRAPHIC_MANAGERS]}
     />
     <Option
       label='Visualización/exportación de los metadatos en diferentes esquemas'
       step={3}
-      text='METS, PREMIS, RDF, JSON, MARC, BibTeX, entre otros'
+      text='METS, PREMIS, RDF, JSON, MARC, BibTeX'
       automatic
       value={data[METADATA_EXPORTS]}
     />
@@ -96,6 +108,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
         control={control}
         error={getError(errors, AUTHOR_PROFILES_URL)}
         radioName={AUTHOR_PROFILES}
+        data={data[AUTHOR_PROFILES]}
         disabled={disabled}
         {...register(AUTHOR_PROFILES_URL)}
       />
@@ -105,11 +118,14 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
       step={6}
       value={data[CITE_METRICS]}
     >
-      <RadioGroup
+      <RadioWithUrl
+        urlLabel='Enalce a las métricas'
         control={control}
-        name={CITE_METRICS}
-        options={YES_NO_OPTIONS}
+        error={getError(errors, CITE_METRICS_URL)}
+        radioName={CITE_METRICS}
+        data={data[CITE_METRICS]}
         disabled={disabled}
+        {...register(CITE_METRICS_URL)}
       />
     </Option>
     <Option
@@ -122,6 +138,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
         control={control}
         error={getError(errors, NEW_METRICS_URL)}
         radioName={NEW_METRICS}
+        data={data[NEW_METRICS]}
         disabled={disabled}
         {...register(NEW_METRICS_URL)}
       />

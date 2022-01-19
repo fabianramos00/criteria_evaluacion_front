@@ -11,18 +11,26 @@ import {
   BACKUPS_URL,
   BACKUPS_LOCATION,
   CHECKSUM,
+  CHECKSUM_URL,
   FORMAT_CONTROL,
 } from '../../../schemas/safety';
 import './Safety.scss';
 import { getError } from '../../../utils/common';
 import * as yup from 'yup';
-import { INVALID_URL_ERROR } from '../../../const/errors';
+import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 
 const schema = yup.object().shape({
   [BACKUPS]: yup.boolean(),
-  [BACKUPS_URL]: yup.string().url(INVALID_URL_ERROR),
+  [BACKUPS_URL]: yup.string().when(BACKUPS, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [BACKUPS_LOCATION]: yup.boolean(),
   [CHECKSUM]: yup.boolean(),
+  [CHECKSUM_URL]: yup.string().when(CHECKSUM, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [FORMAT_CONTROL]: yup.boolean(),
 });
 
@@ -71,6 +79,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
         control={control}
         radioName={BACKUPS}
         error={getError(errors, BACKUPS_URL)}
+        data={data[BACKUPS]}
         disabled={disabled}
         {...register(BACKUPS_URL)}
       />
@@ -81,10 +90,13 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
       value={data[CHECKSUM]}
     >
       <RadioWithUrl
-        urlLabel='Enlace al sitio'
-        control={control}
         radioName={CHECKSUM}
+        control={control}
+        urlLabel='Enlace al sitio'
+        error={getError(errors, CHECKSUM_URL)}
+        data={data[CHECKSUM]}
         disabled={disabled}
+        {...register(CHECKSUM_URL)}
       />
     </Option>
     <Option
@@ -101,7 +113,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
     </Option>
     <Option
       label='Identificación, control y validación de formatos'
-      text='JHOVE, DROID, Xena, entre otros'
+      text='JHOVE, DROID, Xena'
       step={4}
       value={data[FORMAT_CONTROL]}
     >

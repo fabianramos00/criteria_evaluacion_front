@@ -20,7 +20,7 @@ import {
   BOAI,
 } from '../../../schemas/policies';
 import * as yup from 'yup';
-import { INVALID_URL_ERROR } from '../../../const/errors';
+import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 import { getError } from '../../../utils/common';
 import { evalPolitics } from '../../../services/evaluation.services';
 import Option from '../../general/option/Option';
@@ -32,21 +32,46 @@ import './Polocies.scss';
 
 const schema = yup.object().shape({
   [OPEN_ACCESS]: yup.boolean(),
-  [OPEN_ACCESS_URL]: yup.string().url(INVALID_URL_ERROR),
+  [OPEN_ACCESS_URL]: yup.string().when(OPEN_ACCESS, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
+  [BOAI]: yup.boolean(),
   [METADATA_REUSE]: yup.boolean(),
-  [METADATA_REUSE_URL]: yup.string().url(INVALID_URL_ERROR),
+  [METADATA_REUSE_URL]: yup.string().when(METADATA_REUSE, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [CONTENT_PRESERVATION]: yup.boolean(),
-  [CONTENT_PRESERVATION_URL]: yup.string().url(INVALID_URL_ERROR),
+  [CONTENT_PRESERVATION_URL]: yup.string().when(CONTENT_PRESERVATION, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [DEPOSIT_DATA]: yup.boolean(),
-  [DEPOSIT_DATA_URL]: yup.string().url(INVALID_URL_ERROR),
+  [DEPOSIT_DATA_URL]: yup.string().when(DEPOSIT_DATA, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [ACTION_POLICY]: yup.boolean(),
-  [ACTION_POLICY_URL]: yup.string().url(INVALID_URL_ERROR),
+  [ACTION_POLICY_URL]: yup.string().when(ACTION_POLICY, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [POLICY_DATA]: yup.boolean(),
-  [POLICY_DATA_URL]: yup.string().url(INVALID_URL_ERROR),
+  [POLICY_DATA_URL]: yup.string().when(POLICY_DATA, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [VISION_MISSION]: yup.boolean(),
-  [VISION_MISSION_URL]: yup.string().url(INVALID_URL_ERROR),
+  [VISION_MISSION_URL]: yup.string().when(VISION_MISSION, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [CONTACT]: yup.boolean(),
-  [CONTACT_URL]: yup.string().url(INVALID_URL_ERROR),
+  [CONTACT_URL]: yup.string().when(CONTACT, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
 });
 
 const Policies = ({ ref }) => {
@@ -88,7 +113,7 @@ const Policies = ({ ref }) => {
   );
 };
 
-export const Fields = ({ register, control, errors = {}, data = {}, disabled = false }) => {
+export const Fields = ({ register, control, errors = {}, data = {}, disabled = true }) => {
   return (
     <>
       <Option
@@ -102,12 +127,13 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
           urlLabel='Enlace a la política'
           error={getError(errors, OPEN_ACCESS_URL)}
           disabled={disabled}
+          data={data[OPEN_ACCESS]}
           {...register(OPEN_ACCESS_URL)}
         />
       </Option>
       <Option
         step={2}
-        label='Adhesión a la declaración de Budapest, una de las fundacional del movimiento de acceso abierto'
+        label='Adhesión a la declaración de Budapest, una de las fundacionales del movimiento de acceso abierto'
         value={data[BOAI]}
       >
         <RadioGroup
@@ -131,6 +157,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             urlLabel='Enlace a la política'
             error={getError(errors, ACTION_POLICY_URL)}
             disabled={disabled}
+            data={data[ACTION_POLICY]}
             {...register(ACTION_POLICY_URL)}
           />
         </Option>
@@ -145,6 +172,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             urlLabel='Enlace a la política'
             error={getError(errors, POLICY_DATA_URL)}
             disabled={disabled}
+            data={data[POLICY_DATA]}
             {...register(POLICY_DATA_URL)}
           />
         </Option>
@@ -158,6 +186,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             control={control}
             urlLabel='Enlace a la misión y los objetivos'
             error={getError(errors, VISION_MISSION_URL)}
+            data={data[VISION_MISSION]}
             disabled={disabled}
             {...register(VISION_MISSION_URL)}
           />
@@ -172,13 +201,14 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             control={control}
             urlLabel='Enlace'
             error={getError(errors, DEPOSIT_DATA_URL)}
+            data={data[DEPOSIT_DATA]}
             disabled={disabled}
             {...register(DEPOSIT_DATA_URL)}
           />
         </Option>
         <Option
           step={7}
-          label='Indicación de cómo lleva adelante la preservadeposit_datación de los contenidos'
+          label='Indicación de cómo lleva adelante la preservación de los contenidos'
           value={data[CONTENT_PRESERVATION]}
         >
           <RadioWithUrl
@@ -186,6 +216,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             control={control}
             urlLabel='Enlace a contenido de preservación'
             error={getError(errors, CONTENT_PRESERVATION_URL)}
+            data={data[CONTENT_PRESERVATION]}
             disabled={disabled}
             {...register(CONTENT_PRESERVATION_URL)}
           />
@@ -200,6 +231,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
             control={control}
             urlLabel='Enlace '
             error={getError(errors, METADATA_REUSE_URL)}
+            data={data[METADATA_REUSE]}
             disabled={disabled}
             {...register(METADATA_REUSE_URL)}
           />
@@ -215,6 +247,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
           control={control}
           urlLabel='Enlace a datos de contacto'
           error={getError(errors, CONTACT_URL)}
+          data={data[CONTACT]}
           disabled={disabled}
           {...register(CONTACT_URL)}
         />

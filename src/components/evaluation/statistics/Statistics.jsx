@@ -16,12 +16,15 @@ import {
 import * as Yup from 'yup';
 import './Statistics.scss';
 import * as yup from 'yup';
-import { INVALID_URL_ERROR } from '../../../const/errors';
+import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 import { getError } from '../../../utils/common';
 
 const schema = Yup.object().shape({
   [GENERAL_STATISTICS]: Yup.boolean(),
-  [GENERAL_STATISTICS_URL]: yup.string().url(INVALID_URL_ERROR),
+  [GENERAL_STATISTICS_URL]: yup.string().when(GENERAL_STATISTICS, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [COUNTER]: Yup.boolean(),
   [SAVE_LOGS]: Yup.boolean(),
 });
@@ -66,6 +69,7 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
         control={control}
         radioName={GENERAL_STATISTICS}
         error={getError(errors, GENERAL_STATISTICS_URL)}
+        data={data[GENERAL_STATISTICS]}
         disabled={disabled}
         {...register(GENERAL_STATISTICS_URL)}
       />

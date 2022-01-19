@@ -6,9 +6,8 @@ import PropTypes from 'prop-types';
 import './RadioWithUrl.scss';
 
 const RadioWithUrl = forwardRef(
-  ({ control, radioName = '', urlLabel = '', error = '', disabled = false, ...props }, ref) => {
-    const [showUrl, setShowUrl] = useState(false);
-
+  ({ control, radioName = '', urlLabel = '', error = '', disabled = false, data, ...props }, ref) => {
+    const [showUrl, setShowUrl] = useState(typeof data !== 'undefined' && typeof data === 'object' ? data.data !== 0 : false);
     return (
       <div className='radio-with-url'>
         <RadioGroup
@@ -25,6 +24,8 @@ const RadioWithUrl = forwardRef(
             error={error}
             label={urlLabel}
             placeholder={URL_PLACEHOLDER}
+            value={typeof data !== 'undefined' && typeof data === 'object' && data.url ? data.url : undefined}
+            disabled={disabled}
             required
           />
         </div>

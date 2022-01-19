@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import './Option.scss';
+import DetailsModal from '../detailsModal/DetailsModal';
+import { useState } from 'react';
 
 const Option = ({ step = 1, label = '', text = '', automatic = false, value, children }) => {
+  const [openDetails, setOpenDetails] = useState(false);
+  const handleDetails = () => setOpenDetails(!openDetails);
   const score = typeof value === 'object' ? value.value : value;
   const scoreText =
     typeof value === 'object' && value.text ? value.text : score === 0 ? 'No aplica' : 'Aplica';
-
   return (
     <div className='option'>
       <div className='wrapper'>
@@ -28,11 +31,28 @@ const Option = ({ step = 1, label = '', text = '', automatic = false, value, chi
           )}
           <ReactTooltip backgroundColor='#636161' textColor='#e3e3e3' />
         </div>
-        <div className='content'>{children}</div>
+        <div className='content'>
+          {children}
+        </div>
       </div>
       {typeof value !== 'undefined' && String(value) && (
         <div className='score-tag'>
-          <p>{scoreText}</p>
+          {typeof value === 'object' && typeof value.details !== 'undefined' ? (
+            <div>
+              <p>{scoreText}</p>
+              <span
+                onClick={handleDetails}
+                className='material-icons-outlined'
+              >
+                  info
+                </span>
+              <DetailsModal open={openDetails} onClose={handleDetails}
+                            text={label !== '' ? label : text}
+                            links={value.details} />
+            </div>
+          ) : (
+            <p>{scoreText}</p>
+          )}
           <p>{score}</p>
         </div>
       )}

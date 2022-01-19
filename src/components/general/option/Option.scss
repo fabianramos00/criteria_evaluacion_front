@@ -51,6 +51,20 @@ $br-radius: 10px;
     align-items: center;
     margin-top: 10px;
 
+    div {
+      text-align: center;
+      display: flex;
+      align-items: center;
+
+      p {
+        float: left;
+      }
+
+      span {
+        float: right;
+      }
+    }
+
     p {
       margin: 0;
 

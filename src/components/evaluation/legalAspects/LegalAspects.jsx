@@ -9,7 +9,7 @@ import {
   AUTHOR_PROPERTY,
   EDITORIAL_POLICY,
 } from '../../../schemas/legalAspects';
-import { INVALID_URL_ERROR } from '../../../const/errors';
+import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 import Option from '../../general/option/Option';
 import RadioWithUrl from '../../general/radioWithUrl/RadioWithUrl';
 import RadioGroup from '../../general/radioGroup/RadioGroup';
@@ -22,7 +22,10 @@ import './LegalAspects.scss';
 const schema = yup.object().shape({
   [AUTHOR_PROPERTY]: yup.boolean(),
   [AUTHOR_PERMISSION]: yup.boolean(),
-  [AUTHOR_PERMISSION_URL]: yup.string().url(INVALID_URL_ERROR),
+  [AUTHOR_PERMISSION_URL]: yup.string().when(AUTHOR_PERMISSION, {
+    is: true,
+    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  }),
   [EDITORIAL_POLICY]: yup.boolean(),
   [AUTHOR_COPYRIGHT]: yup.boolean(),
 });
@@ -84,13 +87,14 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = f
           radioName={AUTHOR_PERMISSION}
           urlLabel='Enlace'
           control={control}
-          error={getError(errors, AUTHOR_PERMISSION || AUTHOR_PERMISSION_URL)}
+          error={getError(errors, AUTHOR_PERMISSION_URL)}
+          data={data[AUTHOR_PERMISSION]}
           disabled={disabled}
           {...register(AUTHOR_PERMISSION_URL)}
         />
       </Option>
       <Option
-        label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea, etc.)'
+        label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea)'
         step={3}
         value={data[EDITORIAL_POLICY]}
       >

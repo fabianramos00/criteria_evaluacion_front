@@ -28,7 +28,7 @@ import ItemTemplate from '../itemTemplate/ItemTemplate';
 
 const schema = yup.object().shape({
   [NATIONAL_COLLECTOR]: yup.boolean().default(false),
-  [COLLECTOR_URL1]: yup.string().when('national_collector', {
+  [COLLECTOR_URL1]: yup.string().when(NATIONAL_COLLECTOR, {
     is: true,
     then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
@@ -76,7 +76,7 @@ export const Fields = ({ register, control, errors = {}, data = false, disabled 
         <Option
           step={2}
           label='Presencia en recolectores internacionales'
-          text='La Referencia, OpenAIRE, Google Académico, CORE, BASE'
+          text='LA Referencia, OpenAIRE, Google Académico, CORE, BASE'
           automatic
           value={data[COLLECTOR]}
         />

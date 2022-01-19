@@ -72,7 +72,7 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
   <>
     <div className='two-col-content'>
       <Option
-        label='Recolectado por SNRD-LA Referencia-OpenAIRE'
+        label='Recolectado por LA Referencia-OpenAIRE'
         step={1}
         automatic
         value={data[COLLECTOR]}
@@ -208,7 +208,7 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
       </Option>
       <Option
         label='Uso extendido de identificadores persistentes'
-        text='DOI, Handle, URN, ORCID, entre otras'
+        text='DOI, Handle, URN, ORCID'
         step={13}
         automatic
         value={data[STANDARD_IDENTIFIER]}

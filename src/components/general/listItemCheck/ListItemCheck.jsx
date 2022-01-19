@@ -1,49 +1,9 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import Modal from 'react-modal';
 import './ListItemCheck.scss';
+import DetailsModal from '../detailsModal/DetailsModal';
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    padding: '50px',
-  },
-};
-
-Modal.setAppElement('#root');
-
-const DetailsModal = ({ open, onClose, text, links = [] }) => {
-  return (
-    <Modal isOpen={open} onRequestClose={onClose} style={customStyles} contentLabel='Example Modal'>
-      <h2>{text}</h2>
-      <ul>
-        {links.map((link, index) => (
-          <li key={`link-${index}`}>
-            <a href={link} target='_blank' rel='noreferrer' className='detail-link'>
-              {link}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <span onClick={onClose} className='material-icons-outlined details-close-icon'>
-        close
-      </span>
-    </Modal>
-  );
-};
-
-DetailsModal.propTypes = {
-  open: PropTypes.bool,
-  onClose: PropTypes.func,
-  text: PropTypes.string,
-  links: PropTypes.arrayOf(PropTypes.string),
-};
 
 const ListItemCheck = ({ text = '', showResult = false, pass = false }) => {
   const [openDetails, setOpenDetails] = useState(false);
