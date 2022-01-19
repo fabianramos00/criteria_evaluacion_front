@@ -37,7 +37,7 @@ const Option = ({ step = 1, label = '', text = '', automatic = false, value, chi
       </div>
       {typeof value !== 'undefined' && String(value) && (
         <div className='score-tag'>
-          {typeof value === 'object' && typeof value.details !== 'undefined' ? (
+          {typeof value === 'object' && typeof value.details !== 'undefined' && (Array.isArray(value.details) && value.details.length !== 0) ? (
             <div>
               <p>{scoreText}</p>
               <span

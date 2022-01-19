@@ -9,6 +9,7 @@ import { TotalContext } from '../../../context/context';
 import * as Yup from 'yup';
 import { summaryRoute } from '../../../const/routes';
 import './ItemTemplate.scss';
+import { HashLoader } from 'react-spinners';
 
 const ItemTemplate = forwardRef(
   (
@@ -23,7 +24,8 @@ const ItemTemplate = forwardRef(
       nextRoute = '',
       prevRoute = '',
       form = { defaultValues: {}, schema: Yup.object().shape({}) },
-      evalFunc = () => {},
+      evalFunc = () => {
+      },
       lastItem = false,
     },
     ref,
@@ -59,7 +61,8 @@ const ItemTemplate = forwardRef(
           setTotal(data.accumulative);
           setRepositoryName(data.repository_name);
         })
-        .catch(() => {})
+        .catch(() => {
+        })
         .finally(() => setLoading(false));
     }, [token, item, setTotal, setValue, setRepositoryName]);
 
@@ -93,7 +96,8 @@ const ItemTemplate = forwardRef(
     return (
       <section className={`item-template ${wrapperClassName}`} ref={ref}>
         <div className={`blocking-loading ${loading ? 'visible' : ''} main-title`}>
-          <h1 className='main-title'>CARGANDO. . .</h1>
+          <HashLoader color='black' loading={loading} size={150} />
+          <h1 className='main-title'>Cargando</h1>
         </div>
         <header>
           <h1 className='main-title'>{`${title} ${
@@ -105,38 +109,36 @@ const ItemTemplate = forwardRef(
             {total}
           </span>
         </header>
-        {!loading && (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {render
-              ? render({ register, control, errors, data, disabled: !isEmptyObject(data) })
-              : children}
-            {hasPrev && (
-              <button className='cta' onClick={handlePrev}>
-                Anterior
-              </button>
-            )}
-            {isEmptyObject(data) && (
-              <button className='cta' type='submit'>
-                Guardar
-              </button>
-            )}
-            {hasNext && !isEmptyObject(data) && (
-              <button className='cta' onClick={handleNext} type='button'>
-                Siguiente
-              </button>
-            )}
-            {lastItem && data && (
-              <a
-                href={summaryRoute(token)}
-                className='cta summary'
-                target='_blank'
-                rel='noreferrer'
-              >
-                Resumen
-              </a>
-            )}
-          </form>
-        )}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {render
+            ? render({ register, control, errors, data, disabled: !isEmptyObject(data) })
+            : children}
+          {hasPrev && (
+            <button className='cta' onClick={handlePrev}>
+              Anterior
+            </button>
+          )}
+          {isEmptyObject(data) && (
+            <button className='cta' type='submit'>
+              Guardar
+            </button>
+          )}
+          {hasNext && !isEmptyObject(data) && (
+            <button className='cta' onClick={handleNext} type='button'>
+              Siguiente
+            </button>
+          )}
+          {lastItem && data && (
+            <a
+              href={summaryRoute(token)}
+              className='cta summary'
+              target='_blank'
+              rel='noreferrer'
+            >
+              Resumen
+            </a>
+          )}
+        </form>
       </section>
     );
   },
