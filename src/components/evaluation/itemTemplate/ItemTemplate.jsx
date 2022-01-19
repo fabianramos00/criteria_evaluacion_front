@@ -78,7 +78,7 @@ const ItemTemplate = forwardRef(
           .catch(e => {
             console.log(e);
             Object.keys(e).forEach(key => {
-              setError(key, { message: e?.[key] });
+              setError(key, { message: e?.[key].join(', ') });
             });
           })
           .finally(() => setLoading(false));

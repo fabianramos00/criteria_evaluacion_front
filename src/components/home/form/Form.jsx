@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Input from '../../general/input/Input';
 import { REPOSITORY_NAME, REPOSITORY_NAME_1, REPOSITORY_URL } from '../../../schemas/home';
-import { getError } from '../../../utils/common';
+import { getError, isEmptyObject } from '../../../utils/common';
 import { URL_PLACEHOLDER } from '../../../const/common';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -12,9 +12,13 @@ import * as yup from 'yup';
 import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 
 const schema = yup.object().shape({
-  [REPOSITORY_URL]: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  // [REPOSITORY_URL]: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+  [REPOSITORY_URL]: yup.string().required(REQUIRED_FIELD_ERROR),
   [REPOSITORY_NAME]: yup.string().required(REQUIRED_FIELD_ERROR),
-  [REPOSITORY_NAME_1]: yup.string(),
+  [REPOSITORY_NAME_1]: yup.string().notOneOf(
+    [yup.ref(REPOSITORY_NAME), null],
+    'Nombre duplicado',
+  ),
 });
 
 const Form = () => {
@@ -24,6 +28,7 @@ const Form = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -31,12 +36,18 @@ const Form = () => {
 
   const onSubmit = values => {
     setLoading(true);
-    evaluate(values)
-      .then(({ token }) => {
-        history.push(visibilityRoute(token));
-      })
-      .catch(e => console.log(e))
-      .finally(() => setLoading(false));
+    if (isEmptyObject(errors)) {
+      evaluate(values)
+        .then(({ token }) => {
+          history.push(visibilityRoute(token));
+        })
+        .catch(e => {
+          Object.keys(e).forEach(key => {
+            setError(key, { message: e?.[key].join(', ') });
+          });
+        })
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
