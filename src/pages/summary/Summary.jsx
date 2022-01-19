@@ -4,8 +4,10 @@ import { summary } from '../../services/evaluation.services';
 import { HOME_ROUTE, summaryRoute, visibilityRoute } from '../../const/routes';
 import ReactTooltip from 'react-tooltip';
 import './Summary.scss';
+import { HashLoader } from 'react-spinners';
 
 const Summary = () => {
+  const [loading, setLoading] = useState(false);
   const [complete, setComplete] = useState(false);
   const [repositoryNames, setRepositoryNames] = useState([]);
   const [score, setScore] = useState(0);
@@ -15,6 +17,7 @@ const Summary = () => {
   const { token } = useParams();
 
   useEffect(() => {
+    setLoading(true);
     summary(token).then(data => {
       const { is_completed, repository_names, rating, summary, repository_url } = data;
       setComplete(is_completed);
@@ -22,11 +25,18 @@ const Summary = () => {
       setScore(rating);
       setItems(summary);
       setUrl(repository_url);
-    });
+    }).catch(() => {
+    }).finally(() => setLoading(false));
   }, [token]);
 
   return (
     <>
+      {loading && (
+        <div className={`blocking-loading main-title`}>
+          <HashLoader color='black' loading={loading} size={150} />
+          <h1 className='main-title'>Cargando</h1>
+        </div>
+      )}
       <section className='summary'>
         <h1 className='main-title'>{repositoryNames[0]}</h1>
         <header>

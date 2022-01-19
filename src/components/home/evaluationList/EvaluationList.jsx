@@ -4,6 +4,7 @@ import { listEvaluations } from '../../../services/home.services';
 import { formatDate } from '../../../utils/common';
 import { servicesRoute, visibilityRoute } from '../../../const/routes';
 import './EvaluationList.scss';
+import { HashLoader } from 'react-spinners';
 
 const EvaluationList = () => {
   const [list, setList] = useState([]);
@@ -32,9 +33,16 @@ const EvaluationList = () => {
       <h2 className='main-title'>Repositorios evaluados</h2>
       {loading && (
         <>
-          <br />
-          <br />
-          <h1 className='main-title'>Cargando. . . </h1>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <HashLoader color='black' loading={loading} size={150} />
+          <br/>
+          <br/>
+          <br/>
+          <h1 className='main-title'>Cargando</h1>
         </>
       )}
       <div className='two-col-content'>
