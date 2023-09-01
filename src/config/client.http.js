@@ -32,7 +32,6 @@ export const getData = async (path = '') =>
   new Promise((resolve, reject) => {
     fetch(`${SERVER_ENDPOINT}${path}`).then(response => {
       const { status } = response;
-      console.log("RESPONSE ", response)
 
       response.json().then(data => {
         if (status >= 400 && status <= 599) {
