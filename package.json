@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.3.0",
-    "@react-pdf/renderer": "^2.1.0",
+    "@react-pdf/renderer": "2.1.0",
+    "@react-pdf/font": "2.2.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -23,11 +24,14 @@
     "web-vitals": "^1.1.1",
     "yup": "^0.32.9"
   },
+  "resolutions": {
+    "@react-pdf/font": "2.2.0"
+  },
   "devDependencies": {
     "sass": "^1.66.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
