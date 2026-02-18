@@ -23,13 +23,13 @@ const schema = yup.object().shape({
   [BACKUPS]: yup.boolean(),
   [BACKUPS_URL]: yup.string().when(BACKUPS, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [BACKUPS_LOCATION]: yup.boolean(),
   [CHECKSUM]: yup.boolean(),
   [CHECKSUM_URL]: yup.string().when(CHECKSUM, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [FORMAT_CONTROL]: yup.boolean(),
 });
@@ -68,63 +68,67 @@ const Safety = ({ ref }) => {
 };
 
 export const Fields = ({ register, control, errors = {}, data = {}, disabled = false }) => (
-  <div className='two-col-content'>
-    <Option
-      label='Mención en el sitio del RI de la realización de copias de seguridad'
-      step={1}
-      value={data[BACKUPS]}
-    >
-      <RadioWithUrl
-        urlLabel='Enlace al sitio'
-        control={control}
-        radioName={BACKUPS}
-        error={getError(errors, BACKUPS_URL)}
-        data={data[BACKUPS]}
-        disabled={disabled}
-        {...register(BACKUPS_URL)}
-      />
-    </Option>
-    <Option
-      label='Mención en el sitio del RI de la ejecución de sumas de verificación (checksum)'
-      step={2}
-      value={data[CHECKSUM]}
-    >
-      <RadioWithUrl
-        radioName={CHECKSUM}
-        control={control}
-        urlLabel='Enlace al sitio'
-        error={getError(errors, CHECKSUM_URL)}
-        data={data[CHECKSUM]}
-        disabled={disabled}
-        {...register(CHECKSUM_URL)}
-      />
-    </Option>
-    <Option
-      label='Existen como mínimo tres copias de los registros (metadatos y ficheros) y, por lo menos, una de ellas está ubicada en una localización geográfica distinta'
-      step={3}
-      value={data[BACKUPS_LOCATION]}
-    >
-      <RadioGroup
-        options={YES_NO_OPTIONS}
-        control={control}
-        name={BACKUPS_LOCATION}
-        disabled={disabled}
-      />
-    </Option>
-    <Option
-      label='Identificación, control y validación de formatos'
-      text='JHOVE, DROID, Xena'
-      step={4}
-      value={data[FORMAT_CONTROL]}
-    >
-      <RadioGroup
-        options={YES_NO_OPTIONS}
-        control={control}
-        name={FORMAT_CONTROL}
-        disabled={disabled}
-      />
-    </Option>
-  </div>
+  <>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+      <Option
+        label='Mención en el sitio del RI de la realización de copias de seguridad'
+        step={1}
+        value={data[BACKUPS]}
+      >
+        <RadioWithUrl
+          urlLabel='Enlace al sitio'
+          control={control}
+          radioName={BACKUPS}
+          error={getError(errors, BACKUPS_URL)}
+          data={data[BACKUPS]}
+          disabled={disabled}
+          {...register(BACKUPS_URL)}
+        />
+      </Option>
+      <Option
+        label='Mención en el sitio del RI de la ejecución de sumas de verificación (checksum)'
+        step={2}
+        value={data[CHECKSUM]}
+      >
+        <RadioWithUrl
+          radioName={CHECKSUM}
+          control={control}
+          urlLabel='Enlace al sitio'
+          error={getError(errors, CHECKSUM_URL)}
+          data={data[CHECKSUM]}
+          disabled={disabled}
+          {...register(CHECKSUM_URL)}
+        />
+      </Option>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+      <Option
+        label='Existen como mínimo tres copias de los registros (metadatos y ficheros) y, por lo menos, una de ellas está ubicada en una localización geográfica distinta'
+        step={3}
+        value={data[BACKUPS_LOCATION]}
+      >
+        <RadioGroup
+          options={YES_NO_OPTIONS}
+          control={control}
+          name={BACKUPS_LOCATION}
+          disabled={disabled}
+        />
+      </Option>
+      <Option
+        label='Identificación, control y validación de formatos'
+        text='JHOVE, DROID, Xena'
+        step={4}
+        value={data[FORMAT_CONTROL]}
+      >
+        <RadioGroup
+          options={YES_NO_OPTIONS}
+          control={control}
+          name={FORMAT_CONTROL}
+          disabled={disabled}
+        />
+      </Option>
+    </div>
+  </>
 );
 
 export default Safety;

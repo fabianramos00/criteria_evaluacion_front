@@ -23,7 +23,7 @@ const schema = Yup.object().shape({
   [GENERAL_STATISTICS]: Yup.boolean(),
   [GENERAL_STATISTICS_URL]: yup.string().when(GENERAL_STATISTICS, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [COUNTER]: Yup.boolean(),
   [SAVE_LOGS]: Yup.boolean(),
@@ -58,39 +58,48 @@ const Statistics = ({ ref }) => {
 };
 
 export const Fields = ({ register, control, errors = {}, data = {}, disabled = false }) => (
-  <div className='two-col-content'>
-    <Option
-      label='Disponibilidad de estadísticas públicas del RI en general'
-      step={1}
-      value={data[GENERAL_STATISTICS]}
-    >
-      <RadioWithUrl
-        urlLabel='Enlace a estadísticas'
-        control={control}
-        radioName={GENERAL_STATISTICS}
-        error={getError(errors, GENERAL_STATISTICS_URL)}
-        data={data[GENERAL_STATISTICS]}
-        disabled={disabled}
-        {...register(GENERAL_STATISTICS_URL)}
+  <>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+      <Option
+        label='Disponibilidad de estadísticas públicas del RI en general'
+        step={1}
+        value={data[GENERAL_STATISTICS]}
+      >
+        <RadioWithUrl
+          urlLabel='Enlace a estadísticas'
+          control={control}
+          radioName={GENERAL_STATISTICS}
+          error={getError(errors, GENERAL_STATISTICS_URL)}
+          data={data[GENERAL_STATISTICS]}
+          disabled={disabled}
+          {...register(GENERAL_STATISTICS_URL)}
+        />
+      </Option>
+      <Option
+        label='Disponibilidad de estadísticas públicas de cada documento depositado en el RI'
+        step={2}
+        automatic
+        value={data[URL_STATISTICS]}
       />
-    </Option>
-    <Option
-      label='Disponibilidad de estadísticas públicas de cada documento depositado en el RI'
-      step={2}
-      automatic
-      value={data[URL_STATISTICS]}
-    />
-    <Option
-      label='Los logs del servidor web donde está alojado el repositorio se archivan de forma permanente'
-      step={3}
-      value={data[SAVE_LOGS]}
-    >
-      <RadioGroup options={YES_NO_OPTIONS} control={control} name={SAVE_LOGS} disabled={disabled} />
-    </Option>
-    <Option label='Utilización del estándar COUNTER' step={4} value={data[COUNTER]}>
-      <RadioGroup options={YES_NO_OPTIONS} control={control} name={COUNTER} disabled={disabled} />
-    </Option>
-  </div>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+      <Option
+        label='Los logs del servidor web donde está alojado el repositorio se archivan de forma permanente'
+        step={3}
+        value={data[SAVE_LOGS]}
+      >
+        <RadioGroup
+          options={YES_NO_OPTIONS}
+          control={control}
+          name={SAVE_LOGS}
+          disabled={disabled}
+        />
+      </Option>
+      <Option label='Utilización del estándar COUNTER' step={4} value={data[COUNTER]}>
+        <RadioGroup options={YES_NO_OPTIONS} control={control} name={COUNTER} disabled={disabled} />
+      </Option>
+    </div>
+  </>
 );
 
 export default Statistics;

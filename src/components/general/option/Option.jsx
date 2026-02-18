@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 import './Option.scss';
 import DetailsModal from '../detailsModal/DetailsModal';
 import { useState } from 'react';
@@ -12,60 +11,58 @@ const Option = ({ step = 1, label = '', text = '', automatic = false, value, chi
     typeof value === 'object' && value.text ? value.text : score === 0 ? 'No aplica' : 'Aplica';
   return (
     <div className='option'>
-      <div className='wrapper'>
-        <div className='header'>
-          <p>
-            <b>
-              {step}. {label}
-              {text && ':'}
-            </b>{' '}
-            {text}
-          </p>
-          {automatic && (
+      <div className='header'>
+        <p className='title'>
+          <b>{step}. {label}</b>
+          {text && <span className='subtitle'>: {text}</span>}
+        </p>
+        {automatic && (
+          <>
             <div
               className='tag'
-              data-tip='La calificación de este criterio se obtendrá de manera automática'
+              data-tooltip-id={`tooltip-${step}`}
+              data-tooltip-content='La calificación de este criterio se obtendrá de manera automática'
             >
-              Automático
+              AUTOMÁTICO
             </div>
-          )}
-          <ReactTooltip backgroundColor='#636161' textColor='#e3e3e3' />
-        </div>
-        <div className='content'>
-          {children}
-        </div>
+            <Tooltip id={`tooltip-${step}`} style={{ backgroundColor: '#636161', color: '#e3e3e3' }} />
+          </>
+        )}
       </div>
-      {typeof value !== 'undefined' && String(value) && (
-        <div className='score-tag'>
-          {typeof value === 'object' && typeof value.details !== 'undefined' && (Array.isArray(value.details) && value.details.length !== 0) ? (
-            <div>
-              <p>{scoreText}</p>
-              <span
-                onClick={handleDetails}
-                className='material-icons-outlined'
-              >
+
+      <div className='content'>
+        {children}
+      </div>
+
+      {typeof value !== 'undefined' && String(value) !== '' && (
+        <div className='footer'>
+          <div className='status'>
+            {typeof value === 'object' && typeof value.details !== 'undefined' && (Array.isArray(value.details) && value.details.length !== 0) ? (
+              <div className='details-trigger'>
+                <span>{scoreText}</span>
+                <span
+                  onClick={handleDetails}
+                  className='material-icons-outlined'
+                >
                   info
                 </span>
-              <DetailsModal open={openDetails} onClose={handleDetails}
-                            text={label !== '' ? label : text}
-                            links={value.details} />
-            </div>
-          ) : (
-            <p>{scoreText}</p>
-          )}
-          <p>{score}</p>
+                <DetailsModal 
+                  open={openDetails} 
+                  onClose={handleDetails}
+                  text={label !== '' ? label : text}
+                  links={value.details} 
+                />
+              </div>
+            ) : (
+              <span>{scoreText}</span>
+            )}
+          </div>
+          <div className='score-box'>{score}</div>
         </div>
       )}
     </div>
-  );
-};
 
-Option.propTypes = {
-  step: PropTypes.number.isRequired,
-  label: PropTypes.string.isRequired,
-  text: PropTypes.string,
-  automatic: PropTypes.bool,
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
+  );
 };
 
 export default Option;

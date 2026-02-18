@@ -34,43 +34,43 @@ const schema = yup.object().shape({
   [OPEN_ACCESS]: yup.boolean(),
   [OPEN_ACCESS_URL]: yup.string().when(OPEN_ACCESS, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [BOAI]: yup.boolean(),
   [METADATA_REUSE]: yup.boolean(),
   [METADATA_REUSE_URL]: yup.string().when(METADATA_REUSE, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [CONTENT_PRESERVATION]: yup.boolean(),
   [CONTENT_PRESERVATION_URL]: yup.string().when(CONTENT_PRESERVATION, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [DEPOSIT_DATA]: yup.boolean(),
   [DEPOSIT_DATA_URL]: yup.string().when(DEPOSIT_DATA, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [ACTION_POLICY]: yup.boolean(),
   [ACTION_POLICY_URL]: yup.string().when(ACTION_POLICY, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [POLICY_DATA]: yup.boolean(),
   [POLICY_DATA_URL]: yup.string().when(POLICY_DATA, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [VISION_MISSION]: yup.boolean(),
   [VISION_MISSION_URL]: yup.string().when(VISION_MISSION, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [CONTACT]: yup.boolean(),
   [CONTACT_URL]: yup.string().when(CONTACT, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
 });
 
@@ -116,36 +116,38 @@ const Policies = ({ ref }) => {
 export const Fields = ({ register, control, errors = {}, data = {}, disabled = true }) => {
   return (
     <>
-      <Option
-        step={1}
-        label='Existencia de una política institucional de acceso abierto'
-        value={data[OPEN_ACCESS]}
-      >
-        <RadioWithUrl
-          radioName={OPEN_ACCESS}
-          control={control}
-          urlLabel='Enlace a la política'
-          error={getError(errors, OPEN_ACCESS_URL)}
-          disabled={disabled}
-          data={data[OPEN_ACCESS]}
-          {...register(OPEN_ACCESS_URL)}
-        />
-      </Option>
-      <Option
-        step={2}
-        label='Adhesión a la declaración de Budapest, una de las fundacionales del movimiento de acceso abierto'
-        value={data[BOAI]}
-      >
-        <RadioGroup
-          text=''
-          options={YES_NO_OPTIONS}
-          control={control}
-          name={BOAI}
-          error={getError(errors, BOAI)}
-          disabled={disabled}
-        />
-      </Option>
-      <div className='two-col-content'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+        <Option
+          step={1}
+          label='Existencia de una política institucional de acceso abierto'
+          value={data[OPEN_ACCESS]}
+        >
+          <RadioWithUrl
+            radioName={OPEN_ACCESS}
+            control={control}
+            urlLabel='Enlace a la política'
+            error={getError(errors, OPEN_ACCESS_URL)}
+            disabled={disabled}
+            data={data[OPEN_ACCESS]}
+            {...register(OPEN_ACCESS_URL)}
+          />
+        </Option>
+        <Option
+          step={2}
+          label='Adhesión a la declaración de Budapest, una de las fundacionales del movimiento de acceso abierto'
+          value={data[BOAI]}
+        >
+          <RadioGroup
+            text=''
+            options={YES_NO_OPTIONS}
+            control={control}
+            name={BOAI}
+            error={getError(errors, BOAI)}
+            disabled={disabled}
+          />
+        </Option>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={3}
           label='Existencia de una política de actuación del RI (documento público unificado)'
@@ -176,6 +178,8 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = t
             {...register(POLICY_DATA_URL)}
           />
         </Option>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={5}
           label='Indicación de misión y objetivos del RI'
@@ -206,6 +210,8 @@ export const Fields = ({ register, control, errors = {}, data = {}, disabled = t
             {...register(DEPOSIT_DATA_URL)}
           />
         </Option>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={7}
           label='Indicación de cómo lleva adelante la preservación de los contenidos'

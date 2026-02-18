@@ -1,4 +1,4 @@
-@import "src/variables";
+@use "src/variables" as *;
 
 .list-item-check {
   list-style-type: circle;

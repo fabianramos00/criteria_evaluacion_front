@@ -1,44 +1,43 @@
 import { SERVER_ENDPOINT } from './env';
 
+const BASE_URL = import.meta.env.DEV ? '/api' : SERVER_ENDPOINT;
+
 const headers = {
   'Content-Type': 'application/json',
   Accept: '*/*',
 };
 
 export const postData = async (path = '/', body) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const response = await fetch(`${SERVER_ENDPOINT}${path}`, {
-        headers,
-        method: 'POST',
-        body: JSON.stringify(body),
-      });
-      const { status } = response;
-      const data = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL}${path}`, {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(body),
+    });
+    
+    const data = await response.json();
 
-      if (status === 200) {
-        resolve(data);
-      }
-      if (status >= 400 && status <= 599) {
-        reject(data);
-      }
-    } catch (e) {
-      reject(e);
+    if (!response.ok) {
+      throw data;
     }
-  });
+    
+    return data;
+  } catch (e) {
+    throw e;
+  }
 };
 
-export const getData = async (path = '') =>
-  new Promise((resolve, reject) => {
-    fetch(`${SERVER_ENDPOINT}${path}`).then(response => {
-      const { status } = response;
+export const getData = async (path = '') => {
+  try {
+    const response = await fetch(`${BASE_URL}${path}`, { headers });
+    const data = await response.json();
 
-      response.json().then(data => {
-        if (status >= 400 && status <= 599) {
-          reject(data.error);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  });
+    if (!response.ok) {
+        throw data.error || data;
+    }
+
+    return data;
+  } catch (e) {
+    throw e;
+  }
+};

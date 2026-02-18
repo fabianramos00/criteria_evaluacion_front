@@ -1,6 +1,7 @@
 import '../style.scss';
-import { useState, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import * as yup from 'yup';
+import { useWatch } from 'react-hook-form';
 import { INVALID_URL_ERROR, REQUIRED_FIELD_ERROR } from '../../../const/errors';
 import {
   NATIONAL_COLLECTOR,
@@ -30,7 +31,7 @@ const schema = yup.object().shape({
   [NATIONAL_COLLECTOR]: yup.boolean().default(false),
   [COLLECTOR_URL1]: yup.string().when(NATIONAL_COLLECTOR, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [COLLECTOR_URL2]: yup.string().url(INVALID_URL_ERROR),
   [COLLECTOR_URL3]: yup.string().url(INVALID_URL_ERROR),
@@ -61,11 +62,13 @@ const Visibility = forwardRef((_, ref) => {
 });
 
 export const Fields = ({ register, control, errors = {}, data = false, disabled = false }) => {
-  const [national, setNational] = useState(false);
+  const nationalValue = useWatch({ control, name: NATIONAL_COLLECTOR });
+  const national = nationalValue === true || nationalValue === 'true';
 
   return (
     <>
-      <div className='two-col-content'>
+
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={1}
           label='Presencia en directorios internacionales'
@@ -81,53 +84,54 @@ export const Fields = ({ register, control, errors = {}, data = false, disabled 
           value={data[COLLECTOR]}
         />
       </div>
-      <Option
-        step={3}
-        label='Presencia en recolectores nacionales'
-        value={data[NATIONAL_COLLECTOR]}
-      >
-        <RadioGroup
-          options={YES_NO_OPTIONS}
-          onChange={setNational}
-          control={control}
-          name={NATIONAL_COLLECTOR}
-          disabled={disabled}
-        />
-        <div className={`collapse ${national ? 'open' : ''}`}>
-          <Input
-            {...register(COLLECTOR_URL1)}
-            error={getError(errors, COLLECTOR_URL1)}
-            label='Enlace de recolector'
-            placeholder={URL_PLACEHOLDER}
-            required
+      <div className='grid grid-cols-1 gap-8 pr-5'>
+        <Option
+          step={3}
+          label='Presencia en recolectores nacionales'
+          value={data[NATIONAL_COLLECTOR]}
+        >
+          <RadioGroup
+            options={YES_NO_OPTIONS}
+            control={control}
+            name={NATIONAL_COLLECTOR}
+            disabled={disabled}
           />
-          <Input
-            {...register(COLLECTOR_URL2)}
-            error={getError(errors, COLLECTOR_URL2)}
-            label='Enlace de recolector'
-            placeholder={URL_PLACEHOLDER}
-          />
-          <Input
-            {...register(COLLECTOR_URL3)}
-            error={getError(errors, COLLECTOR_URL3)}
-            label='Enlace de recolector'
-            placeholder={URL_PLACEHOLDER}
-          />
-          <Input
-            {...register(COLLECTOR_URL4)}
-            error={getError(errors, COLLECTOR_URL4)}
-            label='Enlace de recolector'
-            placeholder={URL_PLACEHOLDER}
-          />
-          <Input
-            {...register(COLLECTOR_URL5)}
-            error={getError(errors, COLLECTOR_URL5)}
-            label='Enlace de recolector'
-            placeholder={URL_PLACEHOLDER}
-          />
-        </div>
-      </Option>
-      <div className='two-col-content'>
+          <div className={`collapse ${national ? 'open' : ''}`}>
+            <Input
+              {...register(COLLECTOR_URL1)}
+              error={getError(errors, COLLECTOR_URL1)}
+              label='Enlace de recolector'
+              placeholder={URL_PLACEHOLDER}
+              required
+            />
+            <Input
+              {...register(COLLECTOR_URL2)}
+              error={getError(errors, COLLECTOR_URL2)}
+              label='Enlace de recolector'
+              placeholder={URL_PLACEHOLDER}
+            />
+            <Input
+              {...register(COLLECTOR_URL3)}
+              error={getError(errors, COLLECTOR_URL3)}
+              label='Enlace de recolector'
+              placeholder={URL_PLACEHOLDER}
+            />
+            <Input
+              {...register(COLLECTOR_URL4)}
+              error={getError(errors, COLLECTOR_URL4)}
+              label='Enlace de recolector'
+              placeholder={URL_PLACEHOLDER}
+            />
+            <Input
+              {...register(COLLECTOR_URL5)}
+              error={getError(errors, COLLECTOR_URL5)}
+              label='Enlace de recolector'
+              placeholder={URL_PLACEHOLDER}
+            />
+          </div>
+        </Option>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={4}
           label='Existencia de nombre normalizado del RI en directorios y recolectores'
@@ -140,6 +144,8 @@ export const Fields = ({ register, control, errors = {}, data = false, disabled 
           automatic
           value={data[URL]}
         />
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           step={6}
           label='Disponibilidad de documentos en acceso abierto'

@@ -1,9 +1,20 @@
-@import "src/App";
+@use "src/variables" as *;
 
 .error-message {
-  color: $color-error;
-  font-size: 0.9rem;
+  color: var(--error);
+  font-size: var(--text-xs);
   min-height: 1rem;
-  margin-top: 0;
+  margin-top: var(--space-1);
   margin-bottom: 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  
+  &:before {
+      content: 'error_outline';
+      font-family: 'Material Icons Outlined';
+      font-size: 14px;
+      display: none; /* Optional: enable if we want icon */
+  }
 }

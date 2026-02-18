@@ -1,77 +1,202 @@
-@import "src/variables";
+@use "src/variables" as *;
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .item-template {
   @include page;
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
 
-  .blocking-loading {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: .8;
-    transition: opacity 0.4s linear;
-    backdrop-filter: blur(2px);
-    display: none;
-    flex-direction: column;
-
-    > * {
-      color: $color-bloom;
-    }
-
-    &.visible {
-      opacity: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 20;
-    }
-  }
-
-  > header {
+  >header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
     position: relative;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-2);
+    animation: slide-up 0.6s var(--ease-smooth) both;
 
-    > .score {
-      position: absolute;
-      right: 0;
-      top: -25px;
-      background-color: $secondary;
-      font-size: 2rem;
-      padding: 13px 0;
-      color: $light;
-      font-weight: 600;
-      border-radius: 50%;
-      line-height: 26px;
-      width: 100px;
-      height: 100px;
-      text-align: center;
-
-      > span {
-        font-size: 1rem;
-        padding: 0;
+    .title-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      
+      .main-title {
+        font-size: var(--text-4xl);
+        font-weight: 700;
+        color: var(--scholarly-900);
         margin: 0;
-        text-align: center;
-        color: $primary;
+        letter-spacing: -0.02em;
+        text-align: left;
+      }
+
+      .section-score-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        background-color: #d1fae5; // Light green/teal
+        color: #059669; // Dolder teal
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        width: fit-content;
+        animation: fade-in 0.4s ease-out;
+
+        .dot {
+          width: 8px;
+          height: 8px;
+          background-color: #10b981;
+          border-radius: 50%;
+        }
+      }
+    }
+
+
+    .score-badge {
+      flex-shrink: 0;
+      
+      .score-circle {
+        width: 100px;
+        height: 100px;
+        background-color: #ffffff;
+        border: 5px solid var(--brand-teal);
+        border-radius: var(--radius-full);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 150, 136, 0.15);
+        transition: transform var(--duration-normal) var(--ease-spring);
+
+        &:hover {
+          transform: scale(1.05);
+        }
+
+        .score-label {
+          font-size: 10px;
+          font-weight: 700;
+          color: var(--brand-teal);
+          letter-spacing: 0.1em;
+          margin-bottom: -2px;
+        }
+
+        .score-value {
+          font-size: var(--text-3xl);
+          font-weight: 800;
+          color: var(--scholarly-900);
+          line-height: 1;
+        }
       }
     }
   }
 
   form {
-    > .cta {
-      background-color: $tertiary;
-      color: white;
-      outline: none;
-      border: none;
-      font-size: 1.2rem;
-      padding: 10px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      margin: 10px 20px;
-      text-decoration: none;
+    padding-bottom: var(--space-4);
+    display: block; // Ensure it's not flex unless explicitly needed
+    text-align: left;
 
-      &[type=submit], &.summary {
-        background-color: $primary;
+    /* Staggered entry for grid items */
+    .grid {
+      margin-bottom: var(--space-8);
+
+      & > * {
+        animation: slide-up 0.5s var(--ease-smooth) forwards;
+        opacity: 0;
+
+        @for $i from 1 through 20 {
+          &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.05}s;
+          }
+        }
+      }
+    }
+
+
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-4);
+      margin-top: var(--space-12);
+      width: 100%;
+    }
+
+    .cta {
+      font-size: var(--text-base);
+      padding: 12px 32px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      width: fit-content;
+      height: 48px !important; // Forced fixed height
+      min-height: 48px !important;
+      max-height: 48px !important;
+      box-sizing: border-box !important;
+      align-self: center;
+      line-height: 1;
+      margin: 0; // Remove previous margins to let flex gap handle it
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 150, 136, 0.25);
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0, 150, 136, 0.35);
+        filter: brightness(1.05);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+
+      // Default Style (Anterior / Outline)
+      background-color: transparent;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+
+      &:hover {
+        background-color: #f8fafc;
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+      }
+
+      // Primary Style (Guardar, Siguiente, Resumen)
+      &[type=submit],
+      &.summary,
+      &.next {
+        background-color: var(--brand-teal);
+        color: #ffffff;
+        border: 1px solid var(--brand-teal);
+        box-shadow: 0 4px 12px rgba(0, 150, 136, 0.2);
+
+        &:hover {
+          background-color: var(--brand-teal-dark);
+          border-color: var(--brand-teal-dark);
+          box-shadow: 0 6px 16px rgba(0, 150, 136, 0.3);
+        }
+      }
+
+      &.summary::after {
+        content: '\e5e1'; // arrow_forward icon hex
+        font-family: 'Material Icons Outlined';
+        font-size: 20px;
       }
     }
   }

@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 const AutomaticMessage = ({ title }) => {
   return (
     <section>
@@ -7,10 +5,6 @@ const AutomaticMessage = ({ title }) => {
       <p>Los datos de esta sección son recolectados automáticamente.</p>
     </section>
   );
-};
-
-AutomaticMessage.propTypes = {
-  title: PropTypes.string,
 };
 
 export default AutomaticMessage;

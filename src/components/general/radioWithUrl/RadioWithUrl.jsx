@@ -2,7 +2,6 @@ import React, { useState, forwardRef } from 'react';
 import RadioGroup from '../radioGroup/RadioGroup';
 import Input from '../input/Input';
 import { URL_PLACEHOLDER, YES_NO_OPTIONS } from '../../../const/common';
-import PropTypes from 'prop-types';
 import './RadioWithUrl.scss';
 
 const RadioWithUrl = forwardRef(
@@ -24,7 +23,7 @@ const RadioWithUrl = forwardRef(
             error={error}
             label={urlLabel}
             placeholder={URL_PLACEHOLDER}
-            value={typeof data !== 'undefined' && typeof data === 'object' && data.url ? data.url : undefined}
+            defaultValue={typeof data !== 'undefined' && typeof data === 'object' && data.url ? data.url : undefined}
             disabled={disabled}
             required
           />
@@ -33,12 +32,5 @@ const RadioWithUrl = forwardRef(
     );
   },
 );
-
-RadioWithUrl.propTypes = {
-  radioName: PropTypes.string,
-  urlLabel: PropTypes.string,
-  error: PropTypes.string,
-  disabled: PropTypes.bool,
-};
 
 export default RadioWithUrl;

@@ -24,7 +24,7 @@ const schema = yup.object().shape({
   [AUTHOR_PERMISSION]: yup.boolean(),
   [AUTHOR_PERMISSION_URL]: yup.string().when(AUTHOR_PERMISSION, {
     is: true,
-    then: yup.string().url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
+    then: (schema) => schema.url(INVALID_URL_ERROR).required(REQUIRED_FIELD_ERROR),
   }),
   [EDITORIAL_POLICY]: yup.boolean(),
   [AUTHOR_COPYRIGHT]: yup.boolean(),
@@ -65,65 +65,71 @@ const LegalAspects = ({ ref }) => {
 
 export const Fields = ({ register, control, errors = {}, data = {}, disabled = false }) => {
   return (
-    <div className='two-col-content'>
-      <Option
-        step={1}
-        label='Exigencia al autor de reconocer que no está infringiendo ningún derecho de propiedad intelectual'
-        value={data[AUTHOR_PROPERTY]}
-      >
-        <RadioGroup
-          control={control}
-          name={AUTHOR_PROPERTY}
-          options={YES_NO_OPTIONS}
-          disabled={disabled}
+    <>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+        <Option
+          step={1}
+          label='Exigencia al autor de reconocer que no está infringiendo ningún derecho de propiedad intelectual'
+          value={data[AUTHOR_PROPERTY]}
+        >
+          <RadioGroup
+            control={control}
+            name={AUTHOR_PROPERTY}
+            options={YES_NO_OPTIONS}
+            disabled={disabled}
+          />
+        </Option>
+        <Option
+          label='Exigencia al autor de la firma de una autorización para la distribution de su obra'
+          step={2}
+          value={data[AUTHOR_PERMISSION]}
+        >
+          <RadioWithUrl
+            radioName={AUTHOR_PERMISSION}
+            urlLabel='Enlace'
+            control={control}
+            error={getError(errors, AUTHOR_PERMISSION_URL)}
+            data={data[AUTHOR_PERMISSION]}
+            disabled={disabled}
+            {...register(AUTHOR_PERMISSION_URL)}
+          />
+        </Option>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+        <Option
+          label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea)'
+          step={3}
+          value={data[EDITORIAL_POLICY]}
+        >
+          <RadioGroup
+            control={control}
+            name={EDITORIAL_POLICY}
+            options={YES_NO_OPTIONS}
+            disabled={disabled}
+          />
+        </Option>
+        <Option
+          label='Inclusión de los derechos de autor en los metadatos de cada recurso'
+          step={4}
+          automatic
+          value={data[AUTHOR_METADATA]}
         />
-      </Option>
-      <Option
-        label='Exigencia al autor de la firma de una autorización para la distribución de su obra'
-        step={2}
-        value={data[AUTHOR_PERMISSION]}
-      >
-        <RadioWithUrl
-          radioName={AUTHOR_PERMISSION}
-          urlLabel='Enlace'
-          control={control}
-          error={getError(errors, AUTHOR_PERMISSION_URL)}
-          data={data[AUTHOR_PERMISSION]}
-          disabled={disabled}
-          {...register(AUTHOR_PERMISSION_URL)}
-        />
-      </Option>
-      <Option
-        label='Mención de cómo puede hacer el autor para saber si su obra es depositable según política editorial (Sherpa/Romeo, Dulcinea)'
-        step={3}
-        value={data[EDITORIAL_POLICY]}
-      >
-        <RadioGroup
-          control={control}
-          name={EDITORIAL_POLICY}
-          options={YES_NO_OPTIONS}
-          disabled={disabled}
-        />
-      </Option>
-      <Option
-        label='Inclusión de los derechos de autor en los metadatos de cada recurso'
-        step={4}
-        automatic
-        value={data[AUTHOR_METADATA]}
-      />
-      <Option
-        label='Inclusión de los derechos de autor en cada recurso'
-        step={5}
-        value={data[AUTHOR_COPYRIGHT]}
-      >
-        <RadioGroup
-          control={control}
-          name={AUTHOR_COPYRIGHT}
-          options={YES_NO_OPTIONS}
-          disabled={disabled}
-        />
-      </Option>
-    </div>
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
+        <Option
+          label='Inclusión de los derechos de autor en cada recurso'
+          step={5}
+          value={data[AUTHOR_COPYRIGHT]}
+        >
+          <RadioGroup
+            control={control}
+            name={AUTHOR_COPYRIGHT}
+            options={YES_NO_OPTIONS}
+            disabled={disabled}
+          />
+        </Option>
+      </div>
+    </>
   );
 };
 

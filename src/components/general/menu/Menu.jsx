@@ -1,38 +1,52 @@
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import './Menu.scss';
 
-const Menu = memo(({ title, items = [], mode = 'dark' }) => {
+const Menu = memo(({ title, items = [], footerItems = [], mode = 'dark' }) => {
   return (
     <nav className={`menu ${mode}`}>
-      <div className='title'>{title}</div>
-      <ul>
-        {items.map((item, index) => (
-          <MenuItem
-            key={`menu-item-${index}`}
-            to={item.path}
-            text={item.text}
-            icon={item.icon}
-            mode={mode}
-          />
-        ))}
-      </ul>
+      <div className='brand-header'>
+        <div className='logo-container'>
+          <span className='material-icons-outlined'>analytics</span>
+        </div>
+        <div className='brand-info'>
+          <h1 className='brand-title'>Evaluación de repositorios</h1>
+        </div>
+      </div>
+
+      <div className='menu-content'>
+        <ul>
+          {items.map((item, index) => (
+            <MenuItem
+              key={`menu-item-${index}`}
+              to={item.path}
+              text={item.text}
+              icon={item.icon}
+              mode={mode}
+            />
+          ))}
+        </ul>
+      </div>
+
+      {footerItems.length > 0 && (
+        <div className='menu-footer'>
+          <ul>
+            {footerItems.map((item, index) => (
+              <MenuItem
+                key={`footer-item-${index}`}
+                to={item.path}
+                text={item.text}
+                icon={item.icon}
+                mode={mode}
+              />
+            ))}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 });
 
-Menu.propTypes = {
-  title: PropTypes.string,
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      path: PropTypes.string,
-      icon: PropTypes.string,
-      text: PropTypes.string,
-    }),
-  ),
-  mode: PropTypes.oneOf(['dark', 'light']),
-};
 
 function MenuItem({ to, icon, text, mode = 'dark' }) {
   const { pathname } = useLocation();
@@ -40,17 +54,11 @@ function MenuItem({ to, icon, text, mode = 'dark' }) {
   return (
     <li className={`menu-item ${mode} ${pathname === to ? 'selected' : ''}`}>
       <Link to={to} className='link'>
-        <p>{text}</p> <span className='material-icons-outlined md-48'>{icon}</span>
+        <span className='material-icons-outlined md-48'>{icon}</span>
+        <p>{text}</p>
       </Link>
     </li>
   );
 }
-
-MenuItem.propTypes = {
-  to: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-  text: PropTypes.string.isRequired,
-  mode: PropTypes.oneOf(['dark', 'light']),
-};
 
 export default Menu;

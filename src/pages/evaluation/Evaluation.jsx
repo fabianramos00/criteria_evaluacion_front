@@ -1,5 +1,5 @@
 import { useMemo, useContext } from 'react';
-import { useParams, Switch, Route } from 'react-router-dom';
+import { useParams, Routes, Route } from 'react-router-dom';
 import Visibility from '../../components/evaluation/visibility/Visibility';
 import Policies from '../../components/evaluation/policies/Policies';
 import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects';
@@ -27,8 +27,8 @@ function Evaluation() {
   const { token } = useParams();
   const { repositoryName } = useContext(TotalContext);
 
-  const items = useMemo(
-    () => [
+  const { mainItems, footerItems } = useMemo(() => {
+    const list = [
       {
         text: 'Visibilidad',
         path: visibilityRoute(token),
@@ -74,40 +74,29 @@ function Evaluation() {
         path: HOME_ROUTE,
         icon: 'arrow_back_ios',
       },
-    ],
-    [token],
-  );
+    ];
+
+    return {
+      mainItems: list.slice(0, -1),
+      footerItems: list.slice(-1),
+    };
+  }, [token]);
 
   return (
     <section className='evaluation'>
-      <Menu title={repositoryName} items={items} mode='dark' />
+      <Menu title={repositoryName} items={mainItems} footerItems={footerItems} mode='dark' />
+
       <article className='content'>
-        <Switch>
-          <Route exact path={visibilityRoute()}>
-            <Visibility />
-          </Route>
-          <Route exact path={policiesRoute()}>
-            <Policies />
-          </Route>
-          <Route exact path={legalAspectsRoute()}>
-            <LegalAspects />
-          </Route>
-          <Route exact path={metadataRoute()}>
-            <Metadata />
-          </Route>
-          <Route exact path={interoperabilityRoute()}>
-            <Interoperability />
-          </Route>
-          <Route exact path={securityRoute()}>
-            <Safety />
-          </Route>
-          <Route exact path={statsRoute()}>
-            <Statistics />
-          </Route>
-          <Route exact path={servicesRoute()}>
-            <ValueServices />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route index element={<Visibility />} />
+          <Route path='policy' element={<Policies />} />
+          <Route path='legal_aspects' element={<LegalAspects />} />
+          <Route path='metadata' element={<Metadata />} />
+          <Route path='interoperability' element={<Interoperability />} />
+          <Route path='security' element={<Safety />} />
+          <Route path='stats' element={<Statistics />} />
+          <Route path='services' element={<ValueServices />} />
+        </Routes>
       </article>
     </section>
   );

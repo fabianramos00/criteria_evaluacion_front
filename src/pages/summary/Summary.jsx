@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { summary } from '../../services/evaluation.services';
 import { HOME_ROUTE, summaryRoute, visibilityRoute } from '../../const/routes';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 import './Summary.scss';
 import { HashLoader } from 'react-spinners';
 
@@ -32,9 +32,9 @@ const Summary = () => {
   return (
     <>
       {loading && (
-        <div className={`blocking-loading main-title`}>
-          <HashLoader color='black' loading={loading} size={150} />
-          <h1 className='main-title'>Cargando</h1>
+        <div className='blocking-loading visible'>
+          <HashLoader color='var(--assessment-400)' loading={loading} size={150} />
+          <h1>Cargando</h1>
         </div>
       )}
       <section className='summary'>
@@ -62,21 +62,21 @@ const Summary = () => {
           </div>
         </header>
         <div className='options'>
-          <a href={visibilityRoute(token)} data-tip='Ver evaluación'>
+          <a href={visibilityRoute(token)} data-tooltip-id='action-tooltip' data-tooltip-content='Ver evaluación'>
             <span className='material-icons-outlined'>format_list_bulleted</span>
           </a>
-          <a href={HOME_ROUTE} data-tip='Inicio'>
+          <a href={HOME_ROUTE} data-tooltip-id='action-tooltip' data-tooltip-content='Inicio'>
             <span className='material-icons-outlined'>home</span>
           </a>
-          <a href={summaryRoute(token)} data-tip='Imprimir evaluación'>
+          <a href={summaryRoute(token)} data-tooltip-id='action-tooltip' data-tooltip-content='Imprimir evaluación'>
             <span className='material-icons-outlined'>print</span>
           </a>
         </div>
-        <ReactTooltip backgroundColor='#636161' textColor='#fff' />
+        <Tooltip id='action-tooltip' />
         <div className='content'>
-          {items.map(({ item_name, total }, index) => (
+          {items.map(({ item, total }, index) => (
             <article key={`item-${index}`} className='item-card'>
-              <p>{item_name}</p>
+              <p>{item}</p>
               <p className='total'>{total}</p>
             </article>
           ))}

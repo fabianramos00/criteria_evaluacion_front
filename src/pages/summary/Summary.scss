@@ -1,9 +1,9 @@
-@import "src/variables";
+@use "src/variables" as *;
 
 .summary {
   @include page;
   min-height: 100vh;
-  padding: 20px;
+  padding: var(--space-6);
   box-sizing: border-box;
 
   > * {
@@ -12,38 +12,70 @@
   }
 
   > .main-title {
-    font-size: clamp(1.2rem, 5vw, 1.7rem);
-    line-height: clamp(22px, 6vw, 42px);
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: var(--space-6);
+    color: var(--scholarly-900);
   }
 
   > header {
-    padding: 10px 0 20px 0;
+    padding: var(--space-4);
     text-align: left;
+    background-color: var(--manuscript-paper);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-6);
 
     > .names {
-      font-size: 0.9rem;
+      font-size: var(--text-base);
+      color: var(--ink-700);
 
-      ul {
-        margin-block-start: 8px;
+      b {
+          color: var(--scholarly-900);
+          display: block;
+          margin-bottom: var(--space-2);
       }
 
-      li {
-        margin: 0;
+      ul {
+        margin-block-start: 0;
+        margin-block-end: var(--space-4);
+        padding-left: var(--space-4);
+        
+        li {
+            margin-bottom: var(--space-1);
+        }
+      }
+
+      .link {
+          color: var(--info);
+          word-break: break-all;
       }
 
       > .state {
-        margin-top: -10px;
+        margin-top: var(--space-4);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-lg);
 
         span {
-          font-weight: 600;
-          font-size: 1.2rem;
-          margin-left: 5px;
+          font-weight: 700;
+          padding: 2px 10px;
+          border-radius: var(--radius-full);
+          font-size: var(--text-sm);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
 
           &.complete {
-            color: $color-success;
+            color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
           }
           &.progress {
-            color: $color-warning;
+            color: var(--warning);
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
           }
         }
       }
@@ -52,88 +84,97 @@
 
   > .options {
     text-align: right;
-    padding: 20px 10px;
-
-    .option {
-      background-color: $secondary;
-      font-size: 1.5rem;
-      line-height: 2.5rem;
-      padding: 10px 15px 5px;
-      text-align: center;
-      margin: 0 5px;
-      border-radius: 4px;
-    }
+    padding: var(--space-4) 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
 
     > a {
-      @extend .option;
+      background-color: var(--scholarly-800);
+      color: var(--scholarly-100);
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--duration-fast) var(--ease-smooth);
+      box-shadow: var(--shadow-sm);
+      text-decoration: none;
 
+      &:hover {
+        background-color: var(--assessment-500);
+        color: var(--scholarly-900);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      
       span {
-        color: $primary;
-        line-height: 2.5rem;
-
+          font-size: 24px;
       }
     }
   }
 
   > .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
     .card {
-      padding: 0 15px;
+      padding: var(--space-3) var(--space-4);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5px;
+      border-radius: var(--radius-md);
     }
 
     > .item-card {
       @extend .card;
-      border-top: lightgray 1px solid;
+      background-color: var(--manuscript-paper);
+      border: 1px solid var(--border-subtle);
+      
+      p {
+          margin: 0;
+          font-weight: 500;
+      }
 
       > .total {
-        background-color: $secondary;
-        color: $light;
-        min-width: 50px;
-        margin-left: 15px;
-        border-radius: 5px;
+        background-color: var(--scholarly-100);
+        color: var(--scholarly-900);
+        min-width: 40px;
+        margin-left: var(--space-4);
+        border-radius: var(--radius-md);
+        text-align: center;
+        padding: 4px 8px;
+        font-weight: 700;
       }
     }
 
     > .score {
       @extend .card;
-      background-color: $secondary;
-      transform: scale(1.03);
-      padding: 0 clamp(20px, 3vw, 30px);
-      margin-top: 25px;
-      border-radius: 5px;
+      background-color: var(--scholarly-800);
+      color: var(--ink-on-dark);
+      padding: var(--space-4) var(--space-6);
+      margin-top: var(--space-6);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
 
       > p {
-        color: $light;
-        font-size: clamp(0.9rem, 4vw, 1.2rem);
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        margin: 0;
 
         &:last-child {
-          background-color: $primary;
-          color: $secondary;
-          min-width: 60px;
-          font-size: clamp(0.9rem, 4vw, 1.3rem);
-          border-radius: 5px;
-          font-weight: 600;
-          padding: 2px 0;
+          background-color: var(--assessment-500);
+          color: var(--scholarly-900);
+          min-width: 80px;
+          text-align: center;
+          font-size: var(--text-2xl);
+          border-radius: var(--radius-md);
+          font-weight: 700;
+          padding: 8px 16px;
         }
       }
     }
   }
-}
-
-.blocking-loading {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.4s linear;
-  backdrop-filter: blur(2px);
-  flex-direction: column;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
 }

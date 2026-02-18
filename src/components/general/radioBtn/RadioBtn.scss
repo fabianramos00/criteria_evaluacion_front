@@ -1,42 +1,32 @@
-@import "src/variables";
+@use "src/variables" as *;
 
 label {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   font-weight: 500;
-  overflow: hidden;
-  margin-right: 15px;
+  margin-right: var(--space-6);
   position: relative;
+  font-family: var(--font-body);
+  color: var(--ink-700);
+  font-size: var(--text-base);
+  user-select: none;
 
   &.disabled {
     cursor: not-allowed;
-
-    input {
-      &:checked + span {
-        background-color: mix(#fff, $color-info, 70%);
-
-        &:before {
-          box-shadow: inset 0 0 0 0.4375em $color-info;
-        }
-      }
-    }
-
-    span {
-      &:hover {
-        background-color: transparent;
-      }
-    }
+    opacity: 0.5;
   }
 
   input {
     position: absolute;
-    left: -9999px;
+    opacity: 0;
+    cursor: pointer;
 
     &:checked + span {
-      background-color: mix(#fff, $color-info, 70%);
-
       &:before {
-        box-shadow: inset 0 0 0 0.4375em $color-info;
+        border-color: var(--brand-teal);
+        box-shadow: inset 0 0 0 4px #ffffff;
+        background-color: var(--brand-teal);
       }
     }
   }
@@ -44,25 +34,23 @@ label {
   span {
     display: flex;
     align-items: center;
-    padding: 0.375em 0.75em 0.375em 0.375em;
-    border-radius: 99em;
-    transition: 0.25s ease;
-
-    &:hover {
-      background-color: mix(#fff, $color-info, 70%);
-    }
+    transition: all var(--duration-fast) var(--ease-smooth);
 
     &:before {
-      display: flex;
-      flex-shrink: 0;
       content: "";
-      background-color: #fff;
-      width: 1.5em;
-      height: 1.5em;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #cbd5e1;
       border-radius: 50%;
-      margin-right: 0.375em;
-      transition: 0.25s ease;
-      box-shadow: inset 0 0 0 0.125em $color-info;
+      margin-right: var(--space-2);
+      transition: all 0.2s ease;
+      background-color: #ffffff;
+      display: inline-block;
+      flex-shrink: 0;
     }
+  }
+
+  &:hover input:not(:checked) + span:before {
+    border-color: #94a3b8;
   }
 }

@@ -1,10 +1,9 @@
 import { useState, useMemo } from 'react';
-import { Switch, Route, useRouteMatch, NavLink, useParams, useHistory } from 'react-router-dom';
+import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import './Steps.scss';
 
 function Steps({ items = [] }) {
   const [headerPage, setHeaderPage] = useState(0);
-  const { path } = useRouteMatch();
   const { token } = useParams();
 
   const headerSteps = useMemo(() => items.slice(headerPage, headerPage + 3), [headerPage, items]);
@@ -12,7 +11,7 @@ function Steps({ items = [] }) {
   const hasPrev = headerPage > 0;
 
   const getPath = (stepPath, token) => {
-    return typeof stepPath === 'function' ? stepPath(token) : `${path}${stepPath}`;
+    return typeof stepPath === 'function' ? stepPath(token) : stepPath;
   };
 
   const next = () => {
@@ -35,9 +34,10 @@ function Steps({ items = [] }) {
             <div className='steps__header'>
               <NavLink
                 to={getPath(step.path, token)}
-                activeClassName='steps__badge steps__badge--complete'
-                className='steps__badge'
-                exact
+                className={({ isActive }) =>
+                  `steps__badge ${isActive ? 'steps__badge--complete' : ''}`
+                }
+                end
               >
                 <div>{headerPage + i + 1}</div>
               </NavLink>
@@ -50,22 +50,9 @@ function Steps({ items = [] }) {
           onClick={next}
         />
       </div>
-      <div className='content'>
-        {items.map(step => (
-          <Switch key={`content-${step.id}`}>
-            <Route exact path={getPath(step.path)}>
-              <Step step={step} />
-            </Route>
-          </Switch>
-        ))}
-      </div>
     </div>
   );
 }
-
-const Step = ({ step }) => {
-  return <div className='steps__content'>{step.component}</div>;
-};
 
 export const StepControls = ({
   showBack = true,
@@ -75,11 +62,11 @@ export const StepControls = ({
   loading = false,
   total,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const goNext = () => nextRoute && history.push(nextRoute);
+  const goNext = () => nextRoute && navigate(nextRoute);
 
-  const goBack = () => backRoute && history.push(backRoute);
+  const goBack = () => backRoute && navigate(backRoute);
 
   const handleClick = () => {
     if (nextText) {

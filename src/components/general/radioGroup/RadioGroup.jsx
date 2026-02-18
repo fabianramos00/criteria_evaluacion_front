@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import RadioBtn from '../radioBtn/RadioBtn';
 import { Controller } from 'react-hook-form';
 import './styles.scss';
@@ -28,20 +27,21 @@ const RadioGroup = ({
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange, onBlur, value, ref } }) => (
-            <fieldset style={{ display: 'flex' }} onChange={onChange}>
+          render={({ field: { onChange, value, disabled: fieldDisabled } }) => (
+            <fieldset style={{ display: 'flex' }}>
               {options.map(option => (
                 <RadioBtn
                   key={`opt-${option.id}`}
                   label={option.label}
                   value={option.value}
-                  onChange={e => {
-                    onChange(e);
-                    handleChange(e);
+                  onChange={() => {
+                    const newVal = option.value === 'true' || option.value === true;
+                    onChange(newVal);
+                    handleChange({ target: { value: newVal } });
                   }}
                   name={name}
                   checked={String(value) === String(option.value)}
-                  disabled={disabled}
+                  disabled={disabled || fieldDisabled}
                 />
               ))}
             </fieldset>
@@ -62,12 +62,6 @@ const RadioGroup = ({
       )}
     </>
   );
-};
-
-RadioGroup.propTypes = {
-  text: PropTypes.string,
-  options: PropTypes.array.isRequired,
-  disabled: PropTypes.bool,
 };
 
 export default RadioGroup;

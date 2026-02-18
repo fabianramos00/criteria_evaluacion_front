@@ -1,89 +1,231 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { listEvaluations } from '../../../services/home.services';
 import { formatDate } from '../../../utils/common';
-import { servicesRoute, visibilityRoute } from '../../../const/routes';
+import { servicesRoute, visibilityRoute, HOME_ROUTE } from '../../../const/routes';
 import './EvaluationList.scss';
 import { HashLoader } from 'react-spinners';
 
+const ITEMS_PER_PAGE = 8;
+
 const EvaluationList = () => {
-  const [list, setList] = useState([]);
+  const [data, setData] = useState({ items: [], total_records: 0, pages: 0, has_prev: false, has_next: false, prev_num: null, next_num: null });
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    listEvaluations()
-      .then(data => setList(data?.items || []))
+    listEvaluations(page, ITEMS_PER_PAGE, search)
+      .then(res => setData({
+        items: res?.items || [],
+        total_records: res?.total_records || 0,
+        pages: res?.pages || 0,
+        has_prev: res?.has_prev || false,
+        has_next: res?.has_next || false,
+        prev_num: res?.prev_num || null,
+        next_num: res?.next_num || null,
+      }))
       .finally(() => setLoading(false));
-  }, []);
+  }, [page, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const handleContinueClick = (item = '', token = '') => {
     if (item.toLowerCase() === 'visibility' || item.toLowerCase() === 'started') {
-      history.push(visibilityRoute(token));
+      navigate(visibilityRoute(token));
     } else {
-      history.push(`${visibilityRoute(token)}/${item}`);
+      navigate(`${visibilityRoute(token)}/${item}`);
     }
   };
 
-  const handleEvaluationClick = (token = '') => history.push(servicesRoute(token));
+  const handleEvaluationClick = (token = '') => navigate(servicesRoute(token));
+  const handleNewEvaluation = () => navigate(HOME_ROUTE);
+
+  const renderPages = () => {
+    const pages = [];
+    const max = Math.min(data.pages, 3);
+    for (let i = 1; i <= max; i++) pages.push(i);
+    return pages;
+  };
 
   return (
     <div className='evaluation-list'>
-      <h2 className='main-title'>Repositorios evaluados</h2>
-      {loading && (
+      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+        <div>
+          <h2 className='list-title'>Repositorios evaluados</h2>
+          <p className='list-subtitle'>Historial de evaluaciones realizadas a repositorios institucionales</p>
+        </div>
+        <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
+          <div className='search-wrapper'>
+            <span className='material-icons search-icon'>search</span>
+            <input
+              type='text'
+              className='search-input'
+              placeholder='Buscar repositorios...'
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+            {search && (
+              <button className='search-clear' onClick={() => setSearch('')} aria-label='Limpiar búsqueda'>
+                <span className='material-icons'>close</span>
+              </button>
+            )}
+          </div>
+          <button className='btn-new' onClick={handleNewEvaluation}>
+            <span className='material-icons text-xl'>add_circle</span>
+            Nueva Evaluación
+          </button>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className='loading-container'>
+          <HashLoader color='var(--assessment-400)' loading={loading} size={80} />
+          <p className='loading-text'>Cargando...</p>
+        </div>
+      ) : (
         <>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <HashLoader color='black' loading={loading} size={150} />
-          <br/>
-          <br/>
-          <br/>
-          <h1 className='main-title'>Cargando</h1>
+          {data.items.length === 0 ? (
+            <div className='flex flex-col items-center justify-center py-16 px-4 text-center'>
+              <div className='relative w-24 h-24 bg-white rounded-2xl shadow-md flex items-center justify-center mb-8'>
+                <img src='/storage.png' alt='Sin repositorios' className='w-16 h-16 object-contain' />
+              </div>
+
+              <h3 className='text-2xl font-bold mb-3' style={{ color: 'var(--ink-900)', fontFamily: 'var(--font-display)' }}>
+                No hay repositorios institucionales disponibles para esta búsqueda
+              </h3>
+              <p className='text-sm max-w-sm mb-8 leading-relaxed' style={{ color: 'var(--ink-500)' }}>
+                Intenta con otros términos o elimina algunos filtros para ampliar los resultados
+              </p>
+
+              <button
+                className='btn-new flex items-center gap-2 px-8 py-3 text-base rounded-xl mb-6'
+                onClick={handleNewEvaluation}
+              >
+                <span className='material-icons text-xl'>add_circle</span>
+                Nueva Evaluación
+                <span className='material-icons text-xl'>arrow_forward</span>
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+                {data.items.map((item, index) => (
+                  <div key={`eval-${index}`} className='eval-card'>
+                    <div className={`score-badge ${item.is_completed ? 'complete' : ''}`}>
+                      <span className='score-label'>PUNTAJE</span>
+                      <span className='score-value'>{item.rating ?? '—'}</span>
+                    </div>
+
+                    <div className='card-body'>
+                      <div className='card-top'>
+                        <div className='name-group'>
+                          {Array.isArray(item.repository_names) &&
+                            item.repository_names.map((name, j) => (
+                              <h3 key={j} className='repo-name'>
+                                {name}
+                              </h3>
+                            ))}
+                        </div>
+                        <div className={`status-badge ${item.is_completed ? 'complete' : 'in-progress'}`}>
+                          <span className='material-icons status-icon'>
+                            {item.is_completed ? 'check_circle' : 'pending'}
+                          </span>
+                          {item.is_completed ? 'COMPLETO' : 'EN PROCESO'}
+                        </div>
+                      </div>
+
+                      <a
+                        href={item.repository_url}
+                        className='repo-link'
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        {item.repository_url}
+                        <span className='material-icons link-icon'>open_in_new</span>
+                      </a>
+
+                      <div className='card-bottom'>
+                        <div className='card-dates'>
+                          <div className='date-item'>
+                            <span className='date-label'>FECHA DE CREACIÓN</span>
+                            <div className='date-value'>
+                              <span className='material-icons date-icon'>calendar_today</span>
+                              {formatDate(item.created_at)}
+                            </div>
+                          </div>
+                          <div className='date-item'>
+                            <span className='date-label'>ÚLTIMA ACTUALIZACIÓN</span>
+                            <div className='date-value'>
+                              <span className='material-icons date-icon'>schedule</span>
+                              {formatDate(item.updated_at)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {item.is_completed ? (
+                          <button
+                            className='btn-action primary'
+                            onClick={() => handleEvaluationClick(item.id)}
+                          >
+                            <span className='material-icons'>visibility</span>
+                            Ver evaluación
+                          </button>
+                        ) : (
+                          <button
+                            className='btn-action outline'
+                            onClick={() => handleContinueClick(item.last_item_evaluated, item.id)}
+                          >
+                            Continuar evaluación
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {data.total_records > 0 && (
+                <div className='pagination'>
+                  <span className='pagination-info'>
+                    Mostrando {data.items.length} de {data.total_records} repositorios
+                  </span>
+                  <div className='pagination-controls'>
+                    <button
+                      className='page-btn nav'
+                      onClick={() => data.prev_num && setPage(data.prev_num)}
+                      disabled={!data.has_prev}
+                    >
+                      <span className='material-icons'>chevron_left</span>
+                    </button>
+                    {renderPages().map(p => (
+                      <button
+                        key={p}
+                        className={`page-btn ${page === p ? 'active' : ''}`}
+                        onClick={() => setPage(p)}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                    {data.pages > 3 && <span className='page-ellipsis'>...</span>}
+                    <button
+                      className='page-btn nav'
+                      onClick={() => data.next_num && setPage(data.next_num)}
+                      disabled={!data.has_next}
+                    >
+                      <span className='material-icons'>chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
-      <div className='two-col-content'>
-        {list.map((item, index) => (
-          <div key={`eval-${index}`} className='evaluation-card'>
-            <div className={`score ${item.is_completed ? 'complete' : ''}`}>{item.rating}</div>
-            <div className='content'>
-              {Array.isArray(item.repository_names) &&
-                item.repository_names.map((name, j) => (
-                  <li key={`rapo-name-${index}-${j}`} className='name'>
-                    {name}
-                  </li>
-                ))}
-              <div className='date'>
-                <a href={item.repository_url} className='link' target='_blank' rel='noreferrer'>
-                  {item.repository_url}
-                </a>
-                <p>Creación: {formatDate(item.created_on)}</p>
-                <p>Última Actualización: {formatDate(item.last_updated)}</p>
-              </div>
-              <div className='status'>
-                <div className={`state ${item.is_completed ? 'complete' : ''}`}>
-                  {item.is_completed ? 'Completo' : 'En progreso'}
-                </div>
-                {item.is_completed ? (
-                  <button className='cta' onClick={() => handleEvaluationClick(item.token)}>
-                    Ver evaluación
-                  </button>
-                ) : (
-                  <button
-                    className='cta'
-                    onClick={() => handleContinueClick(item.last_item_evaluated, item.token)}
-                  >
-                    Continuar
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

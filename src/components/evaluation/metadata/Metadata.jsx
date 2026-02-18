@@ -66,7 +66,7 @@ const Metadata = ({ ref }) => {
 export const Fields = ({ control, data = {}, disabled = false }) => {
   return (
     <>
-      <div className='two-col-content'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           label='Uso del esquema de metadatos Dublin Core (DC)'
           step={1}
@@ -79,6 +79,8 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           automatic
           value={data[AUTHOR_ID]}
         />
+      </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
         <Option
           label='Inclusión de los siguientes campos:'
           text=''
@@ -169,28 +171,29 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           </ul>
         </Option>
       </div>
-      <Option
-        label='El campo de derechos de acceso se encuentra conforme al vocabulario establecido'
-        step={5}
-        text='closedAccess, embargoedAccess, openAccess, restrictedAccess.'
-        automatic
-        value={data[STANDARD_ACCESS_VALUE]}
-      />
-      <Option
-        step={6}
-        label='El campo de fecha de publicación se encuentra conforme al formato establecido'
-        text='ISO 8601 – AAAA-MM-DD, AAAA-MM-DDTHH:MM:SSZ'
-        automatic
-        value={data[STANDARD_DATE_FORMAT]}
-      />
-      <Option
-        step={7}
-        label='El campo de idioma se encuentra conforme al vocabulario establecido'
-        text='ISO 639-1, 639-2 y 639-3, código zxx'
-        automatic
-        value={data[STANDARD_LANGUAGE]}
-      />
-      <div className='two-col-content'>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pr-5'>
+        <Option
+          label='El campo de derechos de acceso se encuentra conforme al vocabulario establecido'
+          step={5}
+          text='closedAccess, embargoedAccess, openAccess, restrictedAccess.'
+          automatic
+          value={data[STANDARD_ACCESS_VALUE]}
+        />
+        <Option
+          step={6}
+          label='El campo de fecha de publicación se encuentra conforme al formato establecido'
+          text='ISO 8601 – AAAA-MM-DD, AAAA-MM-DDTHH:MM:SSZ'
+          automatic
+          value={data[STANDARD_DATE_FORMAT]}
+        />
+        <Option
+          step={7}
+          label='El campo de idioma se encuentra conforme al vocabulario establecido'
+          text='ISO 639-1, 639-2 y 639-3, código zxx'
+          automatic
+          value={data[STANDARD_LANGUAGE]}
+        />
         <Option
           label='El campo tipo de resultado de investigación contiene una única ocurrencia'
           step={8}
@@ -215,15 +218,13 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           automatic
           value={data[SINGLE_VERSION]}
         />
-      </div>
-      <Option
-        label='El campo de versión del recurso se encuentra conforme al vocabulario COAR'
-        text='draft, submittedVersion, acceptedVersion, publishedVersion, updatedVersion'
-        step={12}
-        automatic
-        value={data[STANDARD_VERSION_COAR]}
-      />
-      <div className='two-col-content'>
+        <Option
+          label='El campo de versión del recurso se encuentra conforme al vocabulario COAR'
+          text='draft, submittedVersion, acceptedVersion, publishedVersion, updatedVersion'
+          step={12}
+          automatic
+          value={data[STANDARD_VERSION_COAR]}
+        />
         <Option
           label='Se aplica algún sistema de clasificación normalizado'
           step={13}
@@ -274,6 +275,7 @@ export const Fields = ({ control, data = {}, disabled = false }) => {
           />
         </Option>
       </div>
+
     </>
   );
 };

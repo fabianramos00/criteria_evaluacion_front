@@ -70,7 +70,7 @@ const Interoperability = ({ ref }) => {
 
 export const Fields = ({ control, data = {}, disabled = false }) => (
   <>
-    <div className='two-col-content'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option
         label='Recolectado por LA Referencia-OpenAIRE'
         step={1}
@@ -84,7 +84,7 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
         value={data[OAI_PMH]}
       />
     </div>
-    <div className='two-col-content'>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option label='Se marcan los registros eliminados' step={3} value={data[DELETED_RECORDS]}>
         <RadioGroup
           options={YES_NO_OPTIONS}
@@ -105,6 +105,8 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
           disabled={disabled}
         />
       </Option>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option
         label='El correo electrónico del administrador del repositorio está disponible en la etiqueta AdminEmail dentro de la respuesta a una orden Identify'
         step={5}
@@ -129,6 +131,8 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
           disabled={disabled}
         />
       </Option>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option
         label='La entrega de registros a través del protocolo OAI-PMH es progresiva a través de lotes'
         step={7}
@@ -153,6 +157,8 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
           disabled={disabled}
         />
       </Option>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option
         label='El formato de la fecha expresado en la orden Identify coincide con el campo datestamp de los registros'
         step={9}
@@ -178,22 +184,24 @@ export const Fields = ({ control, data = {}, disabled = false }) => (
         />
       </Option>
     </div>
-    <Option
-      label='Inclusión de etiquetas <meta…> en las cabeceras HTML '
-      step={11}
-      automatic
-      value={data[HEADERS_HTML]}
-    >
-      <a
-        href='https://scholar.google.com/intl/es/scholar/inclusion.html#indexing'
-        target='_blank'
-        rel='noreferrer'
-        className='link'
+    <div className='grid grid-cols-1 lg:grid-cols-1 gap-8 pr-5'>
+      <Option
+        label='Inclusión de etiquetas <meta…> en las cabeceras HTML '
+        step={11}
+        automatic
+        value={data[HEADERS_HTML]}
       >
-        https://scholar.google.com/intl/es/scholar/inclusion.html#indexing
-      </a>
-    </Option>
-    <div className='two-col-content'>
+        <a
+          href='https://scholar.google.com/intl/es/scholar/inclusion.html#indexing'
+          target='_blank'
+          rel='noreferrer'
+          className='link'
+        >
+          https://scholar.google.com/intl/es/scholar/inclusion.html#indexing
+        </a>
+      </Option>
+    </div>
+    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 pr-5'>
       <Option
         label='El repositorio soporta otros protocolos y APIs para compartir metadatos y/o contenidos'
         step={12}

@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext, forwardRef } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getItemEvaluation } from '../../../services/evaluation.services';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,7 +33,7 @@ const ItemTemplate = forwardRef(
     const [data, setData] = useState({});
     const { setTotal, total, setRepositoryName } = useContext(TotalContext);
     const { token } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const { defaultValues, schema } = form;
 
@@ -68,6 +67,7 @@ const ItemTemplate = forwardRef(
 
     const onSubmit = values => {
       const body = cleanJSON(values);
+      console.log('Form Submission Body:', body);
       if (isEmptyObject(errors)) {
         setLoading(true);
         evalFunc(token, body)
@@ -85,73 +85,73 @@ const ItemTemplate = forwardRef(
       }
     };
 
-    const handlePrev = () => history.push(prevRoute);
+    const handlePrev = () => navigate(prevRoute);
 
     const handleNext = () => {
       if (isEmptyObject(errors)) {
-        history.push(nextRoute);
+        navigate(nextRoute);
       }
     };
 
     return (
       <section className={`item-template ${wrapperClassName}`} ref={ref}>
-        <div className={`blocking-loading ${loading ? 'visible' : ''} main-title`}>
-          <HashLoader color='black' loading={loading} size={150} />
-          <h1 className='main-title'>Cargando</h1>
+        <div className={`blocking-loading ${loading ? 'visible' : ''}`}>
+          <HashLoader color='var(--assessment-400)' loading={loading} size={150} />
+          <h1>Cargando</h1>
         </div>
         <header>
-          <h1 className='main-title'>{`${title} ${
-            typeof data.total !== 'undefined' ? `\n[${data.total}]` : ''
-          }`}</h1>
-          <span className='score'>
-            <span>Total</span>
-            <br />
-            {total}
-          </span>
+          <div className='title-group'>
+            <h1 className='main-title'>{title}</h1>
+            <div className='section-score-pill'>
+              <span className='dot'></span>
+              Puntaje de Sección: {typeof data.total !== 'undefined' ? data.total : '0'}
+            </div>
+
+          </div>
+          <div className='score-badge'>
+            <div className='score-circle'>
+              <span className='score-label'>TOTAL</span>
+              <span className='score-value'>{total}</span>
+            </div>
+          </div>
         </header>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           {render
             ? render({ register, control, errors, data, disabled: !isEmptyObject(data) })
             : children}
-          {hasPrev && (
-            <button className='cta' onClick={handlePrev}>
-              Anterior
-            </button>
-          )}
-          {isEmptyObject(data) && (
-            <button className='cta' type='submit'>
-              Guardar
-            </button>
-          )}
-          {hasNext && !isEmptyObject(data) && (
-            <button className='cta' onClick={handleNext} type='button'>
-              Siguiente
-            </button>
-          )}
-          {lastItem && data && (
-            <a
-              href={summaryRoute(token)}
-              className='cta summary'
-              target='_blank'
-              rel='noreferrer'
-            >
-              Resumen
-            </a>
-          )}
+          <div className='form-actions'>
+            {hasPrev && (
+              <button className='cta' onClick={handlePrev} type='button'>
+                Anterior
+              </button>
+            )}
+            {isEmptyObject(data) && (
+              <button className='cta' type='submit'>
+                Guardar
+              </button>
+            )}
+            {hasNext && !isEmptyObject(data) && (
+              <button className='cta next' onClick={handleNext} type='button'>
+                Siguiente
+              </button>
+            )}
+            {lastItem && data && (
+              <a
+                href={summaryRoute(token)}
+                className='cta summary'
+                target='_blank'
+                rel='noreferrer'
+              >
+                Resumen
+              </a>
+            )}
+          </div>
+
         </form>
       </section>
     );
   },
 );
-
-ItemTemplate.propTypes = {
-  item: PropTypes.string.isRequired,
-  wrapperClassName: PropTypes.string,
-  title: PropTypes.string,
-  render: PropTypes.func,
-  hasNext: PropTypes.bool,
-  hasPrev: PropTypes.bool,
-  lastItem: PropTypes.bool,
-};
 
 export default ItemTemplate;

@@ -1,37 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;0,800;0,900;1,200&display=swap');
+/* Fonts handled in index.html (Fraunces + DM Sans) */
+$font-family: var(--font-body);
 
-$font-family: 'Poppins', sans-serif;
+/* Mapping legacy variables to new Design Tokens */
 
-$color-primary: #f0e3ca;
-$color-secondary: #ff8303;
-$color-tertiary: #a35709;
-$color-bloom: #2b2e4a;
-$color-dark: #1b1a17;
-$color-info: #51c4d3;
-$color-warning: #ffcc29;
-$color-success: #9ede73;
-$color-error: #e84545;
+/* Colors */
+$color-primary: var(--manuscript-paper);
+$color-secondary: var(--assessment-400);
+$color-tertiary: var(--assessment-500);
 
-$color-gray: #c2c2c2;
+/* UI Elements */
+$color-bloom: var(--scholarly-700);
+$color-dark: var(--scholarly-900);
+$color-gray: var(--ink-500);
 
-$color-text-light: #edffec;
-$color-text-dark: #40394a;
+/* Semantic */
+$color-info: var(--info);
+$color-warning: var(--warning);
+$color-success: var(--success);
+$color-error: var(--error);
 
-$dark: #111b27;
-$medium-dark: #1a2738;
-$blue-green: #00a9a3;
-$purple: #503bc8;
-$light-purple: #614de2;
+/* Text */
+$color-text-light: var(--ink-on-dark);
+$color-text-dark: var(--ink-900);
 
-// theming
-$primary: $blue-green;
-$secondary: $medium-dark;
-$tertiary: $dark;
-$light: white;
+/* Layout Colors */
+$dark: var(--scholarly-800);
+/* Sidebar bg */
+$medium-dark: var(--scholarly-700);
+$blue-green: var(--scholarly-600);
+/* Was primary in some contexts */
+$purple: var(--scholarly-600);
+$light-purple: var(--scholarly-600);
+
+/* Theming - Legacy mappings */
+$primary: var(--scholarly-600);
+$secondary: var(--scholarly-700);
+$tertiary: var(--scholarly-900);
+$light: var(--manuscript-paper);
 
 @mixin page {
-  padding: 0 2vw 30px 2vw;
+  padding: var(--space-6);
   width: 100%;
   max-height: 100vh;
   overflow-y: auto;
+  background-color: var(--manuscript-paper);
+  color: var(--ink-900);
+  box-sizing: border-box;
 }

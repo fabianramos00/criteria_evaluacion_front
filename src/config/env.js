@@ -1,1 +1,1 @@
-export const SERVER_ENDPOINT = process.env.REACT_APP_SERVER_URL || '';
+export const SERVER_ENDPOINT = import.meta.env.VITE_SERVER_URL || '';

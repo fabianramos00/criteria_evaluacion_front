@@ -1,7 +1,7 @@
 import { postData, getData } from '../config/client.http';
 
 export function getItemEvaluation(item, token) {
-  return getData(`/${item}/${token}`);
+  return getData(`/detail/${item}/${token}`);
 }
 
 export function evalVisibility(token, data) {
