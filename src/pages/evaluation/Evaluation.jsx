@@ -6,6 +6,7 @@ import LegalAspects from '../../components/evaluation/legalAspects/LegalAspects'
 import Safety from '../../components/evaluation/safety/Safety';
 import Statistics from '../../components/evaluation/statistics/Statistics';
 import Metadata from '../../components/evaluation/metadata/Metadata';
+import Summary from '../../components/evaluation/summary/Summary';
 import {
   visibilityRoute,
   policiesRoute,
@@ -16,6 +17,7 @@ import {
   statsRoute,
   servicesRoute,
   HOME_ROUTE,
+  summaryRoute,
 } from '../../const/routes';
 import Menu from '../../components/general/menu/Menu';
 import Interoperability from '../../components/evaluation/interoperability/Interoperability';
@@ -70,6 +72,11 @@ function Evaluation() {
         icon: 'miscellaneous_services',
       },
       {
+        text: 'Resumen',
+        path: summaryRoute(token),
+        icon: 'receipt',
+      },
+      {
         text: 'Volver al inicio',
         path: HOME_ROUTE,
         icon: 'arrow_back_ios',
@@ -96,6 +103,7 @@ function Evaluation() {
           <Route path='security' element={<Safety />} />
           <Route path='stats' element={<Statistics />} />
           <Route path='services' element={<ValueServices />} />
+          <Route path='summary' element={<Summary />} />
         </Routes>
       </article>
     </section>

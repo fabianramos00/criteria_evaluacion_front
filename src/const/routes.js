@@ -3,7 +3,6 @@ export const HOME_ROUTE = '/home';
 export const homeList = (parent = HOME_ROUTE) => `${parent}/list`;
 
 // eval
-export const EVAL_ROUTE = '/eval/:token';
 export const visibilityRoute = (token = ':token') => `/eval/${token}`;
 export const policiesRoute = (token = ':token') => `/eval/${token}/policy`;
 export const legalAspectsRoute = (token = ':token') => `/eval/${token}/legal_aspects`;
@@ -12,7 +11,15 @@ export const interoperabilityRoute = (token = ':token') => `/eval/${token}/inter
 export const securityRoute = (token = ':token') => `/eval/${token}/security`;
 export const statsRoute = (token = ':token') => `/eval/${token}/stats`;
 export const servicesRoute = (token = ':token') => `/eval/${token}/services`;
+export const summaryRoute = (token = ':token') => `/eval/${token}/summary`;
 
-// Summary
-export const summaryRoute = (token = ':token') => `/summary/${token}`;
-export const summaryPrintRoute = (token = ':token') => `${summaryRoute(token)}/pdf`;
+export const getRouteBySection = {
+    visibility: visibilityRoute,
+    policy: policiesRoute,
+    legal_aspects: legalAspectsRoute,
+    metadata: metadataRoute,
+    interoperability: interoperabilityRoute,
+    security: securityRoute,
+    statistics: statsRoute,
+    services: servicesRoute,
+};

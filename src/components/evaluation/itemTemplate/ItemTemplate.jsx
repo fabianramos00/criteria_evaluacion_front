@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { cleanJSON, isEmptyObject } from '../../../utils/common';
 import { TotalContext } from '../../../context/context';
 import * as Yup from 'yup';
-import { summaryRoute } from '../../../const/routes';
+import { getRouteBySection, HOME_ROUTE, summaryRoute } from '../../../const/routes';
 import './ItemTemplate.scss';
 import { HashLoader } from 'react-spinners';
 
@@ -30,6 +30,7 @@ const ItemTemplate = forwardRef(
     ref,
   ) => {
     const [loading, setLoading] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
     const [data, setData] = useState({});
     const { setTotal, total, setRepositoryName } = useContext(TotalContext);
     const { token } = useParams();
@@ -59,24 +60,29 @@ const ItemTemplate = forwardRef(
           });
           setTotal(data.accumulative);
           setRepositoryName(data.repository_name);
+          setIsCompleted(true);
         })
-        .catch(() => {
+        .catch((e) => {
+          if (e.detail === 'Invalid token') {
+            navigate(HOME_ROUTE);
+          } else if (!e.is_next) {
+            navigate(getRouteBySection[e.next_item](token));
+          }
         })
         .finally(() => setLoading(false));
     }, [token, item, setTotal, setValue, setRepositoryName]);
 
     const onSubmit = values => {
       const body = cleanJSON(values);
-      console.log('Form Submission Body:', body);
       if (isEmptyObject(errors)) {
         setLoading(true);
         evalFunc(token, body)
           .then(data => {
             setData(data);
             setTotal(data.accumulative);
+            setIsCompleted(true);
           })
           .catch(e => {
-            console.log(e);
             Object.keys(e).forEach(key => {
               setError(key, { message: e?.[key].join(', ') });
             });
@@ -102,18 +108,22 @@ const ItemTemplate = forwardRef(
         <header>
           <div className='title-group'>
             <h1 className='main-title'>{title}</h1>
-            <div className='section-score-pill'>
-              <span className='dot'></span>
-              Puntaje de Sección: {typeof data.total !== 'undefined' ? data.total : '0'}
-            </div>
+            {isCompleted && (
+              <div className='section-score-pill'>
+                <span className='dot'></span>
+                Puntaje de Sección: {typeof data.total !== 'undefined' ? data.total : '0'}
+              </div>
+            )}
 
           </div>
-          <div className='score-badge'>
-            <div className='score-circle'>
-              <span className='score-label'>TOTAL</span>
-              <span className='score-value'>{total}</span>
+          {isCompleted && (
+            <div className='score-badge'>
+              <div className='score-circle'>
+                <span className='score-label'>TOTAL</span>
+                <span className='score-value'>{total}</span>
+              </div>
             </div>
-          </div>
+          )}
         </header>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -137,14 +147,13 @@ const ItemTemplate = forwardRef(
               </button>
             )}
             {lastItem && data && (
-              <a
-                href={summaryRoute(token)}
+              <button
+                onClick={() => navigate(summaryRoute(token))}
                 className='cta summary'
-                target='_blank'
-                rel='noreferrer'
+                type='button'
               >
                 Resumen
-              </a>
+              </button>
             )}
           </div>
 

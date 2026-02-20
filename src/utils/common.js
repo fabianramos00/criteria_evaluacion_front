@@ -32,3 +32,11 @@ export const formatDate = (dateString, keepUTC = true) => {
   };
   return new Intl.DateTimeFormat('es-ES', options).format(date);
 };
+
+export const getQualityInfo = (score, max) => {
+  if (!max) return { label: 'N/D' };
+  const pct = (score / max) * 100;
+  if (pct >= 80) return { label: 'Alto', className: 'high-score' };
+  if (pct >= 50) return { label: 'Medio', className: 'medium-score' };
+  return { label: 'Bajo', className: 'low-score' };
+}

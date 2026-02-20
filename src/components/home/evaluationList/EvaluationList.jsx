@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listEvaluations } from '../../../services/home.services';
-import { formatDate } from '../../../utils/common';
-import { servicesRoute, visibilityRoute, HOME_ROUTE } from '../../../const/routes';
+import { formatDate, getQualityInfo } from '../../../utils/common';
+import { visibilityRoute, HOME_ROUTE, getRouteBySection, summaryRoute } from '../../../const/routes';
 import './EvaluationList.scss';
 import { HashLoader } from 'react-spinners';
 
@@ -35,14 +35,15 @@ const EvaluationList = () => {
   }, [search]);
 
   const handleContinueClick = (item = '', token = '') => {
-    if (item.toLowerCase() === 'visibility' || item.toLowerCase() === 'started') {
+    let item_lower = item.toLowerCase();
+    if (item_lower === 'started') {
       navigate(visibilityRoute(token));
     } else {
-      navigate(`${visibilityRoute(token)}/${item}`);
+      navigate(getRouteBySection[item_lower](token));
     }
   };
 
-  const handleEvaluationClick = (token = '') => navigate(servicesRoute(token));
+  const handleEvaluationClick = (token = '') => navigate(summaryRoute(token));
   const handleNewEvaluation = () => navigate(HOME_ROUTE);
 
   const renderPages = () => {
@@ -113,7 +114,7 @@ const EvaluationList = () => {
             </div>
           ) : (
             <>
-              <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+              <div className='grid grid-cols-1 xl:grid-cols-2 gap-3'>
                 {data.items.map((item, index) => (
                   <div key={`eval-${index}`} className='eval-card'>
                     <div className={`score-badge ${item.is_completed ? 'complete' : ''}`}>
@@ -121,7 +122,7 @@ const EvaluationList = () => {
                       <span className='score-value'>{item.rating ?? '—'}</span>
                     </div>
 
-                    <div className='card-body'>
+                    <div className='mt-auto card-body'>
                       <div className='card-top'>
                         <div className='name-group'>
                           {Array.isArray(item.repository_names) &&
@@ -186,7 +187,8 @@ const EvaluationList = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                )
+                )}
               </div>
 
               {data.total_records > 0 && (

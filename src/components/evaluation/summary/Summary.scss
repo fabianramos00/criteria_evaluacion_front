@@ -1,0 +1,79 @@
+@use "src/variables" as *;
+
+.summary {
+    @include page;
+    position: relative;
+    min-height: 100vh;
+
+    .high-score {
+        background: linear-gradient(145deg, #009688 0%, #00796b 100%);
+    }
+
+    .medium-score {
+        background: linear-gradient(145deg, #ffb74d 0%, #f57c00 100%);
+    }
+
+    .low-score {
+        background: linear-gradient(145deg, #e57373 0%, #b71c1c 100%);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-4);
+        margin-top: var(--space-12);
+        width: 100%;
+    }
+
+    .cta {
+        font-size: var(--text-base);
+        padding: 12px 32px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        width: fit-content;
+        height: 48px !important; // Forced fixed height
+        min-height: 48px !important;
+        max-height: 48px !important;
+        box-sizing: border-box !important;
+        align-self: center;
+        line-height: 1;
+        margin: 0; // Remove previous margins to let flex gap handle it
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0, 150, 136, 0.25);
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 150, 136, 0.35);
+            filter: brightness(1.05);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+
+        // Default Style (Anterior / Outline)
+        background-color: transparent;
+        color: #64748b;
+        border: 1px solid #e2e8f0;
+
+        &:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        &.summary::after {
+            content: '\e5e1'; // arrow_forward icon hex
+            font-family: 'Material Icons Outlined';
+            font-size: 20px;
+        }
+    }
+}
