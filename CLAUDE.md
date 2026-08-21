@@ -36,14 +36,24 @@ No test runner is currently configured.
 
 ### Routing & Pages
 
-`/` redirects to `/home`. Three page-level routes:
+`/` redirects to `/home`. Two main page-level routes:
 - `/home` — Repository URL form + paginated evaluation list
-- `/eval/:token` — 8-step evaluation wizard with sidebar navigation
-- `/summary/:token` — Score results; `/summary/:token/pdf` for PDF export
+- `/eval/:token` — Evaluation wizard with sidebar navigation
+
+Within `/eval/:token`, nested routes include:
+- (index) — Visibilidad
+- `policy` — Políticas
+- `legal_aspects` — Aspectos Legales
+- `metadata` — Metadatos
+- `interoperability` — Interoperabilidad
+- `security` — Seguridad
+- `stats` — Estadísticas
+- `services` — Servicios de valor añadido
+- `summary` — Score results & category breakdown
 
 ### Evaluation Categories (in order)
 
-1. Visibilidad  2. Políticas  3. Aspectos Legales  4. Metadatos  5. Interoperabilidad  6. Seguridad  7. Estadísticas  8. Servicios de valor añadido
+1. Visibilidad  2. Políticas  3. Aspectos Legales  4. Metadatos  5. Interoperabilidad  6. Seguridad  7. Estadísticas  8. Servicios de valor añadido  9. Resumen
 
 ### Key Patterns
 
