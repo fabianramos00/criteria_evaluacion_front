@@ -8,7 +8,7 @@ import { TotalContext } from '../../../context/context';
 import * as Yup from 'yup';
 import { getRouteBySection, HOME_ROUTE, summaryRoute } from '../../../const/routes';
 import './ItemTemplate.scss';
-import { HashLoader } from 'react-spinners';
+import Loading from '../../general/loading/Loading';
 
 const ItemTemplate = forwardRef(
   (
@@ -101,10 +101,7 @@ const ItemTemplate = forwardRef(
 
     return (
       <section className={`item-template ${wrapperClassName}`} ref={ref}>
-        <div className={`blocking-loading ${loading ? 'visible' : ''}`}>
-          <HashLoader color='var(--assessment-400)' loading={loading} size={150} />
-          <h1>Cargando</h1>
-        </div>
+        <Loading loading={loading} />
         <header>
           <div className='title-group'>
             <h1 className='main-title'>{title}</h1>

@@ -133,7 +133,7 @@ Teal-tinted shadows on primary actions: `0 4px 12px rgba(0,150,136,0.2)` (rest) 
 Established patterns:
 - **Wizard entry:** `slide-up` (translateY 20px → 0, fade) 0.6s, staggered 50ms per grid child (see `ItemTemplate.scss`).
 - **Hover:** subtle `translateY(-1px)` lift on buttons and option cards; keep it whisper-quiet, no spring in professional flows.
-- **Loading:** full-screen `.blocking-loading` overlay with `HashLoader` (teal, `var(--assessment-400)`) + "Cargando".
+- **Loading:** full-screen `.blocking-loading` overlay with `HashLoader` (`#009688` hex literal, `speedMultiplier={1.25}`) + `.loading-label` "Cargando"; inline variant uses `.loading-container` + `.loading-text`. Fade via `opacity`/`visibility`, theme-aware `color-mix` background + `blur(6px)`.
 
 ---
 

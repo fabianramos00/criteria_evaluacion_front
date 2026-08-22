@@ -4,7 +4,7 @@ import { listEvaluations } from '../../../services/home.services';
 import { formatDate, getQualityInfo } from '../../../utils/common';
 import { visibilityRoute, HOME_ROUTE, getRouteBySection, summaryRoute } from '../../../const/routes';
 import './EvaluationList.scss';
-import { HashLoader } from 'react-spinners';
+import Loading from '../../general/loading/Loading';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -84,10 +84,7 @@ const EvaluationList = () => {
       </div>
 
       {loading ? (
-        <div className='loading-container'>
-          <HashLoader color='var(--assessment-400)' loading={loading} size={80} />
-          <p className='loading-text'>Cargando...</p>
-        </div>
+        <Loading loading={loading} overlay={false} />
       ) : (
         <>
           {data.items.length === 0 ? (

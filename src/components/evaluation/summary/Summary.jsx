@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { summary } from '../../../services/evaluation.services';
 import { formatDate, getQualityInfo } from '../../../utils/common';
-import { HashLoader } from 'react-spinners';
 import './Summary.scss';
+import Loading from '../../general/loading/Loading';
 import { getRouteBySection, HOME_ROUTE, servicesRoute } from '../../../const/routes';
 
 const CATEGORY_META = {
@@ -99,12 +99,7 @@ const Summary = () => {
 
   return (
     <section className="summary">
-      {loading && (
-        <div className="blocking-loading visible">
-          <HashLoader color="var(--assessment-400)" loading={loading} size={150} />
-          <h1>Cargando</h1>
-        </div>
-      )}
+      <Loading loading={loading} />
 
       <div className="max-w-[900px] mx-auto p-6">
         <div className="bg-white rounded-[14px] shadow-sm p-5 flex gap-5 items-center">

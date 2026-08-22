@@ -117,24 +117,6 @@
     }
   }
 
-  // ── Loading ──────────────────────────────────────────────
-  .loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 40vh;
-    gap: var(--space-4);
-
-    .loading-text {
-      color: var(--assessment-400);
-      font-size: var(--text-lg);
-      font-weight: 600;
-      margin: 0;
-      font-family: var(--font-display);
-    }
-  }
-
   // ── Pagination ───────────────────────────────────────────
   .pagination {
     display: flex;
