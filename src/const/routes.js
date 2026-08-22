@@ -1,6 +1,5 @@
 // home
 export const HOME_ROUTE = '/home';
-export const homeList = (parent = HOME_ROUTE) => `${parent}/list`;
 
 // eval
 export const visibilityRoute = (token = ':token') => `/eval/${token}`;
