@@ -46,11 +46,20 @@ const EvaluationList = () => {
   const handleEvaluationClick = (token = '') => navigate(summaryRoute(token));
   const handleNewEvaluation = () => navigate(HOME_ROUTE);
 
+  // Ventana de páginas: primera, actual ±1 y última, con puntos suspensivos en los huecos
   const renderPages = () => {
-    const pages = [];
-    const max = Math.min(data.pages, 3);
-    for (let i = 1; i <= max; i++) pages.push(i);
-    return pages;
+    const pages = [...new Set([1, page - 1, page, page + 1, data.pages])]
+      .filter(p => p >= 1 && p <= data.pages)
+      .sort((a, b) => a - b);
+
+    const items = [];
+    let prev = 0;
+    pages.forEach(p => {
+      if (p - prev > 1) items.push('...');
+      items.push(p);
+      prev = p;
+    });
+    return items;
   };
 
   return (
@@ -201,16 +210,21 @@ const EvaluationList = () => {
                     >
                       <span className='material-icons'>chevron_left</span>
                     </button>
-                    {renderPages().map(p => (
-                      <button
-                        key={p}
-                        className={`page-btn ${page === p ? 'active' : ''}`}
-                        onClick={() => setPage(p)}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                    {data.pages > 3 && <span className='page-ellipsis'>...</span>}
+                    {renderPages().map((p, index) =>
+                      p === '...' ? (
+                        <span key={`ellipsis-${index}`} className='page-ellipsis'>
+                          ...
+                        </span>
+                      ) : (
+                        <button
+                          key={p}
+                          className={`page-btn ${page === p ? 'active' : ''}`}
+                          onClick={() => setPage(p)}
+                        >
+                          {p}
+                        </button>
+                      )
+                    )}
                     <button
                       className='page-btn nav'
                       onClick={() => data.next_num && setPage(data.next_num)}
