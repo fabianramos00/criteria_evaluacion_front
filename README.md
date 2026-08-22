@@ -14,12 +14,12 @@ Aplicacion SPA en React para evaluar repositorios institucionales contra 8 categ
 ## Requisitos
 
 - Node.js 18+
-- npm 9+
+- pnpm 9+
 
 ## Instalacion
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Variables de Entorno
@@ -35,9 +35,9 @@ En desarrollo, Vite hace proxy de `/api` hacia `VITE_SERVER_URL`.
 ## Scripts
 
 ```bash
-npm run dev      # Servidor de desarrollo en http://localhost:3000
-npm run build    # Build de produccion en dist/
-npm run preview  # Previsualizar build de produccion
+pnpm run dev      # Servidor de desarrollo en http://localhost:3000
+pnpm run build    # Build de produccion en dist/
+pnpm run preview  # Previsualizar build de produccion
 ```
 
 ## Estructura del Proyecto

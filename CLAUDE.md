@@ -11,9 +11,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Dev Commands
 
 ```bash
-npm run dev      # Vite dev server on http://localhost:3000
-npm run build    # Production build to dist/
-npm run preview  # Preview production build
+pnpm run dev      # Vite dev server on http://localhost:3000
+pnpm run build    # Production build to dist/
+pnpm run preview  # Preview production build
 ```
 
 No test runner is currently configured.
