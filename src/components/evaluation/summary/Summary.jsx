@@ -139,26 +139,26 @@ const Summary = () => {
             <div
               className={`rounded-[14px] p-5 flex basis-[35%] min-w-[150px] flex-col items-center justify-center gap-2.5 shadow-[0_4px_16px_rgba(0,150,136,0.35)] ${quality.className}`}
             >
-              <p className="m-0 !text-white text-[16px] font-bold tracking-[0.12em] uppercase">PUNTAJE TOTAL</p>
+              <p className="m-0 text-white text-[16px] font-bold tracking-[0.12em] uppercase">PUNTAJE TOTAL</p>
               <div className="flex items-baseline gap-1">
-                <span className="text-[50px] font-extrabold !text-white leading-none">{score}</span>
+                <span className="text-[50px] font-extrabold text-white leading-none">{score}</span>
                 {maxScore > 0 && (
-                  <span className="text-[35px] !text-white font-medium">/{maxScore}</span>
+                  <span className="text-[35px] text-white font-medium">/{maxScore}</span>
                 )}
               </div>
               <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
                 <div className="h-full bg-white/85 rounded-full" style={{ width: `${scorePercent}%` }} />
               </div>
-              <span className="bg-white/15 !text-white text-sm font-semibold px-2 py-[2px] rounded-full">
+              <span className="bg-white/15 text-white text-sm font-semibold px-2 py-[2px] rounded-full">
                 Nivel de Calidad: {quality.label}
               </span>
             </div>
             <div className="flex gap-2.5 flex-shrink-0">
               <button
                 // onClick={() => toPDF()}
-                className="inline-flex items-center gap-1.5 bg-[#009688] !text-white no-underline px-4 py-2 rounded-lg text-[13px] font-semibold shadow-[0_2px_8px_rgba(0,150,136,0.3)] cursor-pointer"
+                className="inline-flex items-center gap-1.5 bg-[#009688] text-white no-underline px-4 py-2 rounded-lg text-[13px] font-semibold shadow-[0_2px_8px_rgba(0,150,136,0.3)] cursor-pointer"
               >
-                <span className="material-icons-outlined text-[15px] !text-white">file_download</span>
+                <span className="material-icons-outlined text-[15px] text-white">file_download</span>
                 Exportar Reporte
               </button>
               <button

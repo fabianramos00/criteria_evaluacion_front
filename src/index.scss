@@ -2,7 +2,6 @@
 
 * {
   font-family: $font-family;
-  color: $color-text-dark;
 }
 
 div {
@@ -16,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--manuscript-cream);
+  color: var(--ink-900);
   position: relative;
 
   &::before {
