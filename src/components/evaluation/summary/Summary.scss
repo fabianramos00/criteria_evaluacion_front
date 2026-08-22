@@ -1,21 +1,23 @@
 @use "src/variables" as *;
 
+/* Sin scope bajo .summary: el clon usado para exportar PDF pierde ese ancestro
+   y un selector descendiente no aplicaría estos fondos en el PDF. */
+.high-score {
+    background: linear-gradient(145deg, #009688 0%, #00796b 100%);
+}
+
+.medium-score {
+    background: linear-gradient(145deg, #ffb74d 0%, #f57c00 100%);
+}
+
+.low-score {
+    background: linear-gradient(145deg, #e57373 0%, #b71c1c 100%);
+}
+
 .summary {
     @include page;
     position: relative;
     min-height: 100vh;
-
-    .high-score {
-        background: linear-gradient(145deg, #009688 0%, #00796b 100%);
-    }
-
-    .medium-score {
-        background: linear-gradient(145deg, #ffb74d 0%, #f57c00 100%);
-    }
-
-    .low-score {
-        background: linear-gradient(145deg, #e57373 0%, #b71c1c 100%);
-    }
 
     .form-actions {
         display: flex;

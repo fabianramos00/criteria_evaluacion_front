@@ -8,8 +8,9 @@ Aplicacion SPA en React para evaluar repositorios institucionales contra 8 categ
 - **react-router-dom 6** para enrutamiento
 - **Tailwind CSS 4** + SCSS (sass-embedded)
 - **react-hook-form** + @hookform/resolvers + Yup para formularios
-- **@react-pdf/renderer** + jspdf para exportacion PDF
-- **DM Sans, Fraunces, Material Icons** (Google Fonts)
+- **html2canvas-pro** + jspdf para exportacion PDF
+- **react-spinners** para indicadores de carga
+- **DM Sans, Material Icons** (Google Fonts)
 
 ## Requisitos
 
@@ -47,7 +48,7 @@ src/
 ├── components/       # Componentes reutilizables
 ├── config/           # Configuracion (cliente HTTP)
 ├── const/            # Constantes (rutas, errores)
-├── contexts/         # Contextos React (TotalContext)
+├── context/           # Contextos React (TotalContext)
 ├── pages/            # Páginas principales
 ├── schemas/          # Esquemas de validacion Yup
 ├── services/         # Funciones de API
@@ -57,7 +58,7 @@ src/
 
 ## Evaluacion
 
-La aplicacionavalua repositorios contra 9 categorias:
+La aplicacion evalua repositorios contra 9 categorias:
 
 1. Visibilidad
 2. Politicas

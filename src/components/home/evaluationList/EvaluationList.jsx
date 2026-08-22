@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { listEvaluations } from '../../../services/home.services';
-import { formatDate, getQualityInfo } from '../../../utils/common';
+import { formatDate } from '../../../utils/common';
 import { visibilityRoute, HOME_ROUTE, getRouteBySection, summaryRoute } from '../../../const/routes';
 import './EvaluationList.scss';
 import Loading from '../../general/loading/Loading';

@@ -205,4 +205,4 @@ Max-width 900px centered. Header card: repository name/subtitle, URL link, statu
 | `src/components/general/option/Option.scss` | Option card |
 | `src/components/general/input/Input.scss` | Input field |
 | `src/components/evaluation/summary/Summary.scss` | Summary/score page |
-| `index.html` | Fonts (DM Sans, Fraunces, Material Icons) |
+| `index.html` | Fonts (DM Sans, Material Icons) |

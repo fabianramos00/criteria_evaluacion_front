@@ -8,7 +8,7 @@ Guidance for AI coding agents working in this repository.
 
 The evaluation flows against an external backend API (the Django/Django REST backend is a separate repository). The frontend only calls that API.
 
-> **Note:** `CONTEXT.md` in the repo root (if present) is outdated — it references CRA, React 17, and react-router-dom 5. The project now uses Vite + React 18 + react-router-dom 6. `CLAUDE.md` also exists but is Claude-specific; `AGENTS.md` is the canonical cross-tool context.
+> **Note:** `AGENTS.md` is the canonical cross-tool context; `CLAUDE.md` is Claude-specific.
 
 ## Build & Dev Commands
 
@@ -19,16 +19,16 @@ pnpm run preview  # Preview production build
 ```
 
 - **No test runner is configured.** No lint or typecheck scripts exist.
-- Package manager is **pnpm** (project was migrated from CRA + yarn, then npm → pnpm).
+- Package manager is **pnpm**.
 
 ## Tech Stack
 
 - **React 18** with **Vite 6**, **react-router-dom 6**
 - **Styling**: Tailwind CSS 4 (`@tailwindcss/vite` plugin) + SCSS via `sass-embedded`. Design tokens in `src/styles/tokens.css`, legacy SCSS variables in `src/variables.scss`. SCSS compiled with `api: 'modern-compiler'`.
 - **Forms**: react-hook-form + @hookform/resolvers + Yup
-- **PDF export**: @react-pdf/renderer, jspdf (deps present; current Summary component has the PDF button disabled/commented out)
+- **PDF export**: html2canvas-pro + jspdf. `Summary.jsx`'s `toPDF()` clones the summary node off-screen, renders it with `html2canvas`, and slices the canvas into A4 pages via jsPDF.
 - **Other**: react-modal, react-spinners, react-tooltip
-- **Fonts**: DM Sans, Fraunces, Material Icons (via Google Fonts CDN in `index.html`)
+- **Fonts**: DM Sans, Material Icons (via Google Fonts CDN in `index.html`)
 
 ## Environment
 
@@ -70,14 +70,15 @@ Route builders live in `src/const/routes.js` (e.g. `visibilityRoute(token)`, `ge
 - **Service functions**: `src/services/` call the HTTP wrappers. `home.services.js`: `evaluate()`, `listEvaluations(page, quantity, search)`. `evaluation.services.js`: `getItemEvaluation(item, token)`, `evalVisibility/Politics/LegalAspects/Metadata/Interoperability/Security/Statistics/Services`, `summary(token)`.
 - **State**: `TotalContext` (React Context, `src/context/context.jsx`) holds `total` (accumulative score) and `repositoryName`, both set by `ItemTemplate`. Form state is managed by react-hook-form with Yup schemas.
 - **Component structure**: each component lives in its own directory with co-located `.jsx` + `.scss`. Reusable form primitives in `src/components/general/`: `Input`, `Option`, `RadioGroup`, `RadioBtn`, `RadioWithUrl`, `ListItemCheck`, `DetailsModal`, `ErrorMessage`, `Menu`.
+- **Loading**: shared `src/components/general/loading/Loading` component (props: `loading`, `overlay`, `size`, `text`) wraps `react-spinners` `HashLoader`. Color is the `#009688` hex literal — the `color` prop is a plain string, so CSS variables don't work; `speedMultiplier={1.25}`. Full-screen overlay variant uses `.blocking-loading`/`.loading-label` (defined in `src/App.scss`); inline variant uses `.loading-container`/`.loading-text`.
 
 ### Home flow
 
-`src/components/home/form/Form.jsx` validates URL + name (with optional unique alternative name), calls `evaluate()` → receives `{ token }` → navigates to `visibilityRoute(token)`. `EvaluationList` fetches paginated history via `listEvaluations`.
+`src/components/home/form/Form.jsx` validates URL + name (with optional unique alternative name), calls `evaluate()` → receives `{ token }` → navigates to `visibilityRoute(token)`. `EvaluationList` fetches paginated history via `listEvaluations` with windowed pagination (first, current ±1 and last page, with ellipsis).
 
 ### Summary
 
-`src/components/evaluation/summary/Summary.jsx` calls `summary(token)` and renders repository names, total score / `max_rating`, per-category bars with quality labels (`getQualityInfo`: Alto/Medio/Bajo), share-to-clipboard, and an (currently disabled) PDF export button.
+`src/components/evaluation/summary/Summary.jsx` calls `summary(token)` and renders repository names, total score / `max_rating`, per-category bars with quality labels (`getQualityInfo`: Alto/Medio/Bajo), share-to-clipboard, and an active PDF export (`toPDF()` using html2canvas-pro + jspdf).
 
 ## Constants & Validation
 
@@ -94,4 +95,4 @@ Route builders live in `src/const/routes.js` (e.g. `visibilityRoute(token)`, `ge
 - `cleanJSON` strips falsy values before POST (empty URLs are not sent).
 - Forms disable editing once answered (`disabled = !isEmptyObject(data)`).
 - Styling: prefer design tokens (`var(--scholarly-900)`, `var(--assessment-400)`, etc.) from `src/styles/tokens.css`; Tailwind utility classes and co-located SCSS are both used.
-- When adding a new category, follow the existing pattern: schema constants file + category component wrapping `ItemTemplate` + route in `Evaluation.jsx` + service function.
+- When adding a new category, follow the existing pattern: schema constants file + category component wrapping `ItemTemplate` + route in `src/pages/evaluation/Evaluation.jsx` (the wizard router) + service function.

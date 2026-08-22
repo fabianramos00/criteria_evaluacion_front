@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Criteria** is a React SPA for evaluating institutional repositories against 8 standardized criteria categories. The UI is entirely in **Spanish**. Users submit a repository URL, receive a token-based evaluation session, step through 8 category forms, and get a final score with PDF export.
 
-> **Note:** `CONTEXT.md` in the repo root is outdated — it references CRA, React 17, and react-router-dom 5. The project has been migrated to Vite + React 18 + react-router-dom 6.
+> **Note:** `AGENTS.md` is the canonical cross-tool context; this file is Claude-specific.
 
 ## Build & Dev Commands
 
@@ -16,15 +16,15 @@ pnpm run build    # Production build to dist/
 pnpm run preview  # Preview production build
 ```
 
-No test runner is currently configured.
+No test runner is configured.
 
 ## Tech Stack
 
 - **React 18** with Vite 6, react-router-dom 6
 - **Styling**: Tailwind CSS 4 + SCSS (sass-embedded). Design tokens in `src/styles/tokens.css`, legacy SCSS variables in `src/variables.scss`
 - **Forms**: react-hook-form + @hookform/resolvers + Yup
-- **PDF export**: @react-pdf/renderer, jspdf
-- **Fonts**: DM Sans, Fraunces, Material Icons (via Google Fonts CDN in `index.html`)
+- **PDF export**: html2canvas-pro + jspdf (`Summary.jsx`'s `toPDF()`)
+- **Fonts**: DM Sans, Material Icons (via Google Fonts CDN in `index.html`)
 
 ## Environment
 

@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas-pro';
 import { summary } from '../../../services/evaluation.services';
 import { formatDate, getQualityInfo } from '../../../utils/common';
 import './Summary.scss';
@@ -58,9 +60,11 @@ const Summary = () => {
   const [url, setUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [lastUpdate, setLastUpdate] = useState('');
+  const [exporting, setExporting] = useState(false);
 
   const { token } = useParams();
   const navigate = useNavigate();
+  const contentRef = useRef(null);
 
   useEffect(() => {
     setLoading(true);
@@ -75,9 +79,11 @@ const Summary = () => {
         setLastUpdate(updated_at);
       })
       .catch((e) => {
-        if (e.detail === 'Invalid token') {
+        // Errores de red (TypeError) no tienen .detail: se protege el acceso
+        // y se evita llamar un route builder inexistente cuando falta e.next_item
+        if (e?.detail === 'Invalid token') {
           navigate(HOME_ROUTE);
-        } else if (!e.is_completed) {
+        } else if (e && typeof e === 'object' && !e.is_completed && getRouteBySection[e.next_item]) {
           navigate(getRouteBySection[e.next_item](token));
         }
       })
@@ -97,11 +103,65 @@ const Summary = () => {
     });
   };
 
+  const toPDF = async () => {
+    setExporting(true);
+    let clone = null;
+    try {
+      const node = contentRef.current;
+      if (!node) return;
+
+      // Se clona el contenido para no mutar el DOM visible
+      clone = node.cloneNode(true);
+      // Se excluyen los controles de UI: botón "Anterior" y fila de acciones (Exportar/Compartir)
+      clone.querySelector('.form-actions')?.remove();
+      clone.querySelector('.summary-actions')?.remove();
+      clone.style.position = 'fixed';
+      clone.style.left = '-9999px';
+      clone.style.top = '0';
+      clone.style.width = '900px';
+      clone.style.margin = '0';
+      document.body.appendChild(clone);
+
+      await document.fonts.ready;
+      const canvas = await html2canvas(clone, { scale: 2, backgroundColor: '#f4f7f6' });
+
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let position = 0;
+      let heightLeft = imgHeight;
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const fileName =
+        repoName
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-zA-Z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'evaluacion';
+      pdf.save(`informe-${fileName}.pdf`);
+    } catch (e) {
+      console.error('Error al exportar el reporte:', e);
+    } finally {
+      if (clone?.parentNode) clone.parentNode.removeChild(clone);
+      setExporting(false);
+    }
+  };
+
   return (
     <section className="summary">
       <Loading loading={loading} />
 
-      <div className="max-w-[900px] mx-auto p-6">
+      <div ref={contentRef} className="max-w-[900px] mx-auto p-6">
         <div className="bg-white rounded-[14px] shadow-sm p-5 flex gap-5 items-center">
           <div className="flex-1 basis-[65%] min-w-[200px] text-left space-y-2">
             <div>
@@ -146,20 +206,21 @@ const Summary = () => {
                   <span className="text-[35px] text-white font-medium">/{maxScore}</span>
                 )}
               </div>
-              <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full bg-white/85 rounded-full" style={{ width: `${scorePercent}%` }} />
+              <div className="w-full h-1 bg-[rgba(255,255,255,0.2)] rounded-full overflow-hidden">
+                <div className="h-full bg-[rgba(255,255,255,0.85)] rounded-full" style={{ width: `${scorePercent}%` }} />
               </div>
-              <span className="bg-white/15 text-white text-sm font-semibold px-2 py-[2px] rounded-full">
+              <span className="bg-[rgba(255,255,255,0.15)] text-white text-sm font-semibold px-2 py-[2px] rounded-full">
                 Nivel de Calidad: {quality.label}
               </span>
             </div>
-            <div className="flex gap-2.5 flex-shrink-0">
+            <div className="flex gap-2.5 flex-shrink-0 summary-actions">
               <button
-                // onClick={() => toPDF()}
-                className="inline-flex items-center gap-1.5 bg-[#009688] text-white no-underline px-4 py-2 rounded-lg text-[13px] font-semibold shadow-[0_2px_8px_rgba(0,150,136,0.3)] cursor-pointer"
+                onClick={toPDF}
+                disabled={exporting}
+                className="inline-flex items-center gap-1.5 bg-[#009688] text-white no-underline px-4 py-2 rounded-lg text-[13px] font-semibold shadow-[0_2px_8px_rgba(0,150,136,0.3)] cursor-pointer disabled:opacity-60 disabled:cursor-wait"
               >
                 <span className="material-icons-outlined text-[15px] text-white">file_download</span>
-                Exportar Reporte
+                {exporting ? 'Exportando...' : 'Exportar Reporte'}
               </button>
               <button
                 onClick={handleShare}
