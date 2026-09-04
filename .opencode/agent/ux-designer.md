@@ -21,7 +21,6 @@ The design language lives in `DESIGN.md` (source of truth). Key facts:
 - **Spacing:** 4px base unit scale. **Radius:** small → inputs/buttons, medium → cards, full → circles/pills.
 - **Depth:** subtle shadows + soft low-opacity borders; one strategy, no harsh lines.
 - **Motion:** 150/300ms durations, `slide-up` wizard entry with 50ms stagger, whisper-quiet hovers, no spring in professional flows.
-- **Dark mode:** `[data-theme='dark']` — borders not shadows, slightly desaturated semantics.
 - **Key surfaces:** dark sidebar (340px), wizard page header with teal score circle, white option cards, input fields, summary page with score panel and category bars.
 
 # Interface design principles

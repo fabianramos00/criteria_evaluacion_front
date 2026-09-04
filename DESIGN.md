@@ -137,18 +137,7 @@ Established patterns:
 
 ---
 
-## 5. Dark mode
-
-`[data-theme='dark']` overrides in `tokens.css`:
-- `--manuscript-paper: #111b27`, `--manuscript-cream: #0a121e`
-- `--ink-900: #f1f5f9`, `--ink-700: #cbd5e1`
-- `--border-subtle: rgba(255,255,255,0.1)`
-
-Dark conventions: use borders (not shadows) for separation; keep semantic colors slightly desaturated.
-
----
-
-## 6. Layout & component patterns
+## 5. Layout & component patterns
 
 ### Global layout
 
@@ -184,7 +173,7 @@ Max-width 900px centered. Header card: repository name/subtitle, URL link, statu
 
 ---
 
-## 7. Conventions for contributors
+## 6. Conventions for contributors
 
 - **Prefer tokens** (`var(--assessment-400)`, `var(--scholarly-900)`) and Tailwind utilities; co-located SCSS per component is used too — follow the existing pattern of whichever file you touch.
 - Keep one accent color (teal) with intention; never multiple accents or decorative gradients.
@@ -193,11 +182,11 @@ Max-width 900px centered. Header card: repository name/subtitle, URL link, statu
 - Icons clarify, don't decorate; remove icons that carry no meaning.
 - Keep all user-facing copy in Spanish.
 
-## 8. Files to reference
+## 7. Files to reference
 
 | File | What it documents |
 |---|---|
-| `src/styles/tokens.css` | Design tokens (colors, type, spacing, radius, shadows, motion, dark mode) |
+| `src/styles/tokens.css` | Design tokens (colors, type, spacing, radius, shadows, motion) |
 | `src/variables.scss` | Legacy SCSS → token mappings, `@mixin page` |
 | `src/App.scss` | Global typography, `.cta`, `.link`, `.state`, `.blocking-loading` |
 | `src/components/general/menu/Menu.scss` | Dark sidebar |

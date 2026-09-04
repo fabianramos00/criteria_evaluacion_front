@@ -88,11 +88,3 @@
   --duration-fast: 150ms;
   --duration-normal: 300ms;
 }
-
-[data-theme='dark'] {
-  --manuscript-paper: #111b27;
-  --manuscript-cream: #0a121e;
-  --ink-900: #f1f5f9;
-  --ink-700: #cbd5e1;
-  --border-subtle: rgba(255, 255, 255, 0.1);
-}
